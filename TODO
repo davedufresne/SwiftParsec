@@ -1,0 +1,1 @@
+- Add the ability to read a text file by chuncks taking in account graphem cluster boundaries (ICU).
