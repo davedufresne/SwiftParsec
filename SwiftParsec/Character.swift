@@ -52,6 +52,19 @@ public extension ParsecType where Stream.Element == Character, Result == Charact
         
     }
     
+    /// Return a parser that succeeds if the current character is in the supplied interval of characters. It returns the parsed character.
+    ///
+    ///     let digit = StringParser.oneOf("0"..."9")
+    ///
+    /// - parameter interval: A `ClosedInterval` of possible characters to match.
+    /// - returns: A parser that succeeds if the current character is in the supplied interval of characters.
+    /// - SeeAlso: `GenericParser.satisfy(predicate: Character -> Bool) -> GenericParser`
+    public static func oneOf(interval: ClosedInterval<Character>) -> GenericParser<Stream, UserState, Result> {
+        
+        return satisfy(interval.contains)
+        
+    }
+    
     /// Return a parser that succeeds if the current character is _not_ in the supplied list of characters. It returns the parsed character.
     ///
     ///     let consonant = StringParser.noneOf("aeiou")
