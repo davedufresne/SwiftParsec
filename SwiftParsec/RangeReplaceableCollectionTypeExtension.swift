@@ -15,7 +15,7 @@ extension RangeReplaceableCollectionType where Generator.Element: Equatable {
     func replaceWith(newElement: Generator.Element) -> [Generator.Element] {
         
         var filtered = filter { $0 != newElement }
-        filtered.insert(newElement, atIndex: 0)
+        filtered.prepend(newElement)
         
         return filtered
         
@@ -39,6 +39,27 @@ public extension RangeReplaceableCollectionType {
     mutating func insert<C : CollectionType where C.Generator.Element == Generator.Element>(collection: C, atIndex index: Index) {
         
         replaceRange(index..<index, with: collection)
+        
+    }
+    
+    /// Prepend `newElement` to the collection.
+    ///
+    /// - parameter newElement: New element to prepend to the collection.
+    mutating func prepend(newElement: Generator.Element) {
+        
+        insert(newElement, atIndex: startIndex)
+        
+    }
+    
+    /// Returns `self` with `newElement` at `startIndex`.
+    ///
+    /// - parameter newElement: New element to add to the begining of `self`.
+    func unshift(newElement: Generator.Element) -> Self {
+        
+        var mutableSelf = self
+        mutableSelf.prepend(newElement)
+        
+        return mutableSelf
         
     }
     
