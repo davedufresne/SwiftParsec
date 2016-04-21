@@ -63,4 +63,16 @@ extension String {
         
     }
     
+    /// Return a new `String` with `c` adjoined to the end.
+    ///
+    /// - parameter c: Character to append.
+    func adjoin(c: Character) -> String {
+        
+        var mutableSelf = self
+        mutableSelf.append(c)
+        
+        return mutableSelf
+        
+    }
+    
 }
