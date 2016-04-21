@@ -63,4 +63,16 @@ public extension RangeReplaceableCollectionType {
         
     }
     
+    /// Return a new `String` with `c` adjoined to the end.
+    ///
+    /// - parameter c: Character to append.
+    func adjoin(newElement: Generator.Element) -> Self {
+        
+        var mutableSelf = self
+        mutableSelf.append(newElement)
+        
+        return mutableSelf
+        
+    }
+
 }
