@@ -26,9 +26,6 @@ class ExpressionTests: XCTestCase {
                 prefix("+", function: { $0 })
             ],
             [
-                postfix("++", function: { (var num) in num++ })
-            ],
-            [
                 binary(">>", function: >>, assoc: .None),
                 binary("<<", function: <<, assoc: .None)
             ],
@@ -56,11 +53,10 @@ class ExpressionTests: XCTestCase {
             
         }
         
-        let matching = ["1+2*4-8+((3-12)/8)+(-71)+2^2^3", "+3-(3++)+5", "4>>2", "4<<2"]
+        let matching = ["1+2*4-8+((3-12)/8)+(-71)+2^2^3", "(+3-3)+5", "4>>2", "4<<2"]
         var expected = [1+2*4-8+((3-12)/8)+(-71)+power(2, power(2, 3))]
         
-        var three = 3
-        expected.append(+3-(three++)+5)
+        expected.append((+3-3)+5)
         
         expected.append(4>>2)
         expected.append(4<<2)
