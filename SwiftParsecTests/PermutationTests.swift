@@ -220,7 +220,8 @@ class PermutationTests: XCTestCase {
         var index = 0
         testStringParserSuccess(imgTag, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         

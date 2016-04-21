@@ -67,7 +67,8 @@ class ExpressionTests: XCTestCase {
         
         testStringParserSuccess(expr, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         

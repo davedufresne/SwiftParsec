@@ -72,10 +72,10 @@ public extension GenericParser {
         
         return self >>- { result in
             
-            self.many >>- { (var results) in
+            self.many >>- { results in
                 
-                results.insert(result, atIndex: 0)
-                return GenericParser<Stream, UserState, [Result]>(result: results)
+                let rs = results.unshift(result)
+                return GenericParser<Stream, UserState, [Result]>(result: rs)
                 
             }
             
@@ -105,10 +105,10 @@ public extension GenericParser {
         
         return self >>- { result in
             
-            (separator *> self).many >>- { (var results) in
+            (separator *> self).many >>- { results in
                 
-                results.insert(result, atIndex: 0)
-                return GenericParser<Stream, UserState, [Result]>(result: results)
+                let rs = results.unshift(result)
+                return GenericParser<Stream, UserState, [Result]>(result: rs)
                 
             }
             
@@ -159,10 +159,10 @@ public extension GenericParser {
             let optionalSeparator: GenericParser<Stream, UserState, [Result]> =
             separator >>- { _ in
                 
-                self.dividedBy(separator, endSeparatorRequired: false) >>- { (var results) in
+                self.dividedBy(separator, endSeparatorRequired: false) >>- { results in
                     
-                    results.insert(result, atIndex: 0)
-                    return GenericParser<Stream, UserState, [Result]>(result: results)
+                    let rs = results.unshift(result)
+                    return GenericParser<Stream, UserState, [Result]>(result: rs)
                     
                 }
                 
@@ -180,7 +180,7 @@ public extension GenericParser {
     /// - returns: A parser that parses `n` occurrences of `self`.
     public func count(n: Int) -> GenericParser<Stream, UserState, [Result]> {
         
-        func count(var n: Int, var results: [Result]) -> GenericParser<Stream, UserState, [Result]> {
+        func count(n: Int, results: [Result]) -> GenericParser<Stream, UserState, [Result]> {
             
             guard n > 0 else {
                 
@@ -190,8 +190,8 @@ public extension GenericParser {
             
             return self >>- { result in
                 
-                results.append(result)
-                return count(--n, results: results)
+                let rs = results.adjoin(result)
+                return count(n - 1, results: rs)
                 
             }
             
@@ -327,10 +327,10 @@ public extension GenericParser {
             
             return empty <|> (self >>- { result in
                 
-                scan() >>- { (var results) in
+                scan() >>- { results in
                     
-                    results.insert(result, atIndex: 0)
-                    return GenericParser<Stream, UserState, [Result]>(result: results)
+                    let rs = results.unshift(result)
+                    return GenericParser<Stream, UserState, [Result]>(result: rs)
                     
                 }
                 

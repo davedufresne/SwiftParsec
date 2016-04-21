@@ -133,9 +133,11 @@ class CombinatorTests: XCTestCase {
         
         let errorMessage = "GenericParser.between error."
         
-        testStringParserSuccess(digit, inputs: matchingDigit, errorMessage: errorMessage) { (var input, let result) in
+        testStringParserSuccess(digit, inputs: matchingDigit, errorMessage: errorMessage) { inputStr, result in
             
-            input.removeAtIndex(input.startIndex)
+            var input = inputStr
+            input.popFirst()
+            
             return input.hasPrefix(String(result))
             
         }
@@ -146,9 +148,11 @@ class CombinatorTests: XCTestCase {
         
         let matchingString = ["{[(abc)]}", "{[(abc)]}abc"]
         
-        testStringParserSuccess(string, inputs: matchingString, errorMessage: errorMessage) { (var input, let result) in
+        testStringParserSuccess(string, inputs: matchingString, errorMessage: errorMessage) { inputStr, result in
             
-            let startIndex = input.startIndex
+            let startIndex = inputStr.startIndex
+            
+            var input = inputStr
             input.removeRange(startIndex...startIndex.advancedBy(2))
             
             return input.hasPrefix(result)
@@ -390,7 +394,8 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(exp, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expectedResult[index++]
+            defer { index += 1 }
+            return result == expectedResult[index]
             
         }
         
@@ -421,7 +426,8 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(exp, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expectedResult[index++]
+            defer { index += 1 }
+            return result == expectedResult[index]
             
         }
         
@@ -452,7 +458,8 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(add, inputs: matchingAdd, errorMessage: errorMessage) { _, result in
             
-            result == expectedResultAdd[index++]
+            defer { index += 1 }
+            return result == expectedResultAdd[index]
             
         }
         
@@ -469,7 +476,8 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(mul, inputs: matchingMul, errorMessage: errorMessage) { _, result in
             
-            result == expectedResultMul[index++]
+            defer { index += 1 }
+            return result == expectedResultMul[index]
             
         }
         
@@ -500,7 +508,8 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(add, inputs: matchingAdd, errorMessage: errorMessage) { _, result in
             
-            return result == expectedResultAdd[index++]
+            defer { index += 1 }
+            return result == expectedResultAdd[index]
             
         }
         
@@ -517,7 +526,8 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(mul, inputs: matchingMul, errorMessage: errorMessage) { _, result in
             
-            result == expectedResultMul[index++]
+            defer { index += 1 }
+            return result == expectedResultMul[index]
             
         }
         
@@ -565,9 +575,11 @@ class CombinatorTests: XCTestCase {
         
         let errorMessage = "GenericParser.manyTill error."
         
-        testStringParserSuccess(comment, inputs: matching, errorMessage: errorMessage) { (var input, result) in
+        testStringParserSuccess(comment, inputs: matching, errorMessage: errorMessage) { inputStr, result in
             
-            let startIndex = input.startIndex
+            let startIndex = inputStr.startIndex
+            
+            var input = inputStr
             input.removeRange(startIndex..<commentStartStr.endIndex)
             
             return result.isEmpty || input.hasPrefix(result)
@@ -631,7 +643,8 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(expression, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         

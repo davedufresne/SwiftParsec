@@ -419,8 +419,8 @@ extension Double: PlusOperator {}
 extension String: PlusOperator {}
 
 /// Curried version of the `+` operator for `Int`.
-func curriedPlus<T: PlusOperator>(lhs: T)(rhs: T) -> T {
+func curriedPlus<T: PlusOperator>(lhs: T) -> (T) -> T {
     
-    return lhs + rhs
+    return { rhs in lhs + rhs }
     
 }

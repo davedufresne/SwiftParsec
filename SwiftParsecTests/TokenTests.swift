@@ -191,7 +191,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(characterLiteral, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -216,7 +217,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(stringLiteral, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -241,7 +243,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(stringLiteral, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -266,7 +269,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(stringLiteral, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -291,7 +295,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(natural, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -316,7 +321,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(integer, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -341,7 +347,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(integer, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -366,7 +373,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(float, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -391,7 +399,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(number, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            let expect = expected[index++]
+            let expect = expected[index]
+            index += 1
             
             switch result {
                 
@@ -437,7 +446,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(decimal, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -461,7 +471,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(hexadecimal, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -485,7 +496,8 @@ class TokenTests: XCTestCase {
         
         testStringParserSuccess(octal, inputs: matching, errorMessage: errorMessage) { _, result in
             
-            result == expected[index++]
+            defer { index += 1 }
+            return result == expected[index]
             
         }
         
@@ -514,7 +526,8 @@ class TokenTests: XCTestCase {
             
             testStringParserSuccess(parser, inputs: [input], errorMessage: errorMessage) { _, result in
                 
-                result == names[index++]
+                defer { index += 1 }
+                return result == names[index]
                 
             }
             

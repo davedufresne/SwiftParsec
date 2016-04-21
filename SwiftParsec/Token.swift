@@ -54,7 +54,7 @@ public struct LanguageDefinition<UserState> {
 public protocol TokenParserType {
     
     /// The state supplied by the user.
-    typealias UserState
+    associatedtype UserState
     
     var languageDefinition: LanguageDefinition<UserState> { get }
     
@@ -139,10 +139,10 @@ extension TokenParserType {
         
         let ident: StrParser = langDef.identifierStart >>- { char in
             
-            langDef.identifierLetter(char).many >>- { (var chars) in
+            langDef.identifierLetter(char).many >>- { chars in
                 
-                chars.insert(char, atIndex: 0)
-                return GenericParser(result: String(chars))
+                let cs = chars.unshift(char)
+                return GenericParser(result: String(cs))
                 
             }
             
@@ -206,10 +206,10 @@ extension TokenParserType {
         
         let op: StrParser = langDef.operatorStart >>- { char in
             
-            langDef.operatorLetter.many >>- { (var chars) in
+            langDef.operatorLetter.many >>- { chars in
                 
-                chars.insert(char, atIndex: 0)
-                return GenericParser(result: String(chars))
+                let cs = chars.unshift(char)
+                return GenericParser(result: String(cs))
                 
             }
             
@@ -304,11 +304,11 @@ extension TokenParserType {
             
         let literalString = string.map({ str in
             
-            str.reduce("") { (var acc, char) in
+            str.reduce("") { (acc, char) in
                 
-                if let c = char { acc.append(c) }
+                guard let c = char else { return acc }
                 
-                return acc
+                return acc.adjoin(c)
                 
             }
             
@@ -847,12 +847,13 @@ extension TokenParserType {
             
         }
         
-        func walk(var str: String) -> VoidParser {
+        func walk(string: String) -> VoidParser {
             
             let unit = VoidParser(result: ())
             
-            guard !str.isEmpty else { return unit }
+            guard !string.isEmpty else { return unit }
             
+            var str = string
             let c = str.popFirst()!
             
             let charParser: VoidParser

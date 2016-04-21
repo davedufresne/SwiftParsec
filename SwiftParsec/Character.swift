@@ -23,10 +23,12 @@ public extension ParsecType where Stream.Element == Character, Result == Charact
         
         return tokenPrimitive(
             tokenDescription: { String(reflecting: $0) },
-            nextPosition: { (var position, elem, _) in
+            nextPosition: { position, elem, _ in
                 
-                position.updatePosition(elem)
-                return position
+                var pos = position
+                pos.updatePosition(elem)
+                
+                return pos
                 
             },
             match: { elem in
@@ -241,11 +243,14 @@ public extension ParsecType where Stream.Element == Character {
         
         return tokens(
             tokensDescription: { String(reflecting: $0) },
-            nextPosition: { (var pos, var cs) in
+            nextPosition: { position, charStream in
+                
+                var pos = position
+                var cs = charStream
                 
                 var char: Character? = cs.popFirst()
                 while char != nil {
-                
+                    
                     pos.updatePosition(char!)
                     char = cs.popFirst()
                     
