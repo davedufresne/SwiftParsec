@@ -2,7 +2,7 @@
 
 Some wise advice gathered from multiple sources on submitting patches.
 
-## Describe you changes
+## Describe your changes
 
 Describe your problem.  Whether your patch is a one-line bug fix or 5000 lines of a new feature, there must be an underlying problem that motivated you to do this work.
 
