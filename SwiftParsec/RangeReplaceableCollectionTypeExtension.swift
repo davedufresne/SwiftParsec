@@ -6,23 +6,6 @@
 //  Copyright © 2015 David Dufresne. All rights reserved.
 //
 
-extension RangeReplaceableCollectionType where Generator.Element: Equatable {
-    
-    /// Remove all elements equal to `newElement` and insert `newElement` at the beginning of the returned array.
-    ///
-    /// - parameter newElement: New element to insert at the beginning of the returned array.
-    /// - returns: An array with all elements equal to `newElement` removed and `newElement` at its beginning.
-    func replaceWith(newElement: Generator.Element) -> [Generator.Element] {
-        
-        var filtered = filter { $0 != newElement }
-        filtered.prepend(newElement)
-        
-        return filtered
-        
-    }
-    
-}
-
 public extension RangeReplaceableCollectionType {
     
     /// If `!self.isEmpty`, remove the first element and return it, otherwise return `nil`.

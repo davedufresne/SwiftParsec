@@ -214,7 +214,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
     /// - parameter message: The new message to insert in `messages`.
     mutating func insertMessage(message: Message) {
         
-        messages = messages.replaceWith(message)
+        messages = messages.filter({ $0 != message }).prepending(message)
         
     }
     
