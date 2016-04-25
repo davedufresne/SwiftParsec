@@ -859,8 +859,8 @@ extension TokenParserType {
             let charParser: VoidParser
             if c.isAlpha {
                 
-                charParser = (GenericParser.character(c.lowercaseCharacter) <|>
-                    GenericParser.character(c.uppercaseCharacter)) *> unit
+                charParser = (GenericParser.character(c.lowercase) <|>
+                    GenericParser.character(c.uppercase)) *> unit
                 
             } else {
                 

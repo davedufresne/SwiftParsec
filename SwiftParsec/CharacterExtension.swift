@@ -126,7 +126,7 @@ extension Character {
     }
     
     /// Lowercase `self`.
-    var lowercaseCharacter: Character {
+    var lowercase: Character {
         
         let str = String(self).lowercaseString
         return str[str.startIndex]
@@ -134,7 +134,7 @@ extension Character {
     }
     
     /// Uppercase `self`.
-    var uppercaseCharacter: Character {
+    var uppercase: Character {
         
         let str = String(self).uppercaseString
         return str[str.startIndex]
