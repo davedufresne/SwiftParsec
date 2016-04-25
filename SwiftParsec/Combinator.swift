@@ -74,7 +74,7 @@ public extension GenericParser {
             
             self.many >>- { results in
                 
-                let rs = results.unshift(result)
+                let rs = results.prepending(result)
                 return GenericParser<Stream, UserState, [Result]>(result: rs)
                 
             }
@@ -107,7 +107,7 @@ public extension GenericParser {
             
             (separator *> self).many >>- { results in
                 
-                let rs = results.unshift(result)
+                let rs = results.prepending(result)
                 return GenericParser<Stream, UserState, [Result]>(result: rs)
                 
             }
@@ -161,7 +161,7 @@ public extension GenericParser {
                 
                 self.dividedBy(separator, endSeparatorRequired: false) >>- { results in
                     
-                    let rs = results.unshift(result)
+                    let rs = results.prepending(result)
                     return GenericParser<Stream, UserState, [Result]>(result: rs)
                     
                 }
@@ -190,7 +190,7 @@ public extension GenericParser {
             
             return self >>- { result in
                 
-                let rs = results.adjoin(result)
+                let rs = results.appending(result)
                 return count(n - 1, results: rs)
                 
             }
@@ -329,7 +329,7 @@ public extension GenericParser {
                 
                 scan() >>- { results in
                     
-                    let rs = results.unshift(result)
+                    let rs = results.prepending(result)
                     return GenericParser<Stream, UserState, [Result]>(result: rs)
                     
                 }

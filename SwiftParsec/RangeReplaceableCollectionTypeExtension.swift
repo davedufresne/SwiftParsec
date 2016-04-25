@@ -51,10 +51,11 @@ public extension RangeReplaceableCollectionType {
         
     }
     
-    /// Returns `self` with `newElement` at `startIndex`.
+    /// Returns a new collection containing the elements of `self` with `newElement` prepended at the beginning.
     ///
-    /// - parameter newElement: New element to add to the begining of `self`.
-    func unshift(newElement: Generator.Element) -> Self {
+    /// - parameter newElement: New element to prepend.
+    /// - returns: A copy of `self` plus `newElement` prepended.
+    func prepending(newElement: Generator.Element) -> Self {
         
         var mutableSelf = self
         mutableSelf.prepend(newElement)
@@ -63,10 +64,11 @@ public extension RangeReplaceableCollectionType {
         
     }
     
-    /// Return a new `String` with `c` adjoined to the end.
+    /// Returns a new collection containing the elements of `self` with `newElement` appended to the end.
     ///
-    /// - parameter c: Character to append.
-    func adjoin(newElement: Generator.Element) -> Self {
+    /// - parameter newElement: New element to append.
+    /// - returns: A copy of `self` plus `newElement` appended.
+    func appending(newElement: Generator.Element) -> Self {
         
         var mutableSelf = self
         mutableSelf.append(newElement)

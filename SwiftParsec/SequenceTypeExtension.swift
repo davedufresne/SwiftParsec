@@ -42,13 +42,13 @@ extension SequenceType where Generator.Element: Equatable {
     /// Return an array with the duplicate elements removed. In particular, it keeps only the first occurrence of each element.
     ///
     /// - returns: An array with the duplicate elements removed.
-    func removeDuplicates() -> [Self.Generator.Element] {
+    func removingDuplicates() -> [Self.Generator.Element] {
         
         return reduce([]) { (acc, elem) in
             
             guard !acc.contains(elem) else { return acc }
             
-            return acc.adjoin(elem)
+            return acc.appending(elem)
             
         }
         

@@ -141,7 +141,7 @@ extension TokenParserType {
             
             langDef.identifierLetter(char).many >>- { chars in
                 
-                let cs = chars.unshift(char)
+                let cs = chars.prepending(char)
                 return GenericParser(result: String(cs))
                 
             }
@@ -208,7 +208,7 @@ extension TokenParserType {
             
             langDef.operatorLetter.many >>- { chars in
                 
-                let cs = chars.unshift(char)
+                let cs = chars.prepending(char)
                 return GenericParser(result: String(cs))
                 
             }
@@ -308,7 +308,7 @@ extension TokenParserType {
                 
                 guard let c = char else { return acc }
                 
-                return acc.adjoin(c)
+                return acc.appending(c)
                 
             }
             
@@ -613,7 +613,7 @@ extension TokenParserType {
             
             let langDef = self.languageDefinition
             
-            let startEnd = (langDef.commentStart + langDef.commentEnd).removeDuplicates()
+            let startEnd = (langDef.commentStart + langDef.commentEnd).removingDuplicates()
             let commentEnd = StrParser.string(langDef.commentEnd)
             
             return commentEnd.attempt *> GenericParser(result: ()) <|>
@@ -632,7 +632,7 @@ extension TokenParserType {
             
             let langDef = self.languageDefinition
             
-            let startEnd = (langDef.commentStart + langDef.commentEnd).removeDuplicates()
+            let startEnd = (langDef.commentStart + langDef.commentEnd).removingDuplicates()
             let commentEnd = StrParser.string(langDef.commentEnd)
             
             return commentEnd.attempt *> GenericParser(result: ()) <|>

@@ -276,7 +276,7 @@ extension SequenceType where Generator.Element == String {
     /// Return an array with duplicate and empty strings removed.
     private func clean() -> [Self.Generator.Element] {
         
-        return self.removeDuplicates().filter { !$0.isEmpty }
+        return self.removingDuplicates().filter { !$0.isEmpty }
         
     }
     

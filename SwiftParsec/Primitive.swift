@@ -356,7 +356,7 @@ public final class GenericParser<Stream: StreamType, UserState, Result>: ParsecT
         
         return manyAccumulator { (result, results) in
             
-            return results.adjoin(result)
+            return results.appending(result)
             
         }
         
