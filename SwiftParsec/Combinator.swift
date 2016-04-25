@@ -277,8 +277,7 @@ public extension GenericParser {
         
         func rest(left: Result) -> GenericParser {
             
-            // Type inference bug.
-            let operParser: GenericParser = oper >>- { op in
+            let operParser = oper >>- { op in
                 
                 self >>- { right in rest(op(left, right)) }
                 
