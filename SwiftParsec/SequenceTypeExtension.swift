@@ -11,17 +11,19 @@ extension SequenceType {
     /// Return a tuple containing the elements of `self`, in order, that satisfy the predicate `includeElement`. The second array of the tuple contains the remainder of the list.
     ///
     /// - parameter includeElement: The predicate function used to split the sequence.
-    /// - returns: A tuple containing the elements that satisfied the predicate in the first element and the remainder of the list in the second element.
-    func part(@noescape includeElement: (Self.Generator.Element) throws -> Bool) rethrows -> (satisfy: [Self.Generator.Element], remainder: [Self.Generator.Element]) {
+    /// - returns:
+    ///   - included: The elements that satisfied the predicate.
+    ///   - remainder: The remainder of `self`.
+    func part(@noescape includeElement: (Self.Generator.Element) throws -> Bool) rethrows -> (included: [Self.Generator.Element], remainder: [Self.Generator.Element]) {
         
-        var satisfy: [Self.Generator.Element] = []
+        var included: [Self.Generator.Element] = []
         var remainder: [Self.Generator.Element] = []
         
         for elem in self {
             
             if (try includeElement(elem)) {
                 
-                satisfy.append(elem)
+                included.append(elem)
                 
             } else {
                 
@@ -31,7 +33,7 @@ extension SequenceType {
             
         }
         
-        return (satisfy, remainder)
+        return (included, remainder)
         
     }
     
