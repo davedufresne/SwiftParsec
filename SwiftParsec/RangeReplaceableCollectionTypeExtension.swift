@@ -19,12 +19,6 @@ public extension RangeReplaceableCollectionType {
         
     }
     
-    mutating func insert<C: CollectionType where C.Generator.Element == Generator.Element>(collection: C, atIndex index: Index) {
-        
-        replaceRange(index..<index, with: collection)
-        
-    }
-    
     /// Prepend `newElement` to the collection.
     ///
     /// - parameter newElement: New element to prepend to the collection.

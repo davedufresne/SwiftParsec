@@ -111,7 +111,7 @@ public struct Permutation<Stream: StreamType, UserState, Result>: RangeReplaceab
                 return p >>- { results in
                     
                     var rs = results
-                    rs.insert(result, atIndex: index)
+                    rs.insertContentsOf(result, at: index)
                     
                     return GenericParser(result: rs)
                     
