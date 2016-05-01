@@ -52,7 +52,7 @@ public extension GenericParser {
     ///   - opening: The first parser to apply.
     ///   - closing: The last parser to apply.
     /// - returns: A parser that parses `opening`, followed by `self` and `closing`.
-    public func between<Open, Close>(opening: GenericParser<Stream, UserState, Open>, _ closing: GenericParser<Stream, UserState, Close>) -> GenericParser {
+    public func between<U, V>(opening: GenericParser<Stream, UserState, U>, _ closing: GenericParser<Stream, UserState, V>) -> GenericParser {
         
         return opening *> self <* closing
         
