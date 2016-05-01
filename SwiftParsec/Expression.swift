@@ -94,9 +94,6 @@ public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplace
     ///             prefix("+", function: { $0 })
     ///         ],
     ///         [
-    ///             postfix("++", function: { (var num) in num++ })
-    ///         ],
-    ///         [
     ///             binary("^", function: power, assoc: .Right)
     ///         ],
     ///         [
