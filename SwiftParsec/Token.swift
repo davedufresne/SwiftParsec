@@ -56,6 +56,7 @@ public protocol TokenParserType {
     /// The state supplied by the user.
     associatedtype UserState
     
+    /// Language definition parameterizing the lexer.
     var languageDefinition: LanguageDefinition<UserState> { get }
     
     var identifier: GenericParser<String, UserState, String> { get }
