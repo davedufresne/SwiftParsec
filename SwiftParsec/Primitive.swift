@@ -26,16 +26,36 @@ public protocol ParsecType {
     /// A combined parser.
     associatedtype CombinedParser = Self
     
-    /// See `GenericParser` documentation.
+    /// Return a parser containing the result of mapping transform over `self`.
+    ///
+    /// This method has the synonym infix operator `<^>`.
+    ///
+    /// - parameter transform: A mapping function.
+    /// - returns: A new parser with the mapped content.
     func map<T>(transform: Result -> T) -> GenericParser<Stream, UserState, T>
     
     /// Infix operator for `ParsecType.map`. It has the same precedence as the equality operator (`==`).
+    ///
+    /// - parameters:
+    ///   - transform: A mapping function.
+    ///   - parser: The parser whose result is mapped.
+    /// - returns: A new parser with the mapped content.
     func <^><T>(transform: Result -> T, parser: Self) -> GenericParser<Stream, UserState, T>
     
-    /// See `ParsecType` extension documentation.
+    /// Return a parser by applying the function contained in the supplied parser to self.
+    ///
+    /// This method has the synonym infix operator `<*>`.
+    ///
+    /// - parameter parser: The parser containing the function to apply to self.
+    /// - returns: A parser with the applied function.
     func apply<T>(parser: GenericParser<Stream, UserState, Result -> T>) -> GenericParser<Stream, UserState, T>
     
     /// Infix operator for `ParsecType.apply`. It has the same precedence as the equality operator (`==`).
+    ///
+    /// - parameters:
+    ///   - leftParser: The parser containing the function to apply to the parser on the right.
+    ///   - rightParser: The parser on which the function is applied.
+    /// - returns: A parser with the applied function.
     func<*><T>(leftParser: GenericParser<Stream, UserState, Result -> T>, rightParser: Self) -> GenericParser<Stream, UserState, T>
     
     /// Sequence parsing, discarding the value of the first parser. It has the same precedence as the equality operator (`==`).
@@ -54,64 +74,183 @@ public protocol ParsecType {
     /// - returns: A parser returning the result of the first parser.
     func <*<T>(leftParser: Self, rightParser: GenericParser<Stream, UserState, T>) -> Self
     
-    /// See `GenericParser` documentation.
+    /// This combinator implements choice. The parser `p.alternative(q)` first applies `p`. If it succeeds, the value of `p` is returned. If `p` fails _without consuming any input_, parser `q` is tried. The parser is called _predictive_ since `q` is only tried when parser `p` didn't consume any input (i.e.. the look ahead is 1). This non-backtracking behaviour allows for both an efficient implementation of the parser combinators and the generation of good error messages.
+    ///
+    /// This method has the synonym infix operator `<|>`.
+    ///
+    /// - parameter altParser: The alternative parser to try if `self` fails.
+    /// - returns: A parser that will first try `self`. If it consumed no input, it will try `altParser`.
     func alternative(altParser: Self) -> Self
     
     /// Infix operator for `ParsecType.alternative`. It has the same precedence as the equality operator (`&&`).
+    ///
+    /// - parameters:
+    ///   - leftParser: The first parser to try.
+    ///   - rightParser: The second parser to try.
     func <|>(leftParser: Self, rightParser: Self) -> Self
     
-    /// See `GenericParser` documentation.
+    /// Return a parser containing the result of mapping transform over `self`.
+    ///
+    /// This method has the synonym infix operator `>>-` (bind).
+    ///
+    /// - parameter transform: A mapping function returning a parser.
+    /// - returns: A new parser with the mapped content.
     func flatMap<T>(transform: Result -> GenericParser<Stream, UserState, T>) -> GenericParser<Stream, UserState, T>
     
     /// Infix operator for `ParsecType.flatMap` named _bind_. It has the same precedence as the `nil` coalescing operator (`??`).
+    ///
+    /// - parameters:
+    ///   - parser: The parser whose result is passed to the `transform` function.
+    ///   - transform: The function receiving the result of `parser`.
     func >>-<T>(parser: Self, transform: Result -> GenericParser<Stream, UserState, T>) -> GenericParser<Stream, UserState, T>
     
-    /// See `GenericParser` documentation.
+    /// This combinator is used whenever arbitrary look ahead is needed. Since it pretends that it hasn't consumed any input when `self` fails, the ('<|>') combinator will try its second alternative even when the first parser failed while consuming input.
+    ///
+    /// The `attempt` combinator can for example be used to distinguish identifiers and reserved words. Both reserved words and identifiers are a sequence of letters. Whenever we expect a certain reserved word where we can also expect an identifier we have to use the `attempt` combinator. Suppose we write:
+    ///
+    ///     let letExpr = StringParser.string("let")
+    ///     let identifier = letter.many1
+    ///
+    ///     let expr = letExpr <|> identifier <?> "expression"
+    ///
+    /// If the user writes \"lexical\", the parser fails with: _unexpected 'x', expecting 't' in "let"_. Indeed, since the ('<|>') combinator only tries alternatives when the first alternative hasn't consumed input, the `identifier` parser is never tried (because the prefix "le" of the `string("let")` parser is already consumed). The right behaviour can be obtained by adding the `attempt` combinator:
+    ///
+    ///     let letExpr = StringParser.string("let")
+    ///     let identifier = StringParser.letter.many1
+    ///
+    ///     let expr = letExpr.attempt <|> identifier <?> "expression"
+    ///
+    /// - returns: A parser that pretends that it hasn't consumed any input when `self` fails.
     var attempt: CombinedParser { get }
     
-    /// See `GenericParser` documentation.
+    /// A combinator that parses without consuming any input.
+    ///
+    /// If `self` fails and consumes some input, so does `lookAhead`. Combine with `attempt` if this is undesirable.
+    ///
+    /// - returns: A parser that parses without consuming any input.
     var lookAhead: CombinedParser { get }
     
-    /// See `ParsecType` extension documentation.
+    /// The `many` combinator applies the parser `self` _zero_ or more times. It returns an array of the returned values of `self`.
+    ///
+    ///     let identifier = identifierStart >>- { char in
+    ///
+    ///         identifierLetter.many >>- { (var chars) in
+    ///
+    ///             chars.insert(char, atIndex: 0)
+    ///             return GenericParser(result: String(chars))
+    ///
+    ///         }
+    ///
+    ///     }
     var many: GenericParser<Stream, UserState, [Result]> { get }
     
-    /// See `ParsecType` extension documentation.
+    /// The `skipMany` combinator applies the parser `self` _zero_ or more times, skipping its result.
+    ///
+    ///     let spaces = space.skipMany
+    ///
+    /// - returns: An parser with an empty result.
     var skipMany: GenericParser<Stream, UserState, ()> { get }
     
-    /// See `GenericParser` documentation.
+    /// This combinator applies `self` _zero_ or more times. It returns an accumulation of the returned values of `self` that were passed to the `accumulator` function.
+    ///
+    /// - parameter accumulator: An accumulator function that process the value returned by `self`. The first argument is the value returned by `self` and the second argument is the previous processed values returned by this accumulator function. It returns the result of processing the passed value and the accumulated values.
+    /// - returns: The processed values of the accumulator function.
     func manyAccumulator(accumulator: (Result, [Result]) -> [Result]) -> GenericParser<Stream, UserState, [Result]>
     
-    /// See `ParsecType` extension documentation.
+    /// A parser that always fails without consuming any input.
     static var empty: Self { get }
     
-    /// See `GenericParser` documentation.
+    /// The parser returned by `p.labels(message)` behaves as parser `p`, but whenever the parser `p` fails _without consuming any input_, it replaces expected error messages with the expected error message `message`.
+    ///
+    /// This is normally used at the end of a set alternatives where we want to return an error message in terms of a higher level construct rather than returning all possible characters. For example, if the `expr` parser from the `attempt` example would fail, the error message is: '...: expecting expression'. Without the `GenericParser.labels()` combinator, the message would be like '...: expecting "let" or "letter"', which is less friendly.
+    ///
+    /// This method has the synonym infix operator `<?>`.
+    ///
+    /// - parameter message: The new error message.
+    /// - returns: A parser with a replaced error message.
     func labels(message: String...) -> Self
     
     /// Infix operator for `ParsecType.label`. It has the lowest precedence.
+    ///
+    /// - parameters:
+    ///   - parser: The parser whose error message is to be replaced.
+    ///   - message: The new error message.
     func <?>(parser: Self, message: String) -> Self
     
-    /// See `GenericParser` documentation
+    /// Return a parser that always fails with an unexpected error message without consuming any input.
+    ///
+    /// The parsers 'fail', '\<?\>' and `unexpected` are the three parsers used to generate error messages. Of these, only '<?>' is commonly used. For an example of the use of `unexpected`, see the definition of `GenericParser.noOccurence`.
+    ///
+    /// - parameter message: The error message.
+    /// - returns: A parser that always fails with an unexpected error message without consuming any input.
+    /// - SeeAlso: `GenericParser.noOccurence`, `GenericParser.fail(message: String)` and `<?>`
     static func unexpected(message: String) -> Self
     
-    /// See `ParsecType` extension documentation.
+    /// Return a parser that always fail with the supplied message.
+    ///
+    /// - parameter message: The failure message.
+    /// - returns: A parser that always fail.
     static func fail(message: String) -> CombinedParser
     
-    /// See `GenericParser` documentation.
+    /// Return a parser that applies the result of the supplied parsers to the lifted function. The parsers are applied from left to right.
+    ///
+    /// - parameters:
+    ///   - function: The Binary function to lift into the parser.
+    ///   - parser1: The parser returning the first argument passed to the lifted function.
+    ///   - parser2: The parser returning the second argument passed to the lifted function.
+    /// - returns: A parser that applies the result of the supplied parsers to the lifted function.
     static func lift2<Param1, Param2>(function: (Param1, Param2) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>) -> CombinedParser
     
-    /// See `GenericParser` documentation.
+    /// Return a parser that applies the result of the supplied parsers to the lifted function. The parsers are applied from left to right.
+    ///
+    /// - parameters:
+    ///   - function: The Ternary function to lift into the parser.
+    ///   - parser1: The parser returning the first argument passed to the lifted function.
+    ///   - parser2: The parser returning the second argument passed to the lifted function.
+    ///   - parser3: The parser returning the third argument passed to the lifted function.
+    /// - returns: A parser that applies the result of the supplied parsers to the lifted function.
     static func lift3<Param1, Param2, Param3>(function: (Param1, Param2, Param3) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>, parser3: GenericParser<Stream, UserState, Param3>) -> CombinedParser
     
-    /// See `GenericParser` documentation.
+    /// Return a parser that applies the result of the supplied parsers to the lifted function. The parsers are applied from left to right.
+    ///
+    /// - parameters:
+    ///   - function: The function to lift into the parser.
+    ///   - parser1: The parser returning the first argument passed to the lifted function.
+    ///   - parser2: The parser returning the second argument passed to the lifted function.
+    ///   - parser3: The parser returning the third argument passed to the lifted function.
+    ///   - parser4: The parser returning the fourth argument passed to the lifted function.
+    /// - returns: A parser that applies the result of the supplied parsers to the lifted function.
     static func lift4<Param1, Param2, Param3, Param4>(function: (Param1, Param2, Param3, Param4) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>, parser3: GenericParser<Stream, UserState, Param3>, parser4: GenericParser<Stream, UserState, Param4>) -> CombinedParser
     
-    /// See `GenericParser` documentation.
+    /// Return a parser that applies the result of the supplied parsers to the lifted function. The parsers are applied from left to right.
+    ///
+    /// - parameters:
+    ///   - function: The function to lift into the parser.
+    ///   - parser1: The parser returning the first argument passed to the lifted function.
+    ///   - parser2: The parser returning the second argument passed to the lifted function.
+    ///   - parser3: The parser returning the third argument passed to the lifted function.
+    ///   - parser4: The parser returning the fourth argument passed to the lifted function.
+    ///   - parser5: The parser returning the fifth argument passed to the lifted function.
+    /// - returns: A parser that applies the result of the supplied parsers to the lifted function.
     static func lift5<Param1, Param2, Param3, Param4, Param5>(function: (Param1, Param2, Param3, Param4, Param5) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>, parser3: GenericParser<Stream, UserState, Param3>, parser4: GenericParser<Stream, UserState, Param4>, parser5: GenericParser<Stream, UserState, Param5>) -> CombinedParser
     
-    /// See `ParsecType` extension documentation.
+    /// The `updateUserState` method applies the function `update` to the user state. Suppose that we want to count identifiers in a source, we could use the user state as:
+    ///
+    ///     let incrementCount = StringParser.updateUserState { ++$0 }
+    ///     let expr = identifier <* incrementCount
+    ///
+    /// - parameter update: The function applied to the `UserState`. It returns the updated `UserState`.
+    /// - returns: An empty parser that will update the `UserState`.
     static func updateUserState(update: UserState -> UserState) -> GenericParser<Stream, UserState, ()>
     
-    /// See `GenericParser` documentation.
+    /// Run the parser and return the result of the parsing and the user state.
+    ///
+    /// - parameters:
+    ///   - userState: The state supplied by the user.
+    ///   - sourceName: The name of the source (i.e. file name).
+    ///   - input: The input stream to parse.
+    /// - throws: A `ParseError` when an error occurs.
+    /// - returns: The result of the parsing and the user state.
     func run(userState userState: UserState, sourceName: String, input: Stream) throws -> (result: Result, userState: UserState)
     
 }
@@ -1045,6 +1184,11 @@ struct ParserState<Stream, UserState> {
 
 infix operator <^> { associativity left precedence 130 }
 
+/// Infix operator for `map`. It has the same precedence as the equality operator (`==`).
+///
+/// - parameters:
+///   - transform: A mapping function.
+///   - parser: The parser whose result is mapped.
 public func <^><Stream, UserState, Result, T>(transform: Result -> T, parser: GenericParser<Stream, UserState, Result>) -> GenericParser<Stream, UserState, T> {
     
     return parser.map(transform)
@@ -1053,6 +1197,12 @@ public func <^><Stream, UserState, Result, T>(transform: Result -> T, parser: Ge
 
 infix operator <*> { associativity left precedence 130 }
 
+/// Infix operator for `apply`. It has the same precedence as the equality operator (`==`).
+///
+/// - parameters:
+///   - leftParser: The parser containing the function to apply to the parser on the right.
+///   - rightParser: The parser on which the function is applied.
+/// - returns: A parser with the applied function.
 public func<*><Stream, UserState, Result, T>(leftParser: GenericParser<Stream, UserState, Result -> T>, rightParser: GenericParser<Stream, UserState, Result>) -> GenericParser<Stream, UserState, T> {
     
     return rightParser.apply(leftParser)
@@ -1061,6 +1211,12 @@ public func<*><Stream, UserState, Result, T>(leftParser: GenericParser<Stream, U
 
 infix operator *> { associativity left precedence 130 }
 
+/// Sequence parsing, discarding the value of the first parser. It has the same precedence as the equality operator (`==`).
+///
+/// - parameters:
+///   - leftParser: The first parser executed.
+///   - rightParser: The second parser executed.
+/// - returns: A parser returning the result of the second parser.
 public func *><Stream, UserState, Param1, Param2>(leftParser: GenericParser<Stream, UserState, Param1>, rightParser: GenericParser<Stream, UserState, Param2>) -> GenericParser<Stream, UserState, Param2> {
     
     return GenericParser.lift2({ $1 }, parser1: leftParser, parser2: rightParser)
@@ -1070,6 +1226,12 @@ public func *><Stream, UserState, Param1, Param2>(leftParser: GenericParser<Stre
 
 infix operator <* { associativity left precedence 130 }
 
+/// Sequence parsing, discarding the value of the second parser. It has the same precedence as the equality operator (`==`).
+///
+/// - parameters:
+///   - leftParser: The first parser executed.
+///   - rightParser: The second parser executed.
+/// - returns: A parser returning the result of the first parser.
 public func <*<Stream, UserState, Param1, Param2>(leftParser: GenericParser<Stream, UserState, Param1>, rightParser: GenericParser<Stream, UserState, Param2>) -> GenericParser<Stream, UserState, Param1> {
     
     return GenericParser.lift2({ $0.0 }, parser1: leftParser, parser2: rightParser)
@@ -1078,6 +1240,11 @@ public func <*<Stream, UserState, Param1, Param2>(leftParser: GenericParser<Stre
 
 infix operator <|> { associativity left precedence 110 }
 
+/// Infix operator for `ParsecType.alternative`. It has the same precedence as the equality operator (`&&`).
+///
+/// - parameters:
+///   - leftParser: The first parser to try.
+///   - rightParser: The second parser to try.
 public func <|><Stream, UserState, Result>(leftParser: GenericParser<Stream, UserState, Result>, rightParser: GenericParser<Stream, UserState, Result>) -> GenericParser<Stream, UserState, Result> {
     
     return leftParser.alternative(rightParser)
@@ -1086,6 +1253,11 @@ public func <|><Stream, UserState, Result>(leftParser: GenericParser<Stream, Use
 
 infix operator >>- { associativity left precedence 100 }
 
+/// Infix operator for `flatMap` named _bind_. It has the same precedence as the `nil` coalescing operator (`??`).
+///
+/// - parameters:
+///   - parser: The parser whose result is passed to the `transform` function.
+///   - transform: The function receiving the result of `parser`.
 public func >>-<Stream, UserState, Result, T>(parser: GenericParser<Stream, UserState, Result>, transform: Result -> GenericParser<Stream, UserState, T>) -> GenericParser<Stream, UserState, T> {
     
     return parser.flatMap(transform)
@@ -1094,6 +1266,11 @@ public func >>-<Stream, UserState, Result, T>(parser: GenericParser<Stream, User
 
 infix operator <?> { precedence 0 }
 
+/// Infix operator for `label`. It has the lowest precedence.
+///
+/// - parameters:
+///   - parser: The parser whose error message is to be replaced.
+///   - message: The new error message.
 public func <?><Stream, UserState, Result>(parser: GenericParser<Stream, UserState, Result>, message: String) -> GenericParser<Stream, UserState, Result> {
     
     return parser.labels(message)
