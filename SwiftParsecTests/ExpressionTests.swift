@@ -65,10 +65,10 @@ class ExpressionTests: XCTestCase {
         
         let errorMessage = "OperatorTable.expressionParser did not succeed."
         
-        testStringParserSuccess(expr, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(expr, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         

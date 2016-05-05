@@ -34,9 +34,9 @@ class TokenTests: XCTestCase {
             
             for (parser, inputs) in parsersAssociation {
                 
-                testStringParserSuccess(parser, inputs: inputs, errorMessage: errorMessage) { input, result in
+                testStringParserSuccess(parser, inputs: inputs) { input, result in
                     
-                    input == result
+                    XCTAssertEqual(input, result, self.formatErrorMessage(errorMessage, input: input, result: result))
                     
                 }
                 
@@ -46,7 +46,11 @@ class TokenTests: XCTestCase {
             let notMatching = swift.reservedNames
             let shouldFailMessage = "GenericTokenParser.identifier should have failed."
             
-            testStringParserFailure(swiftIdentifier, inputs: notMatching, errorMessage: shouldFailMessage)
+            testStringParserFailure(swiftIdentifier, inputs: notMatching) { input, result in
+                
+                XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+                
+            }
             
         }
         
@@ -64,9 +68,9 @@ class TokenTests: XCTestCase {
             let matching = ["test", "breakTest", "classTest", "BreakTest", "ClassTest", "t"]
             let errorMessage = "GenericTokenParser.identifier did not succeed."
             
-            testStringParserSuccess(identifier, inputs: matching, errorMessage: errorMessage) { input, result in
+            testStringParserSuccess(identifier, inputs: matching) { input, result in
                 
-                input == result
+                XCTAssertEqual(input, result, self.formatErrorMessage(errorMessage, input: input, result: result))
                 
             }
             
@@ -75,7 +79,11 @@ class TokenTests: XCTestCase {
             let notMatching = notMatchingLower + notMatchingLower.map { $0.uppercaseString }
             let shouldFailMessage = "GenericTokenParser.identifier should have failed."
             
-            testStringParserFailure(identifier, inputs: notMatching, errorMessage: shouldFailMessage)
+            testStringParserFailure(identifier, inputs: notMatching) { input, result in
+                
+                XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+                
+            }
             
         }
         
@@ -99,13 +107,11 @@ class TokenTests: XCTestCase {
         let matchingAssociation = zip(reservedNames, matching)
         let uppercaseMatchingAssociation = zip(reservedUppercaseNames, uppercaseMatching)
         
-        let errorMessage = "GenericTokenParser.reservedName did not succeed."
-        
         for assocArray in [matchingAssociation, uppercaseMatchingAssociation] {
             
             for (parser, input) in assocArray {
                 
-                testStringParserSuccess(parser, inputs: [input], errorMessage: errorMessage) { _, _ in true }
+                testStringParserSuccess(parser, inputs: [input]) { _, _ in true }
                 
             }
             
@@ -118,7 +124,11 @@ class TokenTests: XCTestCase {
         
         for (parser, noMatch) in notMatchingAssociation {
             
-            testStringParserFailure(parser, inputs: [noMatch], errorMessage: shouldFailMessage)
+            testStringParserFailure(parser, inputs: [noMatch]) { input, result in
+                
+                XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+                
+            }
             
         }
         
@@ -133,16 +143,21 @@ class TokenTests: XCTestCase {
         let matching = ["/>", "=>", "-<", "+", "!>", "*", "%>", "<>", "><", "&>", "|>", "^>", "?>", "~>"]
         let errorMessage = "GenericTokenParser.legalOperator did not succeed."
         
-        testStringParserSuccess(legalOperator, inputs: matching, errorMessage: errorMessage) {input, result in
+        testStringParserSuccess(legalOperator, inputs: matching) {input, result in
             
-            input == result
+            XCTAssertEqual(input, result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = swift.reservedOperators
         let shouldFailMessage = "GenericTokenParser.legalOperator should have failed."
-        testStringParserFailure(legalOperator, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(legalOperator, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -156,11 +171,10 @@ class TokenTests: XCTestCase {
         
         let reservedOperators = matching.map { reservedOperator($0) }
         let matchingAssociation = zip(reservedOperators, matching)
-        let errorMessage = "GenericTokenParser.reservedOperator did not succeed."
         
         for (parser, match) in matchingAssociation {
             
-            testStringParserSuccess(parser, inputs: [match], errorMessage: errorMessage) { _, _ in true }
+            testStringParserSuccess(parser, inputs: [match]) { _, _ in true }
             
         }
         
@@ -171,7 +185,11 @@ class TokenTests: XCTestCase {
         
         for (parser, noMatch) in notMatchingAssociation {
             
-            testStringParserFailure(parser, inputs: [noMatch], errorMessage: shouldFailMessage)
+            testStringParserFailure(parser, inputs: [noMatch]) { input, result in
+                
+                XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+                
+            }
             
         }
         
@@ -189,17 +207,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.characterLiteral did not succeed."
         
-        testStringParserSuccess(characterLiteral, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(characterLiteral, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["'a", "'\\97", "'\\x61", "'\\o141", "'\\x'", "'\\ZZ'", "'\\^a'", "'\\'", "'\\xFFFFFFFFFFFFFFF'"]
         let shouldFailMessage = "GenericTokenParser.characterLiteral should have failed."
-        testStringParserFailure(characterLiteral, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(characterLiteral, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -215,17 +238,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.stringLiteral did not succeed."
         
-        testStringParserSuccess(stringLiteral, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(stringLiteral, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["'a", "'\\97", "'\\x61", "'\\o141", "'\\x'", "'\\ZZ'", "'\\^a'", "'\\'"]
         let shouldFailMessage = "GenericTokenParser.stringLiteral should have failed."
-        testStringParserFailure(stringLiteral, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(stringLiteral, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -241,17 +269,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.stringLiteral did not succeed."
         
-        testStringParserSuccess(stringLiteral, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(stringLiteral, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["\"a", "\"\\{61}\"", "\\0\"", "\"\\\"", "\"\\u{123456789}\"", "\"\\u{FFFFFFFF}\""]
         let shouldFailMessage = "GenericTokenParser.stringLiteral should have failed."
-        testStringParserFailure(stringLiteral, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(stringLiteral, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
 
@@ -267,17 +300,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.stringLiteral did not succeed."
         
-        testStringParserSuccess(stringLiteral, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(stringLiteral, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["\"a", "\"\\u061\"", "\"\\61\"", "\\0\"", "\"\\\"", "\"\\u\"", "\"\\uD834\"", "\"\\uD834\\u0061\""]
         let shouldFailMessage = "GenericTokenParser.stringLiteral should have failed."
-        testStringParserFailure(stringLiteral, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(stringLiteral, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -293,17 +331,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.natural did not succeed."
         
-        testStringParserSuccess(natural, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(natural, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["-1", "-1234", "-0xf", "+0xF", "-0xffff", "+0xFFFF", "-0o1", "-0o1234"]
         let shouldFailMessage = "GenericTokenParser.natural should have failed."
-        testStringParserFailure(natural, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(natural, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -319,17 +362,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.integer did not succeed."
         
-        testStringParserSuccess(integer, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(integer, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["xf", "xF", "ffff", "FFFF", "o1", "o1234", "-xf", "+xF", "-ffff", "+FFFF", "-o1", "+o1234"]
         let shouldFailMessage = "GenericTokenParser.integer should have failed."
-        testStringParserFailure(integer, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(integer, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -345,17 +393,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.integerAsFloat did not succeed."
         
-        testStringParserSuccess(integer, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(integer, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["xf", "xF", "ffff", "FFFF", "o1", "o1234", "-xf", "+xF", "-ffff", "+FFFF", "-o1", "+o1234"]
         let shouldFailMessage = "GenericTokenParser.integerAsFloat should have failed."
-        testStringParserFailure(integer, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(integer, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -371,17 +424,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.float did not succeed."
         
-        testStringParserSuccess(float, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(float, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["1", "1234", "0", "-1", "-1234", "-0", "xf", "xF", "ffff", "FFFF", "o1", "o1234", "-xf", "+xF", "-ffff", "+FFFF", "-o1", "+o1234"]
         let shouldFailMessage = "GenericTokenParser.float should have failed."
-        testStringParserFailure(float, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(float, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -397,7 +455,7 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.number did not succeed."
         
-        testStringParserSuccess(number, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(number, inputs: matching) { input, result in
             
             let expect = expected[index]
             index += 1
@@ -408,7 +466,7 @@ class TokenTests: XCTestCase {
                 
                 if case .Left(let val) = expect where intRes == val {
                     
-                    return true
+                    return
                     
                 }
                 
@@ -416,20 +474,25 @@ class TokenTests: XCTestCase {
                 
                 if case .Right(let val) = expect where doubleRes == val {
                     
-                    return true
+                    return
                     
                 }
                 
             }
             
-            return false
+            XCTFail(self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["xf", "xF", "ffff", "FFFF", "o1", "o1234", "-xf", "+xF", "-ffff", "+FFFF", "-o1", "+o1234"]
         let shouldFailMessage = "GenericTokenParser.number should have failed."
-        testStringParserFailure(number, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(number, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -444,17 +507,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.decimal did not succeed."
         
-        testStringParserSuccess(decimal, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(decimal, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["-1", "-1234", "-0xf", "+0xF", "-0xffff", "+0xFFFF", "-0o1", "-0o1234", "99999999999999999999999999"]
         let shouldFailMessage = "GenericTokenParser.decimal should have failed."
-        testStringParserFailure(decimal, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(decimal, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -469,17 +537,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.hexadecimal did not succeed."
         
-        testStringParserSuccess(hexadecimal, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(hexadecimal, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["1", "1234", "001234", "-1", "-1234", "-0xf", "+0xF", "-0xffff", "+0xFFFF", "-0o1", "-0o1234", "xFFFFFFFFFFFFFFFFFFFFFFFFFF"]
         let shouldFailMessage = "GenericTokenParser.hexadecimal should have failed."
-        testStringParserFailure(hexadecimal, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(hexadecimal, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -494,17 +567,22 @@ class TokenTests: XCTestCase {
         
         let errorMessage = "GenericTokenParser.octal did not succeed."
         
-        testStringParserSuccess(octal, inputs: matching, errorMessage: errorMessage) { _, result in
+        testStringParserSuccess(octal, inputs: matching) { input, result in
             
             defer { index += 1 }
-            return result == expected[index]
+            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["1", "1234", "001234", "-1", "-1234", "-0xf", "+0xF", "-0xffff", "+0xFFFF", "-0o1", "-0o1234", "o777777777777777777777777777777777777"]
         let shouldFailMessage = "GenericTokenParser.octal should have failed."
-        testStringParserFailure(octal, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(octal, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -524,10 +602,10 @@ class TokenTests: XCTestCase {
         
         for (parser, input) in zip(symbols, matching) {
             
-            testStringParserSuccess(parser, inputs: [input], errorMessage: errorMessage) { _, result in
+            testStringParserSuccess(parser, inputs: [input]) { input, result in
                 
                 defer { index += 1 }
-                return result == names[index]
+                XCTAssertEqual(names[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
                 
             }
             
@@ -557,9 +635,9 @@ class TokenTests: XCTestCase {
         
         for (parser, input) in zip(matchingParsers, matching) {
             
-            testStringParserSuccess(parser, inputs: input, errorMessage: errorMessage) { _, result in
+            testStringParserSuccess(parser, inputs: input) { input, result in
                 
-                result == str
+                XCTAssertEqual(str, result, self.formatErrorMessage(errorMessage, input: input, result: result))
                 
             }
             
@@ -591,7 +669,11 @@ class TokenTests: XCTestCase {
         
         for (parser, input) in zip(notMatchingParsers, notMatching) {
             
-            testStringParserFailure(parser, inputs: input, errorMessage: shouldFailMessage)
+            testStringParserFailure(parser, inputs: input) { input, result in
+                
+                XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+                
+            }
             
         }
         
@@ -644,9 +726,9 @@ class TokenTests: XCTestCase {
         
         for (parser, match) in zip(parsers, matching) {
             
-            testStringParserSuccess(parser, inputs: [match], errorMessage: errorMessage) { input, result in
+            testStringParserSuccess(parser, inputs: [match]) { input, result in
                 
-                result == input
+                XCTAssertEqual(input, result, self.formatErrorMessage(errorMessage, input: input, result: result))
                 
             }
             
@@ -702,63 +784,74 @@ class TokenTests: XCTestCase {
         
     }
     
-}
-
-func testBracketsParser(parser: GenericParser<String, (), String> -> GenericParser<String, (), String>, parserName: String, opening: String, closing: String) {
-    
-    let expected = "abcd"
-    
-    let java = LanguageDefinition<()>.javaStyle
-    let lexer = GenericTokenParser(languageDefinition: java)
-    let brackets = parser(lexer.symbol(expected))
-    
-    // Test for success.
-    let matching = [opening + "abcd" + closing,
-        opening + " \n\t\rabcd /*  */ " + closing]
-    let errorMessage = "GenericTokenParser." + parserName + " did not succeed."
-    
-    testStringParserSuccess(brackets, inputs: matching, errorMessage: errorMessage) { _, result in
+    func testBracketsParser(parser: GenericParser<String, (), String> -> GenericParser<String, (), String>, parserName: String, opening: String, closing: String) {
         
-        result == expected
+        let expected = "abcd"
         
-    }
-    
-    // Test when not matching.
-    let notMatching = ["abcd" + closing,
-        opening + "abcd",
-        " \n\t\rabcd /*  */ " + closing,
-        opening + " \n\t\rabcd /*  */ ",
-        opening + closing]
-    let shouldFailMessage = "GenericTokenParser." + parserName + " should have failed."
-    testStringParserFailure(brackets, inputs: notMatching, errorMessage: shouldFailMessage)
-    
-}
-
-func testPunctuationSeparated(parser: GenericParser<String, (), String> -> GenericParser<String, (), [String]>, parserName: String, punctuation: String, allowZeroOccurence: Bool) {
-    
-    let expected = "abcd"
-    
-    let java = LanguageDefinition<()>.javaStyle
-    let lexer = GenericTokenParser(languageDefinition: java)
-    let sepBy = parser(lexer.symbol(expected))
-    
-    // Test for success.
-    var matching = [expected, expected + punctuation + "  " + expected + "  " + punctuation + "\n\t\r" + expected + " " + punctuation + " /* 11111 */" + expected]
-    if allowZeroOccurence { matching.append("") }
-    
-    let errorMessage = "GenericTokenParser." + parserName + " did not succeed."
-    
-    testStringParserSuccess(sepBy, inputs: matching, errorMessage: errorMessage) { _, result in
+        let java = LanguageDefinition<()>.javaStyle
+        let lexer = GenericTokenParser(languageDefinition: java)
+        let brackets = parser(lexer.symbol(expected))
         
-        result.reduce(true) { $0 ? $1 == expected : false }
+        // Test for success.
+        let matching = [opening + "abcd" + closing,
+                        opening + " \n\t\rabcd /*  */ " + closing]
+        let errorMessage = "GenericTokenParser." + parserName + " did not succeed."
+        
+        testStringParserSuccess(brackets, inputs: matching) { input, result in
+            
+            XCTAssertEqual(expected, result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            
+        }
+        
+        // Test when not matching.
+        let notMatching = ["abcd" + closing,
+                           opening + "abcd",
+                           " \n\t\rabcd /*  */ " + closing,
+                           opening + " \n\t\rabcd /*  */ ",
+                           opening + closing]
+        let shouldFailMessage = "GenericTokenParser." + parserName + " should have failed."
+        
+        testStringParserFailure(brackets, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
-    // Test when not matching.
-    var notMatching = [expected + punctuation]
-    if !allowZeroOccurence { notMatching.append("") }
-    
-    let shouldFailMessage = "GenericTokenParser." + parserName + " should have failed."
-    testStringParserFailure(sepBy, inputs: notMatching, errorMessage: shouldFailMessage)
-    
+    func testPunctuationSeparated(parser: GenericParser<String, (), String> -> GenericParser<String, (), [String]>, parserName: String, punctuation: String, allowZeroOccurence: Bool) {
+        
+        let expected = "abcd"
+        
+        let java = LanguageDefinition<()>.javaStyle
+        let lexer = GenericTokenParser(languageDefinition: java)
+        let sepBy = parser(lexer.symbol(expected))
+        
+        // Test for success.
+        var matching = [expected, expected + punctuation + "  " + expected + "  " + punctuation + "\n\t\r" + expected + " " + punctuation + " /* 11111 */" + expected]
+        if allowZeroOccurence { matching.append("") }
+        
+        let errorMessage = "GenericTokenParser." + parserName + " did not succeed."
+        
+        testStringParserSuccess(sepBy, inputs: matching) { input, result in
+            
+            let isMatch = result.reduce(true) { $0 ? $1 == expected : false }
+            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            
+        }
+        
+        // Test when not matching.
+        var notMatching = [expected + punctuation]
+        if !allowZeroOccurence { notMatching.append("") }
+        
+        let shouldFailMessage = "GenericTokenParser." + parserName + " should have failed."
+        
+        testStringParserFailure(sepBy, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
+        
+    }
+
 }

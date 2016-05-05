@@ -9,7 +9,7 @@
 import XCTest
 @testable import SwiftParsec
 
-class PrimitiveTests: XCTestCase {
+class GenericParserTests: XCTestCase {
     
     func testMap() {
         
@@ -21,9 +21,9 @@ class PrimitiveTests: XCTestCase {
         
         let errorMessage = "GenericParser.map error."
         
-        testParserSuccess(mappedParser, errorMessage: errorMessage) { _, result in
+        testParserSuccess(mappedParser) { input, result in
             
-            result == trans(int99)
+            XCTAssertEqual(trans(99), result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
@@ -31,9 +31,9 @@ class PrimitiveTests: XCTestCase {
         
         let functorParser = curriedPlus(int1) <^> intParser
         
-        testParserSuccess(functorParser, errorMessage: errorMessage) { _, result in
+        testParserSuccess(functorParser) { input, result in
             
-            result == int99 + int1
+            XCTAssertEqual(int99 + int1, result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
@@ -50,23 +50,23 @@ class PrimitiveTests: XCTestCase {
         let errorMessage = "GenericParser.apply error."
         
         let applyParser = curriedPlus <^> int99Parser <*> int1Parser
-        testParserSuccess(applyParser, errorMessage: errorMessage) { _, result in
+        testParserSuccess(applyParser) { input, result in
             
-            result == int99 + int1
+            XCTAssertEqual(int99 + int1, result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         let rightParser = int99Parser *> int1Parser
-        testParserSuccess(rightParser, errorMessage: errorMessage) { _, result in
+        testParserSuccess(rightParser) { input, result in
             
-            result == int1
+            XCTAssertEqual(int1, result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         let leftParser = int99Parser <* int1Parser
-        testParserSuccess(leftParser, errorMessage: errorMessage) { _, result in
+        testParserSuccess(leftParser) { input, result in
             
-            result == int99
+            XCTAssertEqual(int99, result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
@@ -80,9 +80,10 @@ class PrimitiveTests: XCTestCase {
         
         let errorMessage = "GenericParser.alternative error."
         
-        testStringParserSuccess(alt1, inputs: ["adsf"], errorMessage: errorMessage) { input, result in
+        testStringParserSuccess(alt1, inputs: ["adsf"]) { input, result in
             
-            input.hasPrefix(String(result))
+            let isMatch = input.hasPrefix(String(result))
+            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
@@ -92,9 +93,10 @@ class PrimitiveTests: XCTestCase {
         
         let matching = ["asdfg, asdfg123"]
         
-        testStringParserSuccess(alt2, inputs: matching, errorMessage: errorMessage) { input, result in
+        testStringParserSuccess(alt2, inputs: matching) { input, result in
             
-            input.hasPrefix(result)
+            let isMatch = input.hasPrefix(result)
+            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
@@ -115,9 +117,9 @@ class PrimitiveTests: XCTestCase {
         let matching = ["a1", "b0", "c9"]
         let errorMessage = "GenericParser.flatMap error."
         
-        testStringParserSuccess(letterDigit, inputs: matching, errorMessage: errorMessage) { input, result in
+        testStringParserSuccess(letterDigit, inputs: matching) { input, result in
             
-            input == result
+            XCTAssertEqual(input, result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
@@ -132,9 +134,10 @@ class PrimitiveTests: XCTestCase {
         let matching = ["asdfg", "asdfg123"]
         let errorMessage = "GenericParser.attempt error."
         
-        testStringParserSuccess(attempt, inputs: matching, errorMessage: errorMessage) { input, result in
+        testStringParserSuccess(attempt, inputs: matching) { input, result in
             
-            input.hasPrefix(result)
+            let isMatch = input.hasPrefix(result)
+            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
@@ -151,16 +154,21 @@ class PrimitiveTests: XCTestCase {
         let matching = [longestMatch, longestMatch + "123"]
         let errorMessage = "GenericParser.lookAhead error."
         
-        testStringParserSuccess(lookAhead, inputs: matching, errorMessage: errorMessage) { input, result in
+        testStringParserSuccess(lookAhead, inputs: matching) { input, result in
             
-            longestMatch == result
+            XCTAssertEqual(longestMatch, result, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["sad", "das", "asdasdfg"]
         let shouldFailMessage = "GenericParser.lookAhead should have failed."
-        testStringParserFailure(lookAhead, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(lookAhead, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -170,16 +178,22 @@ class PrimitiveTests: XCTestCase {
         let matching = ["asdfasdf", "asdfasdfasdf", "asdfasdfasdfasdf", "xasdf"]
         let errorMessage = "GenericParser.many error."
         
-        testStringParserSuccess(manyString, inputs: matching, errorMessage: errorMessage) { input, result in
+        testStringParserSuccess(manyString, inputs: matching) { input, result in
             
-            result.isEmpty || input == result.joinWithSeparator("")
+            let isMatch = result.isEmpty || input == result.joinWithSeparator("")
+            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
         // Test when not matching.
         let notMatching = ["asd", "asdfasd"]
         let shouldFailMessage = "GenericParser.many should have failed."
-        testStringParserFailure(manyString, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(manyString, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -188,13 +202,17 @@ class PrimitiveTests: XCTestCase {
         let skipManyString = StringParser.string("asdf").skipMany
         
         let matching = ["asdfasdf", "asdfasdfasdf", "asdfasdfasdfasdf", "xasdf"]
-        let errorMessage = "GenericParser.skipMany error."
-        testStringParserSuccess(skipManyString, inputs: matching, errorMessage: errorMessage) { _, _ in true }
+        testStringParserSuccess(skipManyString, inputs: matching) { _, _ in true }
         
         // Test when not matching.
         let notMatching = ["asd", "asdfasd"]
         let shouldFailMessage = "GenericParser.skipMany should have failed."
-        testStringParserFailure(skipManyString, inputs: notMatching, errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(skipManyString, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -203,7 +221,12 @@ class PrimitiveTests: XCTestCase {
         let empty = StringParser.empty
         
         let shouldFailMessage = "GenericParser.empty should have failed."
-        testStringParserFailure(empty, inputs: [""], errorMessage: shouldFailMessage)
+        
+        testStringParserFailure(empty, inputs: [""]) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
         
     }
     
@@ -272,9 +295,10 @@ class PrimitiveTests: XCTestCase {
         let add = GenericParser.lift2(-, parser1: left, parser2: right)
         
         let errorMessage = "GenericParser.lift2 error."
-        testParserSuccess(add, errorMessage: errorMessage) { _, result in
+        testParserSuccess(add) { input, result in
             
-            result == leftNumber - rightNumber
+            let isMatch = result == leftNumber - rightNumber
+            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
@@ -293,9 +317,10 @@ class PrimitiveTests: XCTestCase {
         let add = GenericParser.lift3({ $0 - $1 - $2 }, parser1: num1, parser2: num2, parser3: num3)
         
         let errorMessage = "GenericParser.lift3 error."
-        testParserSuccess(add, errorMessage: errorMessage) { _, result in
+        testParserSuccess(add) { input, result in
             
-            result == number1 - number2 - number3
+            let isMatch = result == number1 - number2 - number3
+            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
@@ -317,9 +342,10 @@ class PrimitiveTests: XCTestCase {
             parser1: num1, parser2: num2, parser3: num3, parser4: num4)
         
         let errorMessage = "GenericParser.lift4 error."
-        testParserSuccess(add, errorMessage: errorMessage) { _, result in
+        testParserSuccess(add) { input, result in
             
-            result == number1 - number2 - number3 - number4
+            let isMatch = result == number1 - number2 - number3 - number4
+            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         
@@ -343,9 +369,10 @@ class PrimitiveTests: XCTestCase {
             parser1: num1, parser2: num2, parser3: num3, parser4: num4, parser5: num5)
         
         let errorMessage = "GenericParser.lift4 error."
-        testParserSuccess(add, errorMessage: errorMessage) { _, result in
+        testParserSuccess(add) { input, result in
             
-            result == number1 - number2 - number3 - number4 - number5
+            let isMatch = result == number1 - number2 - number3 - number4 - number5
+            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
         

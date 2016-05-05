@@ -17,14 +17,22 @@ class ErrorMessageTests: XCTestCase {
         let expectedVowel = "\"test\" (line 1, column 1):\n" +
         "unexpected \"z\""
         
-        errorMessageTest(vowel, input: "z", expectedMessage: expectedVowel)
+        errorMessageTest(vowel, input: "z") { actual in
+            
+            XCTAssertEqual(expectedVowel, actual, self.formatErrorMessage(expected: expectedVowel, actual: actual))
+            
+        }
         
         let char = StringParser.character("a")
         let expectedChar = "\"test\" (line 1, column 1):\n" +
         "unexpected \"z\"\n" +
         "expecting \"a\""
         
-        errorMessageTest(char, input: "z", expectedMessage: expectedChar)
+        errorMessageTest(char, input: "z") { actual in
+            
+            XCTAssertEqual(expectedChar, actual, self.formatErrorMessage(expected: expectedChar, actual: actual))
+            
+        }
         
     }
     
@@ -35,7 +43,11 @@ class ErrorMessageTests: XCTestCase {
         "unexpected \"z\"\n" +
         "expecting \"allo\""
         
-        errorMessageTest(allo, input: "allz", expectedMessage: expected)
+        errorMessageTest(allo, input: "allz") { actual in
+            
+            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            
+        }
         
     }
     
@@ -46,7 +58,11 @@ class ErrorMessageTests: XCTestCase {
         "unexpected end of input\n" +
         "expecting \"allo\""
         
-        errorMessageTest(allo, input: "all", expectedMessage: expected)
+        errorMessageTest(allo, input: "all") { actual in
+            
+            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            
+        }
         
     }
     
@@ -62,13 +78,21 @@ class ErrorMessageTests: XCTestCase {
         "unexpected \"z\"\n" +
         "expecting \"allo\", \"hello\" or \"hola\""
         
-        errorMessageTest(hellos, input: "z", expectedMessage: expectedHellos)
+        errorMessageTest(hellos, input: "z") { actual in
+            
+            XCTAssertEqual(expectedHellos, actual, self.formatErrorMessage(expected: expectedHellos, actual: actual))
+            
+        }
         
-        let expectedEof = "\"test\" (line 1, column 1):\n" +
+        let expectedEOF = "\"test\" (line 1, column 1):\n" +
         "unexpected end of input\n" +
         "expecting \"allo\""
         
-        errorMessageTest(hellos, input: "all", expectedMessage: expectedEof)
+        errorMessageTest(hellos, input: "all") { actual in
+            
+            XCTAssertEqual(expectedEOF, actual, self.formatErrorMessage(expected: expectedEOF, actual: actual))
+            
+        }
         
     }
     
@@ -79,7 +103,11 @@ class ErrorMessageTests: XCTestCase {
         "unexpected \"a\"\n" +
         "expecting \"\\tallo\\n\\r\""
         
-        errorMessageTest(allo, input: "all", expectedMessage: expected)
+        errorMessageTest(allo, input: "all") { actual in
+            
+            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            
+        }
         
     }
     
@@ -94,19 +122,31 @@ class ErrorMessageTests: XCTestCase {
         "unexpected end of input\n" +
         "expecting \"allo\""
         
-        errorMessageTest(parser, input: "\tall", expectedMessage: expectedTab)
+        errorMessageTest(parser, input: "\tall") { actual in
+            
+            XCTAssertEqual(expectedTab, actual, self.formatErrorMessage(expected: expectedTab, actual: actual))
+            
+        }
         
         let expectedSpaces = "\"test\" (line 1, column 5):\n" +
         "unexpected end of input\n" +
         "expecting \"allo\""
         
-        errorMessageTest(parser, input: "    all", expectedMessage: expectedSpaces)
+        errorMessageTest(parser, input: "    all") { actual in
+            
+            XCTAssertEqual(expectedSpaces, actual, self.formatErrorMessage(expected: expectedSpaces, actual: actual))
+            
+        }
         
         let expectedLine = "\"test\" (line 3, column 1):\n" +
         "unexpected end of input\n" +
         "expecting \"allo\""
         
-        errorMessageTest(parser, input: "\n\nall", expectedMessage: expectedLine)
+        errorMessageTest(parser, input: "\n\nall") { actual in
+            
+            XCTAssertEqual(expectedLine, actual, self.formatErrorMessage(expected: expectedLine, actual: actual))
+            
+        }
         
     }
     
@@ -119,7 +159,11 @@ class ErrorMessageTests: XCTestCase {
         let expected = "\"test\" (line 3, column 5):\n" +
         "unexpected \"allo\""
         
-        errorMessageTest(parser, input: "\n\nallo", expectedMessage: expected)
+        errorMessageTest(parser, input: "\n\nallo") { actual in
+            
+            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            
+        }
         
     }
     
@@ -130,7 +174,11 @@ class ErrorMessageTests: XCTestCase {
         "unexpected \"z\"\n" +
         "expecting lf new-line"
         
-        errorMessageTest(newline, input: "z", expectedMessage: expected)
+        errorMessageTest(newline, input: "z") { actual in
+            
+            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            
+        }
         
     }
     
@@ -141,17 +189,25 @@ class ErrorMessageTests: XCTestCase {
         "unexpected \"z\"\n" +
         "expecting a, b or c"
         
-        errorMessageTest(newline, input: "z", expectedMessage: expected)
+        errorMessageTest(newline, input: "z") { actual in
+            
+            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            
+        }
         
         let charA = StringParser.character("a").labels()
         let emptyExpected = "\"test\" (line 1, column 1):\n" +
         "unexpected \"z\""
         
-        errorMessageTest(charA, input: "z", expectedMessage: emptyExpected)
+        errorMessageTest(charA, input: "z") { actual in
+            
+            XCTAssert(emptyExpected == actual, self.formatErrorMessage(expected: expected, actual: actual))
+            
+        }
         
     }
     
-    func errorMessageTest<Result>(parser: GenericParser<String, (), Result>, input: String, expectedMessage: String) {
+    func errorMessageTest<Result>(parser: GenericParser<String, (), Result>, input: String, assert: (String) -> Void) {
         
         do {
             
@@ -160,10 +216,15 @@ class ErrorMessageTests: XCTestCase {
         } catch let error {
             
             let errorStr = String(error)
-            XCTAssert(errorStr == expectedMessage,
-                "Error messages error, Expected:\n\(expectedMessage)\nActual:\n\(errorStr)")
+            assert(errorStr)
             
         }
+        
+    }
+    
+    func formatErrorMessage(expected expected: String, actual: String) -> String {
+        
+        return "Error messages error, Expected:\n\(expected)\nActual:\n\(actual)"
         
     }
     
