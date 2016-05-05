@@ -38,6 +38,33 @@ class CharacterTests: XCTestCase {
         
     }
     
+    func testOneOfInterval() {
+        
+        let interval = StringParser.oneOf("a"..."z")
+        
+        // Test for success.
+        let matching = ["axyz", "éxyz", "ixyz", "oxyz", "uxyz"]
+        let errorMessage = "GenericParser.oneOf did not succeed."
+        
+        testStringParserSuccess(interval, inputs: matching) { input, result in
+            
+            let isMatch = input.hasPrefix(String(result))
+            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            
+        }
+        
+        // Test for failure.
+        let notMatching = ["1xyzu", "?yzo", "Ezi", ")taeiou", "@vexyz"]
+        let shouldFailMessage = "GenericParser.oneOf should have failed."
+        
+        testStringParserFailure(interval, inputs: notMatching) { input, result in
+            
+            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            
+        }
+        
+    }
+    
     func testNoneOf() {
         
         let consonant = StringParser.noneOf("aeiou")
