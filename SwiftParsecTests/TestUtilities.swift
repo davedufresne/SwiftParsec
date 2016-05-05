@@ -19,7 +19,6 @@ extension XCTestCase {
             for input in inputs {
                 
                 let result = try parser.run(sourceName: "", input: input)
-                
                 assert(input, result)
                 
             }
