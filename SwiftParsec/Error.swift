@@ -90,7 +90,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
         
     }
     
-    /// Return an unexpected parse error.
+    /// Return a system unexpected parse error.
     ///
     /// - parameters:
     ///   - position: The current position.
