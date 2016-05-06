@@ -397,7 +397,7 @@ public final class GenericParser<Stream: StreamType, UserState, Result>: ParsecT
         
         return GenericParser { state in
 
-            .None(.Error(ParseError.unexpectedParseError(state.position, message: message)))
+            .None(.Error(ParseError(position: state.position, messages: [.Unexpected(message)])))
             
         }
         
