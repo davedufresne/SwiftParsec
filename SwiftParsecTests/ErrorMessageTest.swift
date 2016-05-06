@@ -207,6 +207,34 @@ class ErrorMessageTests: XCTestCase {
         
     }
     
+    func testGenericError() {
+        
+        let fail = StringParser.fail("I always fail")
+        let expected = "\"test\" (line 1, column 1):\n" +
+        "I always fail"
+        
+        errorMessageTest(fail, input: "") { actual in
+            
+            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            
+        }
+        
+    }
+
+    func testUnknownError() {
+        
+        let empty = StringParser.empty
+        let expected = "\"test\" (line 1, column 1):\n" +
+        "unknown parse error"
+        
+        errorMessageTest(empty, input: "z") { actual in
+            
+            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            
+        }
+        
+    }
+    
     func errorMessageTest<Result>(parser: GenericParser<String, (), Result>, input: String, assert: (String) -> Void) {
         
         do {
