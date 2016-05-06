@@ -124,29 +124,10 @@ public struct ParseError: ErrorType, CustomStringConvertible {
         
     }
     
+    /// Indicates if `self` is an unknown parse error.
+    var isUnknown: Bool { return messages.isEmpty }
+    
     private var messagesDescription: String {
-        
-        func msgsDesc(messageType: String, messages: [Message]) -> String {
-            
-            let msgs = messages.map({ $0.messageString }).removingDuplicatesAndEmpties()
-            
-            guard !msgs.isEmpty else { return "" }
-            
-            let msgType = messageType.isEmpty ? "" : messageType + " "
-            
-            if msgs.count == 1 {
-                
-                return msgType + msgs.first!
-                
-            }
-            
-            let commaSep = msgs.dropLast().joinWithSeparator(", ")
-            
-            let orStr =  NSLocalizedString("or", comment: "Error messages.")
-            
-            return msgType + commaSep + " " + orStr + " " + msgs.last!
-            
-        }
         
         guard !messages.isEmpty else {
             
@@ -176,7 +157,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
                 sysUnexpectedDesc = NSLocalizedString("unexpected end of input", comment: "Error messages.")
                 
             } else {
-            
+                
                 sysUnexpectedDesc = unexpectedMsg + " " + firstMsg
                 
             }
@@ -184,22 +165,19 @@ public struct ParseError: ErrorType, CustomStringConvertible {
         }
         
         // Unexpected messages.
-        let unexpectedDesc = msgsDesc(unexpectedMsg, messages: unexpected)
+        let unexpectedDesc = formatMessages(unexpected, havingType: unexpectedMsg)
         
         // Expected messages.
         let expectingMsg = NSLocalizedString("expecting", comment: "Error messages.")
-        let expectedDesc = msgsDesc(expectingMsg, messages: expected)
+        let expectedDesc = formatMessages(expected, havingType: expectingMsg)
         
         // Generic messages.
-        let genericDesc = msgsDesc("", messages: generic)
+        let genericDesc = formatMessages(generic, havingType: "")
         
         let descriptions = [sysUnexpectedDesc, unexpectedDesc, expectedDesc, genericDesc]
         return descriptions.removingDuplicatesAndEmpties().joinWithSeparator("\n")
         
     }
-    
-    /// Indicates if `self` is an unknown parse error.
-    var isUnknown: Bool { return messages.isEmpty }
     
     /// Initializes from a source position and an array of messages.
     init(position: SourcePosition, messages: [Message]) {
@@ -269,6 +247,28 @@ public struct ParseError: ErrorType, CustomStringConvertible {
         
     }
     
+    private func formatMessages(messages: [Message], havingType messageType: String) -> String {
+        
+        let msgs = messages.map({ $0.messageString }).removingDuplicatesAndEmpties()
+        
+        guard !msgs.isEmpty else { return "" }
+        
+        let msgType = messageType.isEmpty ? "" : messageType + " "
+        
+        if msgs.count == 1 {
+            
+            return msgType + msgs.first!
+            
+        }
+        
+        let commaSep = msgs.dropLast().joinWithSeparator(", ")
+        
+        let orStr =  NSLocalizedString("or", comment: "Error messages.")
+        
+        return msgType + commaSep + " " + orStr + " " + msgs.last!
+        
+    }
+
 }
 
 extension SequenceType where Generator.Element == String {
