@@ -128,7 +128,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
         
         func msgsDesc(messageType: String, messages: [Message]) -> String {
             
-            let msgs = messages.map({ $0.messageString }).clean()
+            let msgs = messages.map({ $0.messageString }).removingDuplicatesAndEmpties()
             
             guard !msgs.isEmpty else { return "" }
             
@@ -194,7 +194,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
         let genericDesc = msgsDesc("", messages: generic)
         
         let descriptions = [sysUnexpectedDesc, unexpectedDesc, expectedDesc, genericDesc]
-        return descriptions.clean().joinWithSeparator("\n")
+        return descriptions.removingDuplicatesAndEmpties().joinWithSeparator("\n")
         
     }
     
@@ -274,7 +274,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
 extension SequenceType where Generator.Element == String {
     
     /// Return an array with duplicate and empty strings removed.
-    private func clean() -> [Self.Generator.Element] {
+    private func removingDuplicatesAndEmpties() -> [Self.Generator.Element] {
         
         return self.removingDuplicates().filter { !$0.isEmpty }
         
