@@ -77,6 +77,28 @@ class ExpressionTests: XCTestCase {
         
     }
     
+    func testReplaceRange() {
+        
+        var opTable = OperatorTable<String, (), Int>()
+        
+        opTable.append([
+            prefix("-", function: -),
+            prefix("+", function: { $0 })
+        ])
+        
+        opTable.append([
+            binary("*", function: *, assoc: .Left),
+            binary("/", function: /, assoc: .Left)
+        ])
+        
+        XCTAssertEqual(opTable.count, 2)
+        
+        opTable.replaceRange(0...0, with: [])
+        
+        XCTAssertEqual(opTable.count, 1)
+        
+    }
+    
     func binary(name: String, function: (Int, Int) -> Int, assoc: Associativity) -> Operator<String, (), Int> {
         
         let opParser = StringParser.string(name) *> GenericParser(result: function)
