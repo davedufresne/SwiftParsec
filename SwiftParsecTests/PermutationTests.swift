@@ -11,6 +11,24 @@ import XCTest
 
 class PermutationTests: XCTestCase {
     
+    func testCollectionMethods() {
+        
+        var permutation: Permutation = [
+            
+            (StringParser.character("a"), nil),
+            (StringParser.character("b"), nil),
+            (StringParser.character("c"), nil)
+            
+        ]
+
+        XCTAssertEqual(permutation.count, 3, "Permutation.count returned wrong value.")
+        
+        permutation.replaceRange(0...0, with: [])
+        
+        XCTAssertEqual(permutation.count, 2, "Permutation.replaceRange did not remove first element.")
+        
+    }
+    
     func testPermutation() {
         
         let permutation: Permutation = [
