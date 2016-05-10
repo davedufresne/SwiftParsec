@@ -36,11 +36,13 @@ extension UnicodeScalar {
         
         guard v >= UInt32(min) && v <= UInt32(max) else { return nil }
         
+        guard !isSurrogatePair(v) else { return nil }
+        
         return UnicodeScalar(v)
         
     }
     
-    private static func isSurrogatePair(v: Int) -> Bool {
+    private static func isSurrogatePair<T: IntegerType>(v: T) -> Bool {
         
         return v >= 0xD800 && v <= 0xDFFF
         
