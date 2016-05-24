@@ -179,7 +179,7 @@ class CombinatorTests: XCTestCase {
             let startIndex = inputStr.startIndex
             
             var input = inputStr
-            input.removeRange(startIndex...startIndex.advancedBy(2))
+            input.removeSubrange(startIndex..<inputStr.index(startIndex, offsetBy: 3))
             
             let isMatch = input.hasPrefix(result)
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: inputStr, result: result))
@@ -229,7 +229,7 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(manyString, inputs: matching) { input, result in
             
-            let isMatch = input == result.joinWithSeparator("")
+            let isMatch = input == result.joined(separator: "")
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
@@ -261,7 +261,7 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(commaSeparated, inputs: matching) { input, result in
             
-            let isMatch = result.isEmpty || result == input.componentsSeparatedByString(String(separator))
+            let isMatch = result.isEmpty || result == input.components(separatedBy: String(separator))
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
@@ -293,7 +293,7 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(commaSeparated, inputs: matching) { input, result in
             
-            let isMatch = result == input.componentsSeparatedByString(String(separator))
+            let isMatch = result == input.components(separatedBy: String(separator))
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
@@ -325,7 +325,7 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(commaSeparated, inputs: endRequired) { input, result in
             
-            let isMatch = result.isEmpty || result + [""] == input.componentsSeparatedByString(String(separator))
+            let isMatch = result.isEmpty || result + [""] == input.components(separatedBy: String(separator))
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
@@ -338,8 +338,8 @@ class CombinatorTests: XCTestCase {
         testStringParserSuccess(commaDivided, inputs: endNotRequired) { input, result in
             
             let isEmpty = result.isEmpty
-            let endNotPresentEqual = result == input.componentsSeparatedByString(String(separator))
-            let endPresentEqual = result + [""] == input.componentsSeparatedByString(String(separator))
+            let endNotPresentEqual = result == input.components(separatedBy: String(separator))
+            let endPresentEqual = result + [""] == input.components(separatedBy: String(separator))
             
             let isMatch = isEmpty || endNotPresentEqual || endPresentEqual
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
@@ -373,7 +373,7 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(commaSeparated, inputs: endRequired) { input, result in
             
-            let isMatch = result + [""] == input.componentsSeparatedByString(String(separator))
+            let isMatch = result + [""] == input.components(separatedBy: String(separator))
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
@@ -385,8 +385,8 @@ class CombinatorTests: XCTestCase {
         
         testStringParserSuccess(commaDivided, inputs: endNotRequired) { input, result in
             
-            let endNotPresentEqual = result == input.componentsSeparatedByString(String(separator))
-            let endPresentEqual = result + [""] == input.componentsSeparatedByString(String(separator))
+            let endNotPresentEqual = result == input.components(separatedBy: String(separator))
+            let endPresentEqual = result + [""] == input.components(separatedBy: String(separator))
             
             let isMatch = endNotPresentEqual || endPresentEqual
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
@@ -418,7 +418,7 @@ class CombinatorTests: XCTestCase {
         testStringParserSuccess(letters, inputs: matching) { input, result in
             
             let sameCount = result.count == countNumber
-            let joinedResult = result.joinWithSeparator("")
+            let joinedResult = result.joined(separator: "")
             
             let isMatch = sameCount && input.hasPrefix(joinedResult)
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
@@ -431,7 +431,7 @@ class CombinatorTests: XCTestCase {
         testStringParserSuccess(asdf, inputs: matchingAsdf) { input, result in
             
             let sameCount = result.count == countNumber
-            let joinedResult = result.joinWithSeparator("")
+            let joinedResult = result.joined(separator: "")
             
             let isMatch = sameCount && input.hasPrefix(joinedResult)
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
@@ -682,7 +682,7 @@ class CombinatorTests: XCTestCase {
             let startIndex = inputStr.startIndex
             
             var input = inputStr
-            input.removeRange(startIndex..<commentStartStr.endIndex)
+            input.removeSubrange(startIndex..<commentStartStr.endIndex)
             
             let isMatch = result.isEmpty || input.hasPrefix(result)
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: inputStr, result: result))
@@ -714,7 +714,7 @@ class CombinatorTests: XCTestCase {
         
         let expression = GenericParser<String, (), Int>.recursive { expression in
             
-            func opParser(left: Int) -> GenericParser<String, (), Int> {
+            func opParser(_ left: Int) -> GenericParser<String, (), Int> {
                 
                 return operators >>- { f in
                     
@@ -728,7 +728,7 @@ class CombinatorTests: XCTestCase {
                 
             }
             
-            func opParser1(right: Int) -> GenericParser<String, (), Int> {
+            func opParser1(_ right: Int) -> GenericParser<String, (), Int> {
                 
                 return opParser(right) <|> GenericParser(result: right)
                 

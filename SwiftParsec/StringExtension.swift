@@ -13,25 +13,25 @@ extension String {
     /// - parameters:
     ///   - codeUnits: Sequence of code units.
     ///   - codec: A unicode encoding scheme.
-    init?<C: UnicodeCodecType, S: SequenceType where S.Generator.Element == C.CodeUnit>(codeUnits: S, codec: C) {
+    init?<C: UnicodeCodec, S: Sequence where S.Iterator.Element == C.CodeUnit>(codeUnits: S, codec: C) {
         
         var unicodeCode = codec
         var str = ""
         
-        var generator = codeUnits.generate()
+        var iterator = codeUnits.makeIterator()
         var done = false
         while !done {
             
-            let result = unicodeCode.decode(&generator)
+            let result = unicodeCode.decode(&iterator)
             switch result {
                 
-            case .EmptyInput: done = true
+            case .emptyInput: done = true
                 
-            case let .Result(val):
+            case let .scalarValue(val):
                 
                 str.append(Character(val))
                 
-            case .Error: return nil
+            case .error: return nil
                 
             }
             
@@ -49,7 +49,7 @@ extension String {
         guard !isEmpty else { return nil }
         
         let first = self[startIndex]
-        removeAtIndex(startIndex)
+        remove(at: startIndex)
         
         return first
         
@@ -67,7 +67,7 @@ extension String {
     /// Return a new `String` with `c` adjoined to the end.
     ///
     /// - parameter c: Character to append.
-    func appending(c: Character) -> String {
+    func appending(_ c: Character) -> String {
         
         var mutableSelf = self
         mutableSelf.append(c)

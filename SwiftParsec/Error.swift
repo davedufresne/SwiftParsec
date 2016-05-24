@@ -78,13 +78,13 @@ public func <(leftMsg: Message, rightMsg: Message) -> Bool {
 }
 
 /// `ParseError` represents parse errors. It provides the source position (`SourcePosition`) of the error and an array of error messages (`Message`). A `ParseError` can be returned by the function `parse`.
-public struct ParseError: ErrorType, CustomStringConvertible {
+public struct ParseError: ErrorProtocol, CustomStringConvertible {
     
     /// Return an unknown parse error.
     ///
     /// - parameter position: The current position.
     /// - returns: An unknown parse error.
-    static func unknownParseError(position: SourcePosition) -> ParseError {
+    static func unknownParseError(_ position: SourcePosition) -> ParseError {
         
         return ParseError(position: position, messages: [])
         
@@ -96,7 +96,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
     ///   - position: The current position.
     ///   - message: The message string.
     /// - returns: An unexpected parse error.
-    static func unexpectedParseError(position: SourcePosition, message: String) -> ParseError {
+    static func unexpectedParseError(_ position: SourcePosition, message: String) -> ParseError {
         
         return ParseError(position: position, messages: [.SystemUnexpected(message)])
         
@@ -108,7 +108,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
     /// Sorted array of error messages.
     public var messages: [Message] {
         
-        get { return _messages.sort() }
+        get { return _messages.sorted() }
         
         set { _messages = newValue }
         
@@ -175,7 +175,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
         let genericDesc = formatMessages(generic, havingType: "")
         
         let descriptions = [sysUnexpectedDesc, unexpectedDesc, expectedDesc, genericDesc]
-        return descriptions.removingDuplicatesAndEmpties().joinWithSeparator("\n")
+        return descriptions.removingDuplicatesAndEmpties().joined(separator: "\n")
         
     }
     
@@ -190,7 +190,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
     /// Insert a message error in `messages`. All messages equal to the inserted messages are removed and the new message is inserted at the beginning of `messages`.
     ///
     /// - parameter message: The new message to insert in `messages`.
-    mutating func insertMessage(message: Message) {
+    mutating func insertMessage(_ message: Message) {
         
         messages = messages.filter({ $0 != message }).prepending(message)
         
@@ -199,7 +199,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
     /// Insert the labels as `.Expected` message errors in `messages`.
     ///
     /// - parameter labels: The labels to insert.
-    mutating func insertLabelsAsExpected(labels: [String]) {
+    mutating func insertLabelsAsExpected(_ labels: [String]) {
         
         guard !labels.isEmpty else {
             
@@ -210,7 +210,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
         
         insertMessage(.Expected(labels[0]))
         
-        for label in labels.suffixFrom(1) {
+        for label in labels.suffix(from: 1) {
             
             messages.append(.Expected(label))
             
@@ -221,7 +221,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
     /// Merge this `ParseError` with another `ParseError`.
     ///
     /// - parameter other: `ParseError` to merge with `self`.
-    mutating func merge(other: ParseError) {
+    mutating func merge(_ other: ParseError) {
         
         let otherIsEmpty = other.messages.isEmpty
         
@@ -247,7 +247,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
         
     }
     
-    private func formatMessages(messages: [Message], havingType messageType: String) -> String {
+    private func formatMessages(_ messages: [Message], havingType messageType: String) -> String {
         
         let msgs = messages.map({ $0.messageString }).removingDuplicatesAndEmpties()
         
@@ -261,7 +261,7 @@ public struct ParseError: ErrorType, CustomStringConvertible {
             
         }
         
-        let commaSep = msgs.dropLast().joinWithSeparator(", ")
+        let commaSep = msgs.dropLast().joined(separator: ", ")
         
         let orStr =  NSLocalizedString("or", comment: "Error messages.")
         
@@ -271,10 +271,10 @@ public struct ParseError: ErrorType, CustomStringConvertible {
 
 }
 
-extension SequenceType where Generator.Element == String {
+extension Sequence where Iterator.Element == String {
     
     /// Return an array with duplicate and empty strings removed.
-    private func removingDuplicatesAndEmpties() -> [Self.Generator.Element] {
+    private func removingDuplicatesAndEmpties() -> [Self.Iterator.Element] {
         
         return self.removingDuplicates().filter { !$0.isEmpty }
         

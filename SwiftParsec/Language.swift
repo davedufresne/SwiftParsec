@@ -28,7 +28,7 @@ public struct LanguageDefinition<UserState> {
     public var identifierStart: GenericParser<String, UserState, Character>
     
     /// This parser should accept any legal tail characters of identifiers. For example `alphaNum <|> character("_")`. The function receives the character parsed by `identifierStart` as parameter, allowing to handle special cases (i.e. implicit parameters in swift start with a '$' that must be followed by decimal digits only).
-    public var identifierLetter: Character -> GenericParser<String, UserState, Character>
+    public var identifierLetter: (Character) -> GenericParser<String, UserState, Character>
     
     /// This parser should accept any start characters of operators. For example `oneOf(":!#$%&*+./<=>?@\\^|-~")`
     public var operatorStart: GenericParser<String, UserState, Character>
@@ -291,7 +291,7 @@ private let swiftIdentifierStartCharacters4 =
     (0xD0000...0xDFFFD).stringValue +
     (0xE0000...0xEFFFD).stringValue
 
-private let swiftIdentifierStartSet = NSCharacterSet(charactersInString: swiftIdentifierStartCharacters)
+private let swiftIdentifierStartSet = NSCharacterSet(charactersIn: swiftIdentifierStartCharacters)
 
 private let swiftIdentifierLetterCharacters =
     swiftIdentifierStartCharacters +
@@ -301,7 +301,7 @@ private let swiftIdentifierLetterCharacters =
     (0x20D0...0x20FF).stringValue +
     (0xFE20...0xFE2F).stringValue
 
-private let swiftIdentifierLetterSet = NSCharacterSet(charactersInString: swiftIdentifierLetterCharacters)
+private let swiftIdentifierLetterSet = NSCharacterSet(charactersIn: swiftIdentifierLetterCharacters)
 
 private let swiftOperatorStartCharacters =
     "/=-+!*%<>&|^?~" +
@@ -321,7 +321,7 @@ private let swiftOperatorStartCharacters =
     (0x3001...0x3003).stringValue +
     (0x3008...0x3030).stringValue
 
-private let swiftOperatorStartSet = NSCharacterSet(charactersInString: swiftOperatorStartCharacters)
+private let swiftOperatorStartSet = NSCharacterSet(charactersIn: swiftOperatorStartCharacters)
 
 private let swiftOperatorLetterCharacters =
     swiftOperatorStartCharacters +
@@ -332,6 +332,6 @@ private let swiftOperatorLetterCharacters =
     (0xFE20...0xFE2F).stringValue +
     (0xE0100...0xE01EF).stringValue
 
-private let swiftOperatorLetterSet = NSCharacterSet(charactersInString: swiftOperatorLetterCharacters)
+private let swiftOperatorLetterSet = NSCharacterSet(charactersIn: swiftOperatorLetterCharacters)
 
 private let swiftEscapeMap: [(esc: Character, code: Character)] = [("n", "\n"), ("r", "\r"), ("t", "\t"), ("\\", "\\"), ("\"", "\""), ("'", "'"), ("0", "\0")]

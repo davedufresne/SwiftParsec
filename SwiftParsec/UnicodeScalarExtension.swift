@@ -18,7 +18,7 @@ extension UnicodeScalar {
     ///
     /// - parameter v: Unicode code point.
     /// - returns: A `UnicodeScalar` with value `v` or nil if the value is outside of Unicode codespace or a surrogate pair code point.
-    static func fromInt(v: Int) -> UnicodeScalar? {
+    static func fromInt(_ v: Int) -> UnicodeScalar? {
         
         guard v >= min && v <= max else { return nil }
         
@@ -32,7 +32,7 @@ extension UnicodeScalar {
     ///
     /// - parameter v: Unicode code point.
     /// - returns: A `UnicodeScalar` with value `v` or nil if the value is outside of Unicode codespace.
-    static func fromUInt32(v: UInt32) -> UnicodeScalar? {
+    static func fromUInt32(_ v: UInt32) -> UnicodeScalar? {
         
         guard v >= UInt32(min) && v <= UInt32(max) else { return nil }
         
@@ -42,7 +42,7 @@ extension UnicodeScalar {
         
     }
     
-    private static func isSurrogatePair<T: IntegerType>(v: T) -> Bool {
+    private static func isSurrogatePair<T: Integer>(_ v: T) -> Bool {
         
         return v >= 0xD800 && v <= 0xDFFF
         

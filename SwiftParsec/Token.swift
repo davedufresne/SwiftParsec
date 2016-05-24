@@ -20,11 +20,11 @@ public protocol TokenParserType {
     
     var identifier: GenericParser<String, UserState, String> { get }
     
-    func reservedName(name: String) -> GenericParser<String, UserState, ()>
+    func reservedName(_ name: String) -> GenericParser<String, UserState, ()>
     
     var legalOperator: GenericParser<String, UserState, String> { get }
     
-    func reservedOperator(name: String) -> GenericParser<String, UserState, ()>
+    func reservedOperator(_ name: String) -> GenericParser<String, UserState, ()>
     
     var characterLiteral: GenericParser<String, UserState, Character> { get }
     
@@ -46,19 +46,19 @@ public protocol TokenParserType {
     
     static var octal: GenericParser<String, UserState, Int> { get }
     
-    func symbol(name: String) -> GenericParser<String, UserState, String>
+    func symbol(_ name: String) -> GenericParser<String, UserState, String>
     
-    func lexeme<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result>
+    func lexeme<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result>
     
     var whiteSpace: GenericParser<String, UserState, ()> { get }
     
-    func parentheses<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result>
+    func parentheses<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result>
     
-    func braces<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result>
+    func braces<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result>
     
-    func angles<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result>
+    func angles<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result>
     
-    func brackets<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result>
+    func brackets<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result>
     
     var semicolon: GenericParser<String, UserState, String> { get }
     
@@ -68,13 +68,13 @@ public protocol TokenParserType {
     
     var dot: GenericParser<String, UserState, String> { get }
     
-    func semicolonSeparated<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]>
+    func semicolonSeparated<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]>
     
-    func semicolonSeparated1<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]>
+    func semicolonSeparated1<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]>
     
-    func commaSeparated<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]>
+    func commaSeparated<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]>
     
-    func commaSeparated1<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]>
+    func commaSeparated1<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]>
     
 }
 
@@ -120,8 +120,8 @@ extension TokenParserType {
                 
             } else {
                 
-                reservedNames = langDef.reservedNames.map { $0.lowercaseString }
-                n = name.lowercaseString
+                reservedNames = langDef.reservedNames.map { $0.lowercased() }
+                n = name.lowercased()
                 
             }
             
@@ -144,9 +144,9 @@ extension TokenParserType {
     ///
     /// - parameter name: The reserved name to parse.
     /// - returns: `()`
-    public func reservedName(name: String) -> GenericParser<String, UserState, ()> {
+    public func reservedName(_ name: String) -> GenericParser<String, UserState, ()> {
         
-        let lastChar = name[name.endIndex.predecessor()]
+        let lastChar = name[name.index(before: name.endIndex)]
         let reserved = caseString(name) *>
             languageDefinition.identifierLetter(lastChar).noOccurence <?>
             NSLocalizedString("end of ", comment: "Token parser, end of reserved name.") + name
@@ -196,7 +196,7 @@ extension TokenParserType {
     ///
     /// - parameter name: The operator name.
     /// - returns: `()`
-    public func reservedOperator(name: String) -> GenericParser<String, UserState, ()> {
+    public func reservedOperator(_ name: String) -> GenericParser<String, UserState, ()> {
         
         let op = VoidParser.string(name) *>
             languageDefinition.operatorLetter.noOccurence <?>
@@ -389,7 +389,7 @@ extension TokenParserType {
     ///
     /// - parameter name: The name of the symbol to parse.
     /// - returns: `name`.
-    public func symbol(name: String) -> GenericParser<String, UserState, String> {
+    public func symbol(_ name: String) -> GenericParser<String, UserState, String> {
         
         return lexeme(StrParser.string(name))
         
@@ -403,7 +403,7 @@ extension TokenParserType {
     ///
     /// - parameter parser: The parser to transform in a 'lexeme'.
     /// - returns: The value of `parser`.
-    public func lexeme<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result> {
+    public func lexeme<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result> {
         
         return parser <* whiteSpace
         
@@ -447,7 +447,7 @@ extension TokenParserType {
     ///
     /// - parameter parser: The parser applied between the parentheses.
     /// - returns: The value of `parser`.
-    public func parentheses<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result> {
+    public func parentheses<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result> {
         
         return parser.between(symbol("("), symbol(")"))
         
@@ -457,7 +457,7 @@ extension TokenParserType {
     ///
     /// - parameter parser: The parser applied between the braces.
     /// - returns: The value of `parser`.
-    public func braces<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result> {
+    public func braces<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result> {
         
         return parser.between(symbol("{"), symbol("}"))
         
@@ -467,7 +467,7 @@ extension TokenParserType {
     ///
     /// - parameter parser: The parser applied between the angles.
     /// - returns: The value of `parser`.
-    public func angles<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result> {
+    public func angles<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result> {
         
         return parser.between(symbol("<"), symbol(">"))
         
@@ -477,7 +477,7 @@ extension TokenParserType {
     ///
     /// - parameter parser: The parser applied between the brackets.
     /// - returns: The value of `parser`.
-    public func brackets<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result> {
+    public func brackets<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, Result> {
         
         return parser.between(symbol("["), symbol("]"))
         
@@ -499,7 +499,7 @@ extension TokenParserType {
     ///
     /// - parameter parser: The parser applied between semicolons.
     /// - returns: An array of values returned by `parser`.
-    public func semicolonSeparated<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]> {
+    public func semicolonSeparated<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]> {
         
         return parser.separatedBy(semicolon)
         
@@ -509,7 +509,7 @@ extension TokenParserType {
     ///
     /// - parameter parser: The parser applied between semicolons.
     /// - returns: An array of values returned by `parser`.
-    public func semicolonSeparated1<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]> {
+    public func semicolonSeparated1<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]> {
         
         return parser.separatedBy1(semicolon)
         
@@ -519,7 +519,7 @@ extension TokenParserType {
     ///
     /// - parameter parser: The parser applied between commas.
     /// - returns: An array of values returned by `parser`.
-    public func commaSeparated<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]> {
+    public func commaSeparated<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]> {
         
         return parser.separatedBy(comma)
         
@@ -529,7 +529,7 @@ extension TokenParserType {
     ///
     /// - parameter parser: The parser applied between commas.
     /// - returns: An array of values returned by `parser`.
-    public func commaSeparated1<Result>(parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]> {
+    public func commaSeparated1<Result>(_ parser: GenericParser<String, UserState, Result>) -> GenericParser<String, UserState, [Result]> {
         
         return parser.separatedBy1(comma)
         
@@ -671,7 +671,7 @@ extension TokenParserType {
             GenericParser.character("_") *> GenericParser(result: "\u{001F}"))
     }
     
-    static func characterFromInt(v: Int) -> CharacterParser {
+    static func characterFromInt(_ v: Int) -> CharacterParser {
         
         guard let us = UnicodeScalar.fromInt(v) else {
             
@@ -684,7 +684,7 @@ extension TokenParserType {
         
     }
     
-    private static func numberWithBase(base: Int, parser: CharacterParser) -> IntParser {
+    private static func numberWithBase(_ base: Int, parser: CharacterParser) -> IntParser {
         
         return parser.many1 >>- { digits in
             
@@ -694,7 +694,7 @@ extension TokenParserType {
         
     }
     
-    static func integerWithDigits(digits: String, base: Int) -> IntParser {
+    static func integerWithDigits(_ digits: String, base: Int) -> IntParser {
         
         guard let integer = Int(digits, radix: base) else {
             
@@ -707,7 +707,7 @@ extension TokenParserType {
         
     }
     
-    private static func doubleWithBase(base: Int, parser: CharacterParser) -> DoubleParser {
+    private static func doubleWithBase(_ base: Int, parser: CharacterParser) -> DoubleParser {
         
         let baseDouble = Double(base)
         
@@ -744,7 +744,7 @@ extension TokenParserType {
         
     }
     
-    private static func sign<Number: SignedNumberType>() -> GenericParser<String, UserState, Number -> Number> {
+    private static func sign<Number: SignedNumber>() -> GenericParser<String, UserState, (Number) -> Number> {
         
         return GenericParser.character("-") *> GenericParser(result: -) <|>
             GenericParser.character("+") *> GenericParser(result: { $0 }) <|>
@@ -752,7 +752,7 @@ extension TokenParserType {
         
     }
     
-    private static func fractionalExponent(number: Double) -> DoubleParser {
+    private static func fractionalExponent(_ number: Double) -> DoubleParser {
         
         let fractionMsg = NSLocalizedString("fraction", comment: "Token parser, double number.")
         
@@ -799,7 +799,7 @@ extension TokenParserType {
         
     }
     
-    private func caseString(name: String) -> StrParser {
+    private func caseString(_ name: String) -> StrParser {
         
         if languageDefinition.isCaseSensitive {
             
@@ -807,7 +807,7 @@ extension TokenParserType {
             
         }
         
-        func walk(string: String) -> VoidParser {
+        func walk(_ string: String) -> VoidParser {
             
             let unit = VoidParser(result: ())
             
@@ -887,7 +887,7 @@ private let escapeMap: [(esc: Character, code: Character)] = [("a", "\u{0007}"),
 
 private let asciiCodesMap: [(esc: String, code:Character)] = [("NUL", "\u{0000}"), ("SOH", "\u{0001}"), ("STX", "\u{0002}"), ("ETX", "\u{0003}"), ("EOT", "\u{0004}"), ("ENQ", "\u{0005}"), ("ACK", "\u{0006}"), ("BEL", "\u{0007}"), ("BS", "\u{0008}"), ("HT", "\u{0009}"), ("LF", "\u{000A}"), ("VT", "\u{000B}"), ("FF", "\u{000C}"), ("CR", "\u{000D}"), ("SO", "\u{000E}"), ("SI", "\u{000F}"),  ("DLE", "\u{0010}"), ("DC1", "\u{0011}"), ("DC2", "\u{0012}"), ("DC3", "\u{0013}"), ("DC4", "\u{0014}"), ("NAK", "\u{0015}"), ("SYN", "\u{0016}"), ("ETB", "\u{0017}"),  ("CAN", "\u{0018}"), ("EM", "\u{0019}"), ("SUB", "\u{001A}"), ("ESC", "\u{001B}"),  ("FS", "\u{001C}"), ("GS", "\u{001D}"), ("RS", "\u{001E}"), ("US", "\u{001F}"), ("SP", "\u{0020}"), ("DEL", "\u{007F}")]
 
-private func power(exp: Int) -> Double {
+private func power(_ exp: Int) -> Double {
     
     if exp < 0 {
         

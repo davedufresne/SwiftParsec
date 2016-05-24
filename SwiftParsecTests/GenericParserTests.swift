@@ -180,7 +180,7 @@ class GenericParserTests: XCTestCase {
         
         testStringParserSuccess(manyString, inputs: matching) { input, result in
             
-            let isMatch = result.isEmpty || input == result.joinWithSeparator("")
+            let isMatch = result.isEmpty || input == result.joined(separator: "")
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
@@ -446,7 +446,7 @@ extension Double: PlusOperator {}
 extension String: PlusOperator {}
 
 /// Curried version of the `+` operator for `Int`.
-func curriedPlus<T: PlusOperator>(lhs: T) -> (T) -> T {
+func curriedPlus<T: PlusOperator>(_ lhs: T) -> (T) -> T {
     
     return { rhs in lhs + rhs }
     

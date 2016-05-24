@@ -540,7 +540,7 @@ class CharacterTests: XCTestCase {
         }
         
         // Test when not matching.
-        let notMatching = ["àaeéèëcçAÀEÉÈËCÇ", stringToMatch.substringToIndex(stringToMatch.endIndex.predecessor())]
+        let notMatching = ["àaeéèëcçAÀEÉÈËCÇ", stringToMatch.substring(to: stringToMatch.index(before: stringToMatch.endIndex))]
         let shouldFailMessage = "GenericParser.string should have failed."
         
         testStringParserFailure(string1, inputs: notMatching) { input, result in

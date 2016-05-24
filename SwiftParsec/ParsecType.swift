@@ -30,7 +30,7 @@ public protocol ParsecType {
     ///
     /// - parameter transform: A mapping function.
     /// - returns: A new parser with the mapped content.
-    func map<T>(transform: Result -> T) -> GenericParser<Stream, UserState, T>
+    func map<T>(_ transform: (Result) -> T) -> GenericParser<Stream, UserState, T>
     
     /// Infix operator for `ParsecType.map`. It has the same precedence as the equality operator (`==`).
     ///
@@ -38,7 +38,7 @@ public protocol ParsecType {
     ///   - transform: A mapping function.
     ///   - parser: The parser whose result is mapped.
     /// - returns: A new parser with the mapped content.
-    func <^><T>(transform: Result -> T, parser: Self) -> GenericParser<Stream, UserState, T>
+    func <^><T>(transform: (Result) -> T, parser: Self) -> GenericParser<Stream, UserState, T>
     
     /// Return a parser by applying the function contained in the supplied parser to self.
     ///
@@ -46,7 +46,7 @@ public protocol ParsecType {
     ///
     /// - parameter parser: The parser containing the function to apply to self.
     /// - returns: A parser with the applied function.
-    func apply<T>(parser: GenericParser<Stream, UserState, Result -> T>) -> GenericParser<Stream, UserState, T>
+    func apply<T>(_ parser: GenericParser<Stream, UserState, (Result) -> T>) -> GenericParser<Stream, UserState, T>
     
     /// Infix operator for `ParsecType.apply`. It has the same precedence as the equality operator (`==`).
     ///
@@ -54,7 +54,7 @@ public protocol ParsecType {
     ///   - leftParser: The parser containing the function to apply to the parser on the right.
     ///   - rightParser: The parser on which the function is applied.
     /// - returns: A parser with the applied function.
-    func<*><T>(leftParser: GenericParser<Stream, UserState, Result -> T>, rightParser: Self) -> GenericParser<Stream, UserState, T>
+    func<*><T>(leftParser: GenericParser<Stream, UserState, (Result) -> T>, rightParser: Self) -> GenericParser<Stream, UserState, T>
     
     /// Sequence parsing, discarding the value of the first parser. It has the same precedence as the equality operator (`==`).
     ///
@@ -78,7 +78,7 @@ public protocol ParsecType {
     ///
     /// - parameter altParser: The alternative parser to try if `self` fails.
     /// - returns: A parser that will first try `self`. If it consumed no input, it will try `altParser`.
-    func alternative(altParser: Self) -> Self
+    func alternative(_ altParser: Self) -> Self
     
     /// Infix operator for `ParsecType.alternative`. It has the same precedence as the equality operator (`&&`).
     ///
@@ -93,14 +93,14 @@ public protocol ParsecType {
     ///
     /// - parameter transform: A mapping function returning a parser.
     /// - returns: A new parser with the mapped content.
-    func flatMap<T>(transform: Result -> GenericParser<Stream, UserState, T>) -> GenericParser<Stream, UserState, T>
+    func flatMap<T>(_ transform: (Result) -> GenericParser<Stream, UserState, T>) -> GenericParser<Stream, UserState, T>
     
     /// Infix operator for `ParsecType.flatMap` named _bind_. It has the same precedence as the `nil` coalescing operator (`??`).
     ///
     /// - parameters:
     ///   - parser: The parser whose result is passed to the `transform` function.
     ///   - transform: The function receiving the result of `parser`.
-    func >>-<T>(parser: Self, transform: Result -> GenericParser<Stream, UserState, T>) -> GenericParser<Stream, UserState, T>
+    func >>-<T>(parser: Self, transform: (Result) -> GenericParser<Stream, UserState, T>) -> GenericParser<Stream, UserState, T>
     
     /// This combinator is used whenever arbitrary look ahead is needed. Since it pretends that it hasn't consumed any input when `self` fails, the ('<|>') combinator will try its second alternative even when the first parser failed while consuming input.
     ///
@@ -153,7 +153,7 @@ public protocol ParsecType {
     ///
     /// - parameter accumulator: An accumulator function that process the value returned by `self`. The first argument is the value returned by `self` and the second argument is the previous processed values returned by this accumulator function. It returns the result of processing the passed value and the accumulated values.
     /// - returns: The processed values of the accumulator function.
-    func manyAccumulator(accumulator: (Result, [Result]) -> [Result]) -> GenericParser<Stream, UserState, [Result]>
+    func manyAccumulator(_ accumulator: (Result, [Result]) -> [Result]) -> GenericParser<Stream, UserState, [Result]>
     
     /// A parser that always fails without consuming any input.
     static var empty: Self { get }
@@ -166,7 +166,7 @@ public protocol ParsecType {
     ///
     /// - parameter message: The new error message.
     /// - returns: A parser with a replaced error message.
-    func labels(message: String...) -> Self
+    func labels(_ message: String...) -> Self
     
     /// Infix operator for `ParsecType.label`. It has the lowest precedence.
     ///
@@ -182,13 +182,13 @@ public protocol ParsecType {
     /// - parameter message: The error message.
     /// - returns: A parser that always fails with an unexpected error message without consuming any input.
     /// - SeeAlso: `GenericParser.noOccurence`, `GenericParser.fail(message: String)` and `<?>`
-    static func unexpected(message: String) -> Self
+    static func unexpected(_ message: String) -> Self
     
     /// Return a parser that always fail with the supplied message.
     ///
     /// - parameter message: The failure message.
     /// - returns: A parser that always fail.
-    static func fail(message: String) -> CombinedParser
+    static func fail(_ message: String) -> CombinedParser
     
     /// Return a parser that applies the result of the supplied parsers to the lifted function. The parsers are applied from left to right.
     ///
@@ -197,7 +197,7 @@ public protocol ParsecType {
     ///   - parser1: The parser returning the first argument passed to the lifted function.
     ///   - parser2: The parser returning the second argument passed to the lifted function.
     /// - returns: A parser that applies the result of the supplied parsers to the lifted function.
-    static func lift2<Param1, Param2>(function: (Param1, Param2) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>) -> CombinedParser
+    static func lift2<Param1, Param2>(_ function: (Param1, Param2) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>) -> CombinedParser
     
     /// Return a parser that applies the result of the supplied parsers to the lifted function. The parsers are applied from left to right.
     ///
@@ -207,7 +207,7 @@ public protocol ParsecType {
     ///   - parser2: The parser returning the second argument passed to the lifted function.
     ///   - parser3: The parser returning the third argument passed to the lifted function.
     /// - returns: A parser that applies the result of the supplied parsers to the lifted function.
-    static func lift3<Param1, Param2, Param3>(function: (Param1, Param2, Param3) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>, parser3: GenericParser<Stream, UserState, Param3>) -> CombinedParser
+    static func lift3<Param1, Param2, Param3>(_ function: (Param1, Param2, Param3) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>, parser3: GenericParser<Stream, UserState, Param3>) -> CombinedParser
     
     /// Return a parser that applies the result of the supplied parsers to the lifted function. The parsers are applied from left to right.
     ///
@@ -218,7 +218,7 @@ public protocol ParsecType {
     ///   - parser3: The parser returning the third argument passed to the lifted function.
     ///   - parser4: The parser returning the fourth argument passed to the lifted function.
     /// - returns: A parser that applies the result of the supplied parsers to the lifted function.
-    static func lift4<Param1, Param2, Param3, Param4>(function: (Param1, Param2, Param3, Param4) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>, parser3: GenericParser<Stream, UserState, Param3>, parser4: GenericParser<Stream, UserState, Param4>) -> CombinedParser
+    static func lift4<Param1, Param2, Param3, Param4>(_ function: (Param1, Param2, Param3, Param4) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>, parser3: GenericParser<Stream, UserState, Param3>, parser4: GenericParser<Stream, UserState, Param4>) -> CombinedParser
     
     /// Return a parser that applies the result of the supplied parsers to the lifted function. The parsers are applied from left to right.
     ///
@@ -230,7 +230,7 @@ public protocol ParsecType {
     ///   - parser4: The parser returning the fourth argument passed to the lifted function.
     ///   - parser5: The parser returning the fifth argument passed to the lifted function.
     /// - returns: A parser that applies the result of the supplied parsers to the lifted function.
-    static func lift5<Param1, Param2, Param3, Param4, Param5>(function: (Param1, Param2, Param3, Param4, Param5) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>, parser3: GenericParser<Stream, UserState, Param3>, parser4: GenericParser<Stream, UserState, Param4>, parser5: GenericParser<Stream, UserState, Param5>) -> CombinedParser
+    static func lift5<Param1, Param2, Param3, Param4, Param5>(_ function: (Param1, Param2, Param3, Param4, Param5) -> Result, parser1: GenericParser<Stream, UserState, Param1>, parser2: GenericParser<Stream, UserState, Param2>, parser3: GenericParser<Stream, UserState, Param3>, parser4: GenericParser<Stream, UserState, Param4>, parser5: GenericParser<Stream, UserState, Param5>) -> CombinedParser
     
     /// The `updateUserState` method applies the function `update` to the user state. Suppose that we want to count identifiers in a source, we could use the user state as:
     ///
@@ -239,7 +239,7 @@ public protocol ParsecType {
     ///
     /// - parameter update: The function applied to the `UserState`. It returns the updated `UserState`.
     /// - returns: An empty parser that will update the `UserState`.
-    static func updateUserState(update: UserState -> UserState) -> GenericParser<Stream, UserState, ()>
+    static func updateUserState(_ update: (UserState) -> UserState) -> GenericParser<Stream, UserState, ()>
     
     /// Run the parser and return the result of the parsing and the user state.
     ///
@@ -249,7 +249,7 @@ public protocol ParsecType {
     ///   - input: The input stream to parse.
     /// - throws: A `ParseError` when an error occurs.
     /// - returns: The result of the parsing and the user state.
-    func run(userState userState: UserState, sourceName: String, input: Stream) throws -> (result: Result, userState: UserState)
+    func run(userState: UserState, sourceName: String, input: Stream) throws -> (result: Result, userState: UserState)
     
 }
 
@@ -298,7 +298,7 @@ public extension ParsecType {
     ///   - nextPosition: A function returning the position of the next token.
     ///   - match: A function returning an optional result when the token match a predicate.
     /// - returns: Return a parser that accepts a token `Element` with result `Result` when the token matches.
-    public static func tokenPrimitive(tokenDescription tokenDescription: Stream.Element -> String, nextPosition: (SourcePosition, Stream.Element, Stream) -> SourcePosition, match: Stream.Element -> Result?) -> GenericParser<Stream, UserState, Result> {
+    public static func tokenPrimitive(tokenDescription: (Stream.Element) -> String, nextPosition: (SourcePosition, Stream.Element, Stream) -> SourcePosition, match: (Stream.Element) -> Result?) -> GenericParser<Stream, UserState, Result> {
         
         return GenericParser(parse: { state in
             
@@ -342,7 +342,7 @@ public extension ParsecType where Stream.Element: Equatable {
     ///   - nextPosition: A function returning the position after the tokens.
     ///   - tokens: The collection of tokens to parse.
     /// - returns: A parser that parses a collection of tokens.
-    public static func tokens(tokensDescription tokensDescription: Stream -> String, nextPosition: (SourcePosition, Stream) -> SourcePosition, tokens: Stream) -> GenericParser<Stream, UserState, Stream> {
+    public static func tokens(tokensDescription: (Stream) -> String, nextPosition: (SourcePosition, Stream) -> SourcePosition, tokens: Stream) -> GenericParser<Stream, UserState, Stream> {
         
         return GenericParser(parse: { state in
             
@@ -418,7 +418,7 @@ public extension ParsecType where UserState == () {
     ///   - input: The input stream to parse.
     /// - throws: A `ParseError` when an error occurs.
     /// - returns: The result of the parsing.
-    public func run(sourceName sourceName: String, input: Stream) throws -> Result {
+    public func run(sourceName: String, input: Stream) throws -> Result {
         
         return try run(userState: (), sourceName: sourceName, input: input).result
         

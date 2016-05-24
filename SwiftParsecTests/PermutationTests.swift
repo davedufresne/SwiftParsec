@@ -23,7 +23,7 @@ class PermutationTests: XCTestCase {
 
         XCTAssertEqual(permutation.count, 3, "Permutation.count returned wrong value.")
         
-        permutation.replaceRange(0...0, with: [])
+        permutation.replaceSubrange(0..<1, with: [])
         
         XCTAssertEqual(permutation.count, 2, "Permutation.replaceRange did not remove first element.")
         
