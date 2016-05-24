@@ -93,27 +93,27 @@ class ExpressionTests: XCTestCase {
         
         XCTAssertEqual(opTable.count, 2)
         
-        opTable.replaceRange(0...0, with: [])
+        opTable.replaceSubrange(0..<1, with: [])
         
         XCTAssertEqual(opTable.count, 1)
         
     }
     
-    func binary(name: String, function: (Int, Int) -> Int, assoc: Associativity) -> Operator<String, (), Int> {
+    func binary(_ name: String, function: (Int, Int) -> Int, assoc: Associativity) -> Operator<String, (), Int> {
         
         let opParser = StringParser.string(name) *> GenericParser(result: function)
         return .Infix(opParser, assoc)
         
     }
     
-    func prefix(name: String, function: Int -> Int) -> Operator<String, (), Int> {
+    func prefix(_ name: String, function: (Int) -> Int) -> Operator<String, (), Int> {
         
         let opParser = StringParser.string(name) *> GenericParser(result: function)
         return .Prefix(opParser)
         
     }
     
-    func postfix(name: String, function: Int -> Int) -> Operator<String, (), Int> {
+    func postfix(_ name: String, function: (Int) -> Int) -> Operator<String, (), Int> {
         
         let opParser = StringParser.string(name) *> GenericParser(result: function)
         return .Postfix(opParser.attempt)

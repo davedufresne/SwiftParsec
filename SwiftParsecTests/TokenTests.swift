@@ -76,7 +76,7 @@ class TokenTests: XCTestCase {
             
             // Test when not matching.
             let notMatchingLower = swift.reservedNames
-            let notMatching = notMatchingLower + notMatchingLower.map { $0.uppercaseString }
+            let notMatching = notMatchingLower + notMatchingLower.map { $0.uppercased() }
             let shouldFailMessage = "GenericTokenParser.identifier should have failed."
             
             testStringParserFailure(identifier, inputs: notMatching) { input, result in
@@ -99,7 +99,7 @@ class TokenTests: XCTestCase {
         
         // Test for success.
         let matching = swift.reservedNames
-        let uppercaseMatching = swift.reservedNames.map { $0.uppercaseString }
+        let uppercaseMatching = swift.reservedNames.map { $0.uppercased() }
         
         let reservedNames = matching.map { reservedName($0) }
         let reservedUppercaseNames = uppercaseMatching.map { reservedCaseInsensitive($0) }
@@ -784,7 +784,7 @@ class TokenTests: XCTestCase {
         
     }
     
-    func testBracketsParser(parser: GenericParser<String, (), String> -> GenericParser<String, (), String>, parserName: String, opening: String, closing: String) {
+    func testBracketsParser(_ parser: (GenericParser<String, (), String>) -> GenericParser<String, (), String>, parserName: String, opening: String, closing: String) {
         
         let expected = "abcd"
         
@@ -819,7 +819,7 @@ class TokenTests: XCTestCase {
         
     }
     
-    func testPunctuationSeparated(parser: GenericParser<String, (), String> -> GenericParser<String, (), [String]>, parserName: String, punctuation: String, allowZeroOccurence: Bool) {
+    func testPunctuationSeparated(_ parser: (GenericParser<String, (), String>) -> GenericParser<String, (), [String]>, parserName: String, punctuation: String, allowZeroOccurence: Bool) {
         
         let expected = "abcd"
         

@@ -6,7 +6,7 @@
 //  Copyright © 2015 David Dufresne. All rights reserved.
 //
 
-public extension RangeReplaceableCollectionType {
+public extension RangeReplaceableCollection {
     
     /// If `!self.isEmpty`, remove the first element and return it, otherwise return `nil`.
     ///
@@ -22,9 +22,9 @@ public extension RangeReplaceableCollectionType {
     /// Prepend `newElement` to the collection.
     ///
     /// - parameter newElement: New element to prepend to the collection.
-    mutating func prepend(newElement: Generator.Element) {
+    mutating func prepend(_ newElement: Generator.Element) {
         
-        insert(newElement, atIndex: startIndex)
+        insert(newElement, at: startIndex)
         
     }
     
@@ -32,7 +32,7 @@ public extension RangeReplaceableCollectionType {
     ///
     /// - parameter newElement: New element to prepend.
     /// - returns: A copy of `self` plus `newElement` prepended.
-    func prepending(newElement: Generator.Element) -> Self {
+    func prepending(_ newElement: Generator.Element) -> Self {
         
         var mutableSelf = self
         mutableSelf.prepend(newElement)
@@ -45,7 +45,7 @@ public extension RangeReplaceableCollectionType {
     ///
     /// - parameter newElement: New element to append.
     /// - returns: A copy of `self` plus `newElement` appended.
-    func appending(newElement: Generator.Element) -> Self {
+    func appending(_ newElement: Generator.Element) -> Self {
         
         var mutableSelf = self
         mutableSelf.append(newElement)

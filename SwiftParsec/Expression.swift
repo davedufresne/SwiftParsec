@@ -23,20 +23,20 @@ public enum Operator<Stream: StreamType, UserState, Result> {
     case Infix(GenericParser<Stream, UserState, (Result, Result) -> Result>, Associativity)
     
     /// Prefix operator.
-    case Prefix(GenericParser<Stream, UserState, Result -> Result>)
+    case Prefix(GenericParser<Stream, UserState, (Result) -> Result>)
     
     /// Postfix operator.
-    case Postfix(GenericParser<Stream, UserState, Result -> Result>)
+    case Postfix(GenericParser<Stream, UserState, (Result) -> Result>)
     
 }
 
-public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplaceableCollectionType, ArrayLiteralConvertible {
+public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplaceableCollection, ArrayLiteralConvertible {
     
     /// Represents a valid position in the operator table.
     public typealias Index = Int
     
     /// Operator table's generator.
-    public typealias Generator = IndexingGenerator<OperatorTable>
+    public typealias Iterator = IndexingIterator<OperatorTable>
     
     /// Element type of the operator table.
     public typealias Element = [Operator<Stream, UserState, Result>]
@@ -61,6 +61,15 @@ public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplace
     
     /// Create an empty instance.
     public init() { table = [] }
+    
+    /// Returns the position immediately after i.
+    ///
+    /// - SeeAlso: `IndexableBase` protocol.
+    public func index(after i: OperatorTable.Index) -> OperatorTable.Index {
+        
+        return table.index(after: i)
+        
+    }
     
     /// Build an expression parser for terms returned by `combined` with operators from `self`, taking the associativity and precedence specified in `self` into account. Prefix and postfix operators of the same precedence can only occur once (i.e. `--2` is not allowed if `-` is prefix negate). Prefix and postfix operators of the same precedence associate to the left (i.e. if `++` is postfix increment, than `-2++` equals `-1`, not `-3`).
     ///
@@ -121,7 +130,7 @@ public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplace
     /// - parameter combine: A function receiving a 'simple expression' as parameter that can be nested in other expressions.
     /// - returns: An expression parser for terms returned by `combined` with operators from `self`.
     /// - SeeAlso: GenericParser.recursive(combine: GenericParser -> GenericParser) -> GenericParser
-    public func expressionParser(@noescape combine: GenericParser<Stream, UserState, Result> -> GenericParser<Stream, UserState, Result>) -> GenericParser<Stream, UserState, Result> {
+    public func expressionParser(_ combine: @noescape(GenericParser<Stream, UserState, Result>) -> GenericParser<Stream, UserState, Result>) -> GenericParser<Stream, UserState, Result> {
         
         var term: GenericParser<Stream, UserState, Result>!
         let lazyTerm = GenericParser<Stream, UserState, Result> { term }
@@ -134,12 +143,12 @@ public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplace
     }
     
     private typealias InfixOperatorParser = GenericParser<Stream, UserState, (Result, Result) -> Result>
-    private typealias PrefixOperatorParser = GenericParser<Stream, UserState, Result -> Result>
-    private typealias PostfixOperatorParser = GenericParser<Stream, UserState, Result -> Result>
+    private typealias PrefixOperatorParser = GenericParser<Stream, UserState, (Result) -> Result>
+    private typealias PostfixOperatorParser = GenericParser<Stream, UserState, (Result) -> Result>
     
     private typealias OperatorsTuple = (right: [InfixOperatorParser], left: [InfixOperatorParser], none: [InfixOperatorParser], prefix: [PrefixOperatorParser], postfix: [PostfixOperatorParser])
     
-    private func buildParser(term: GenericParser<Stream, UserState, Result>, operators: [Operator<Stream, UserState, Result>]) -> GenericParser<Stream, UserState, Result> {
+    private func buildParser(_ term: GenericParser<Stream, UserState, Result>, operators: [Operator<Stream, UserState, Result>]) -> GenericParser<Stream, UserState, Result> {
         
         let ops: OperatorsTuple = operators.reduce(([], [], [], [], []), combine: splitOperators)
         
@@ -175,7 +184,7 @@ public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplace
             
         }
         
-        func rightAssocParser(left: Result) -> GenericParser<Stream, UserState, Result> {
+        func rightAssocParser(_ left: Result) -> GenericParser<Stream, UserState, Result> {
             
             let rightTerm = termParser >>- { rightAssocParser1($0) }
             
@@ -189,13 +198,13 @@ public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplace
             
         }
         
-        func rightAssocParser1(right: Result) -> GenericParser<Stream, UserState, Result> {
+        func rightAssocParser1(_ right: Result) -> GenericParser<Stream, UserState, Result> {
             
             return rightAssocParser(right) <|> GenericParser(result: right)
             
         }
         
-        func leftAssocParser(left: Result) -> GenericParser<Stream, UserState, Result> {
+        func leftAssocParser(_ left: Result) -> GenericParser<Stream, UserState, Result> {
             
             let apply = leftAssocOp >>- { f in
                 
@@ -211,13 +220,13 @@ public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplace
                 
         }
         
-        func leftAssocParser1(right: Result) -> GenericParser<Stream, UserState, Result> {
+        func leftAssocParser1(_ right: Result) -> GenericParser<Stream, UserState, Result> {
             
             return leftAssocParser(right) <|> GenericParser(result: right)
             
         }
         
-        func nonAssocParser(left: Result) -> GenericParser<Stream, UserState, Result> {
+        func nonAssocParser(_ left: Result) -> GenericParser<Stream, UserState, Result> {
             
             return nonAssocOp >>- { f in
                 
@@ -294,10 +303,10 @@ public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplace
         
     }
     
-    private func ambigious(op: InfixOperatorParser, assoc: String) -> GenericParser<Stream, UserState, Result> {
+    private func ambigious(_ op: InfixOperatorParser, assoc: String) -> GenericParser<Stream, UserState, Result> {
         
         let msg = NSLocalizedString("ambiguous use of a %@ associative operator", comment: "Expression parser.")
-        let localizedMsg = String(format: msg, arguments: [assoc])
+        let localizedMsg = String.localizedStringWithFormat(msg, assoc as CVarArg)
         
         return (op *> GenericParser.fail(localizedMsg)).attempt
         
@@ -308,9 +317,9 @@ public struct OperatorTable<Stream: StreamType, UserState, Result>: RangeReplace
     /// - parameters:
     ///   - subRange: Range of elements to replace.
     ///   - newElements: New elements replacing the previous elements contained in `subRange`.
-    public mutating func replaceRange<C: CollectionType where C.Generator.Element == Generator.Element>(subRange: Range<Index>, with newElements: C) {
+    public mutating func replaceSubrange<C: Collection where C.Iterator.Element == Iterator.Element>(_ subrange: Range<Index>, with newElements: C) {
         
-        table.replaceRange(subRange, with: newElements)
+        table.replaceSubrange(subrange, with: newElements)
         
     }
     

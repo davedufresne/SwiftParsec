@@ -235,7 +235,7 @@ class ErrorMessageTests: XCTestCase {
         
     }
     
-    func errorMessageTest<Result>(parser: GenericParser<String, (), Result>, input: String, assert: (String) -> Void) {
+    func errorMessageTest<Result>(_ parser: GenericParser<String, (), Result>, input: String, assert: (String) -> Void) {
         
         do {
             
@@ -250,7 +250,7 @@ class ErrorMessageTests: XCTestCase {
         
     }
     
-    func formatErrorMessage(expected expected: String, actual: String) -> String {
+    func formatErrorMessage(expected: String, actual: String) -> String {
         
         return "Error messages error, Expected:\n\(expected)\nActual:\n\(actual)"
         

@@ -19,7 +19,7 @@ public extension ParsecType where Stream.Element == Character, Result == Charact
     ///
     /// - parameter predicate: The predicate to apply on the `Character`.
     /// - returns: A parser that succeeds for any character for which the supplied function `predicate` returns `true`.
-    public static func satisfy(predicate: Character -> Bool) -> GenericParser<Stream, UserState, Result> {
+    public static func satisfy(_ predicate: (Character) -> Bool) -> GenericParser<Stream, UserState, Result> {
         
         return tokenPrimitive(
             tokenDescription: { String(reflecting: $0) },
@@ -46,7 +46,7 @@ public extension ParsecType where Stream.Element == Character, Result == Charact
     /// - parameter list: A `String` of possible characters to match.
     /// - returns: A parser that succeeds if the current character is in the supplied list of characters.
     /// - SeeAlso: `GenericParser.satisfy(predicate: Character -> Bool) -> GenericParser`
-    public static func oneOf(list: String) -> GenericParser<Stream, UserState, Result> {
+    public static func oneOf(_ list: String) -> GenericParser<Stream, UserState, Result> {
         
         return satisfy(list.characters.contains)
         
@@ -59,7 +59,7 @@ public extension ParsecType where Stream.Element == Character, Result == Charact
     /// - parameter interval: A `ClosedInterval` of possible characters to match.
     /// - returns: A parser that succeeds if the current character is in the supplied interval of characters.
     /// - SeeAlso: `GenericParser.satisfy(predicate: Character -> Bool) -> GenericParser`
-    public static func oneOf(interval: ClosedInterval<Character>) -> GenericParser<Stream, UserState, Result> {
+    public static func oneOf(_ interval: ClosedRange<Character>) -> GenericParser<Stream, UserState, Result> {
         
         return satisfy(interval.contains)
         
@@ -71,7 +71,7 @@ public extension ParsecType where Stream.Element == Character, Result == Charact
     ///
     /// - parameter list: A `String` of possible _not_ to match.
     /// - returns: A parser that succeeds if the current character is _not_ in the supplied list of characters.
-    public static func noneOf(list: String) -> GenericParser<Stream, UserState, Result> {
+    public static func noneOf(_ list: String) -> GenericParser<Stream, UserState, Result> {
         
         return satisfy { !list.characters.contains($0) }
         
@@ -200,7 +200,7 @@ public extension ParsecType where Stream.Element == Character, Result == Charact
     ///
     /// - parameter char: The character to parse.
     /// - returns: A parser that parses a single character `Character`.
-    public static func character(char: Character) -> GenericParser<Stream, UserState, Result> {
+    public static func character(_ char: Character) -> GenericParser<Stream, UserState, Result> {
         
         return satisfy { $0 == char } <?> String(reflecting: char)
         
@@ -224,7 +224,7 @@ public extension ParsecType where Stream.Element == Character, Result == Charact
     ///
     /// - parameter set: The `NSCharacterSet` used to test for membership.
     /// - returns: The parsed character.
-    static func memberOf(set: NSCharacterSet) -> GenericParser<Stream, UserState, Result> {
+    static func memberOf(_ set: NSCharacterSet) -> GenericParser<Stream, UserState, Result> {
         
         return satisfy { $0.isMemberOfCharacterSet(set) }
         
@@ -232,12 +232,12 @@ public extension ParsecType where Stream.Element == Character, Result == Charact
     
 }
 
-public extension ParsecType where Result: SequenceType, Result.Generator.Element == Character {
+public extension ParsecType where Result: Sequence, Result.Iterator.Element == Character {
     
     /// A Parser that maps an array of `Character` to a `String`.
     public var stringValue: GenericParser<Stream, UserState, String> {
         
-        return map(String.init)
+        return map { String($0) }
         
     }
     
@@ -252,7 +252,7 @@ public extension ParsecType where Stream.Element == Character {
     ///
     /// - parameter str: The string to parse.
     /// - returns: A parser that parses a `String`.
-    public static func string(str: Stream) -> GenericParser<Stream, UserState, Stream> {
+    public static func string(_ str: Stream) -> GenericParser<Stream, UserState, Stream> {
         
         return tokens(
             tokensDescription: { String(reflecting: $0) },
