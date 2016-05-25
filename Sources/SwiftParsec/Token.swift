@@ -146,7 +146,7 @@ extension TokenParserType {
     /// - returns: `()`
     public func reservedName(_ name: String) -> GenericParser<String, UserState, ()> {
         
-        let lastChar = name[name.index(before: name.endIndex)]
+        let lastChar = name.last!
         let reserved = caseString(name) *>
             languageDefinition.identifierLetter(lastChar).noOccurence <?>
             NSLocalizedString("end of ", comment: "Token parser, end of reserved name.") + name
