@@ -76,13 +76,14 @@
 		578435571BF692380067B3E9 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		578E3B0F1CA4B014005B83B8 /* SwiftParsec.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SwiftParsec.podspec; sourceTree = "<group>"; };
 		579C00C71C0277CA009282A6 /* UInt16Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UInt16Extension.swift; sourceTree = "<group>"; };
-		579C00CD1C03EC60009282A6 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = SwiftParsec/en.lproj; sourceTree = "<group>"; };
+		579C00CD1C03EC60009282A6 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Sources/SwiftParsec/en.lproj; sourceTree = "<group>"; };
 		579C00D31C03F16E009282A6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		57A86B0A1BC862CC00A7F45F /* CollectionTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTypeExtension.swift; sourceTree = "<group>"; };
 		57A86B0C1BC983B400A7F45F /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		57A86B0E1BC9990B00A7F45F /* SetExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetExtension.swift; sourceTree = "<group>"; };
 		57AA4E001BB777FF0026DF01 /* Combinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Combinator.swift; sourceTree = "<group>"; };
 		57AA4E021BB77A0F0026DF01 /* CombinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombinatorTests.swift; sourceTree = "<group>"; };
+		57AB6BB51CF399E6008A1927 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		57C459771CE2150D0014764F /* UnicodeScalarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalarTests.swift; sourceTree = "<group>"; };
 		57C956681BDAE01D00057A4F /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
 		57E5A60A1BA36FD10062F479 /* RangeReplaceableCollectionTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeReplaceableCollectionTypeExtension.swift; sourceTree = "<group>"; };
@@ -119,6 +120,7 @@
 				579C00CD1C03EC60009282A6 /* en.lproj */,
 				571A4EFC1CE2895E00D6D446 /* CHANGELOG.md */,
 				578435571BF692380067B3E9 /* LICENSE */,
+				57AB6BB51CF399E6008A1927 /* Package.swift */,
 				579C00D31C03F16E009282A6 /* README.md */,
 				575680E01CCA99E3003FBCFA /* SubmittingPatches.md */,
 				578E3B0F1CA4B014005B83B8 /* SwiftParsec.podspec */,
@@ -151,7 +153,8 @@
 				570DB5B41BC3422A0058D186 /* Token.swift */,
 				57167F071B99E66800F35A29 /* Info.plist */,
 			);
-			path = SwiftParsec;
+			name = SwiftParsec;
+			path = Sources/SwiftParsec;
 			sourceTree = "<group>";
 		};
 		57167F101B99E66800F35A29 /* SwiftParsecTests */ = {
@@ -169,7 +172,8 @@
 				57C459771CE2150D0014764F /* UnicodeScalarTests.swift */,
 				57167F131B99E66800F35A29 /* Info.plist */,
 			);
-			path = SwiftParsecTests;
+			name = SwiftParsecTests;
+			path = Tests/SwiftParsec;
 			sourceTree = "<group>";
 		};
 		57E5A60E1BA372D40062F479 /* Extensions */ = {
@@ -445,7 +449,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = SwiftParsec/Info.plist;
+				INFOPLIST_FILE = Sources/SwiftParsec/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -470,7 +474,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = SwiftParsec/Info.plist;
+				INFOPLIST_FILE = Sources/SwiftParsec/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
@@ -491,7 +495,7 @@
 					"$(SDKROOT)",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SwiftParsecTests/Info.plist;
+				INFOPLIST_FILE = Tests/SwiftParsec/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = daviddufresne.SwiftParsecTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -509,7 +513,7 @@
 					"$(SDKROOT)",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SwiftParsecTests/Info.plist;
+				INFOPLIST_FILE = Tests/SwiftParsec/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = daviddufresne.SwiftParsecTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
