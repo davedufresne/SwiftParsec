@@ -226,7 +226,7 @@ public extension Parsec where StreamType.Element == Character, Result == Charact
     /// - returns: The parsed character.
     static func memberOf(_ set: NSCharacterSet) -> GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isMemberOfCharacterSet(set) }
+        return satisfy { $0.isMember(of: set) }
         
     }
     
