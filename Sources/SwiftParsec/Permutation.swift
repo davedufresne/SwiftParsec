@@ -19,7 +19,7 @@
 ///
 ///     let parser = permutation.parser.stringValue
 ///
-public struct Permutation<Stream: StreamType, UserState, Result>: RangeReplaceableCollection, ArrayLiteralConvertible {
+public struct Permutation<StreamType: Stream, UserState, Result>: RangeReplaceableCollection, ArrayLiteralConvertible {
     
     /// Represents a valid position in the permutation.
     public typealias Index = Int
@@ -28,7 +28,7 @@ public struct Permutation<Stream: StreamType, UserState, Result>: RangeReplaceab
     public typealias Iterator = IndexingIterator<Permutation>
     
     /// Element type of the permutation.
-    public typealias Element = (parser: GenericParser<Stream, UserState, Result>, otherwise: Result?)
+    public typealias Element = (parser: GenericParser<StreamType, UserState, Result>, otherwise: Result?)
     
     /// The position of the first element.
     public let startIndex = 0
@@ -61,7 +61,7 @@ public struct Permutation<Stream: StreamType, UserState, Result>: RangeReplaceab
     }
     
     /// A parser applying to the permutation of all the parsers contained in `self`.
-    public var parser: GenericParser<Stream, UserState, [Result]> {
+    public var parser: GenericParser<StreamType, UserState, [Result]> {
         
         return parserWithSeparator(GenericParser(result: ()))
         
@@ -70,7 +70,7 @@ public struct Permutation<Stream: StreamType, UserState, Result>: RangeReplaceab
     /// A parser applying to the permutation of all the parsers contained in `self` separated by `separator`.
     ///
     /// - parameter separator: A separator to apply between each element of the permutation.
-    public func parserWithSeparator<Separator>(_ separator: GenericParser<Stream, UserState, Separator>) -> GenericParser<Stream, UserState, [Result]> {
+    public func parserWithSeparator<Separator>(_ separator: GenericParser<StreamType, UserState, Separator>) -> GenericParser<StreamType, UserState, [Result]> {
         
         let ps = parsers.map { elem in
             
@@ -82,9 +82,9 @@ public struct Permutation<Stream: StreamType, UserState, Result>: RangeReplaceab
         
     }
     
-    private typealias PermParser = GenericParser<Stream, UserState, [Result]>
+    private typealias PermParser = GenericParser<StreamType, UserState, [Result]>
     
-    private func permute<Separator>(_ elements: [(parser: PermParser, otherwise: Result?)], separator: GenericParser<Stream, UserState, Separator>) -> PermParser {
+    private func permute<Separator>(_ elements: [(parser: PermParser, otherwise: Result?)], separator: GenericParser<StreamType, UserState, Separator>) -> PermParser {
         
         var permutation = ContiguousArray<PermParser>()
         
@@ -147,7 +147,7 @@ public struct Permutation<Stream: StreamType, UserState, Result>: RangeReplaceab
     /// Append a parser to the permutation. The added parser is not allowed to accept empty input - use `appendOptionalParser` instead.
     ///
     /// - parameter parser: The parser to append to the permutation.
-    public mutating func appendParser(_ parser: GenericParser<Stream, UserState, Result>) {
+    public mutating func appendParser(_ parser: GenericParser<StreamType, UserState, Result>) {
         
         parsers.append((parser, nil))
         
@@ -158,7 +158,7 @@ public struct Permutation<Stream: StreamType, UserState, Result>: RangeReplaceab
     /// - parameters:
     ///   - parser: The optional parser to append to the permutation.
     ///   - otherwise: The default value to use if the parser cannot be applied.
-    public mutating func appendOptionalParser(_ parser: GenericParser<Stream, UserState, Result>, otherwise: Result) {
+    public mutating func appendOptionalParser(_ parser: GenericParser<StreamType, UserState, Result>, otherwise: Result) {
         
         parsers.append((parser, otherwise))
         
