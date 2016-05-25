@@ -41,6 +41,17 @@ extension String {
         
     }
     
+    /// The last character of the string.
+    ///
+    /// If the string is empty, the value of this property is `nil`.
+    var last: Character? {
+        
+        guard !isEmpty else { return nil }
+        
+        return self[index(before: endIndex)]
+        
+    }
+    
     /// If `!self.isEmpty`, remove the first `Character` and return it, otherwise return nil.
     ///
     /// - returns: The first `Character` if `!self.isEmpty`.
