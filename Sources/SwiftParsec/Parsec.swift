@@ -461,7 +461,7 @@ public protocol Stream: ArrayLiteralConvertible {
 
 extension String: Stream {
     
-    public typealias Element = String.CharacterView.Generator.Element
+    public typealias Element = String.CharacterView.Iterator.Element
     
     /// Create an instance containing `elements`.
     public init(arrayLiteral elements: Element...) {
@@ -474,7 +474,7 @@ extension String: Stream {
 
 extension String.CharacterView: Stream {
     
-    public typealias Element = String.CharacterView.Generator.Element
+    public typealias Element = String.CharacterView.Iterator.Element
     
     /// Create an instance containing `elements`.
     public init(arrayLiteral elements: Element...) {
