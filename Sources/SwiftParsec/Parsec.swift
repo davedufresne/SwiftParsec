@@ -1,5 +1,5 @@
 //
-//  ParsecType.swift
+//  Parsec.swift
 //  SwiftParsec
 //
 //  Created by David Dufresne on 2016-05-02.
@@ -8,9 +8,9 @@
 
 import Foundation
 
-// TODO: - Make the ParsecType the model of a true monad when Swift will allow it.
-/// ParsecType is a parser with stream type `Stream`, user state type `UserState` and return type `Result`.
-public protocol ParsecType {
+// TODO: - Make `Parsec` the model of a true monad when Swift will allow it.
+/// `Parsec` is a parser with stream type `Stream`, user state type `UserState` and return type `Result`.
+public protocol Parsec {
     
     /// The input stream to parse.
     associatedtype Stream: StreamType
@@ -32,7 +32,7 @@ public protocol ParsecType {
     /// - returns: A new parser with the mapped content.
     func map<T>(_ transform: (Result) -> T) -> GenericParser<Stream, UserState, T>
     
-    /// Infix operator for `ParsecType.map`. It has the same precedence as the equality operator (`==`).
+    /// Infix operator for `Parsec.map`. It has the same precedence as the equality operator (`==`).
     ///
     /// - parameters:
     ///   - transform: A mapping function.
@@ -48,7 +48,7 @@ public protocol ParsecType {
     /// - returns: A parser with the applied function.
     func apply<T>(_ parser: GenericParser<Stream, UserState, (Result) -> T>) -> GenericParser<Stream, UserState, T>
     
-    /// Infix operator for `ParsecType.apply`. It has the same precedence as the equality operator (`==`).
+    /// Infix operator for `Parsec.apply`. It has the same precedence as the equality operator (`==`).
     ///
     /// - parameters:
     ///   - leftParser: The parser containing the function to apply to the parser on the right.
@@ -80,7 +80,7 @@ public protocol ParsecType {
     /// - returns: A parser that will first try `self`. If it consumed no input, it will try `altParser`.
     func alternative(_ altParser: Self) -> Self
     
-    /// Infix operator for `ParsecType.alternative`. It has the same precedence as the equality operator (`&&`).
+    /// Infix operator for `Parsec.alternative`. It has the same precedence as the equality operator (`&&`).
     ///
     /// - parameters:
     ///   - leftParser: The first parser to try.
@@ -95,7 +95,7 @@ public protocol ParsecType {
     /// - returns: A new parser with the mapped content.
     func flatMap<T>(_ transform: (Result) -> GenericParser<Stream, UserState, T>) -> GenericParser<Stream, UserState, T>
     
-    /// Infix operator for `ParsecType.flatMap` named _bind_. It has the same precedence as the `nil` coalescing operator (`??`).
+    /// Infix operator for `Parsec.flatMap` named _bind_. It has the same precedence as the `nil` coalescing operator (`??`).
     ///
     /// - parameters:
     ///   - parser: The parser whose result is passed to the `transform` function.
@@ -168,7 +168,7 @@ public protocol ParsecType {
     /// - returns: A parser with a replaced error message.
     func labels(_ message: String...) -> Self
     
-    /// Infix operator for `ParsecType.label`. It has the lowest precedence.
+    /// Infix operator for `Parsec.label`. It has the lowest precedence.
     ///
     /// - parameters:
     ///   - parser: The parser whose error message is to be replaced.
@@ -267,9 +267,9 @@ infix operator >>- { associativity left precedence 100 }
 
 infix operator <?> { precedence 0 }
 
-public extension ParsecType {
+public extension Parsec {
     
-    // TODO: Move this function into the `ParsecType` protocol extension when Swift will allow to add requirements to `typealias` type constraint (Ex.: `typealias Stream: CollectionType where Stream.SubSequence == Stream`)
+    // TODO: Move this function into the `Parsec` protocol extension when Swift will allow to add requirements to `typealias` type constraint (Ex.: `typealias Stream: CollectionType where Stream.SubSequence == Stream`)
     
     /// Return a parser that accepts a token `Element` with `Result` when the function `match(Element) -> Result` returns `Optional.SomeWrapped(Result)`. The token can be shown using `tokenDescription(Element) -> String`. The position of the _next_ token should be returned when `nextPosition(SourcePosition, Element, Stream) -> SourcePosition` is called with the current source position, the current token and the rest of the tokens.
     ///
@@ -331,9 +331,9 @@ public extension ParsecType {
     
 }
 
-public extension ParsecType where Stream.Element: Equatable {
+public extension Parsec where Stream.Element: Equatable {
     
-    // TODO: Move this function into the `ParsecType` protocol extension when Swift will allow to add requirements to `typealias` type constraint (Ex.: `typealias Stream: CollectionType where Stream.SubSequence == Stream`)
+    // TODO: Move this function into the `Parsec` protocol extension when Swift will allow to add requirements to `typealias` type constraint (Ex.: `typealias Stream: CollectionType where Stream.SubSequence == Stream`)
     
     /// Return a parser that parses a collection of tokens.
     ///
@@ -408,7 +408,7 @@ public extension ParsecType where Stream.Element: Equatable {
     
 }
 
-public extension ParsecType where UserState == () {
+public extension Parsec where UserState == () {
     
     /// Run the parser and return the result of the parsing.
     ///

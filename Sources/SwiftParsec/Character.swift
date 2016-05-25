@@ -13,7 +13,7 @@ import Foundation
 /// String parser with an empty `UserState`.
 public typealias StringParser = GenericParser<String, (), Character>
 
-public extension ParsecType where Stream.Element == Character, Result == Character {
+public extension Parsec where Stream.Element == Character, Result == Character {
     
     /// Return a parser that succeeds for any character for which the supplied function `predicate` returns `true`. The parser returns the character that is actually parsed.
     ///
@@ -232,7 +232,7 @@ public extension ParsecType where Stream.Element == Character, Result == Charact
     
 }
 
-public extension ParsecType where Result: Sequence, Result.Iterator.Element == Character {
+public extension Parsec where Result: Sequence, Result.Iterator.Element == Character {
     
     /// A Parser that maps an array of `Character` to a `String`.
     public var stringValue: GenericParser<Stream, UserState, String> {
@@ -243,7 +243,7 @@ public extension ParsecType where Result: Sequence, Result.Iterator.Element == C
     
 }
 
-public extension ParsecType where Stream.Element == Character {
+public extension Parsec where Stream.Element == Character {
     
     /// Return a parser that parses a `String`. It returns the parsed string (i.e. `str`).
     ///

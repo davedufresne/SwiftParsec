@@ -10,10 +10,10 @@
 
 import Foundation
 
-/// `GenericParser` is a generic implementation of the `ParsecType`.
+/// `GenericParser` is a generic implementation of the `Parsec`.
 ///
 /// - requires: Stream has to be a value type.
-public final class GenericParser<Stream: StreamType, UserState, Result>: ParsecType {
+public final class GenericParser<Stream: StreamType, UserState, Result>: Parsec {
     
     /// Create a parser containing the injected result.
     ///
@@ -749,7 +749,7 @@ public func <*<Stream, UserState, Param1, Param2>(leftParser: GenericParser<Stre
     
 }
 
-/// Infix operator for `ParsecType.alternative`. It has the same precedence as the equality operator (`&&`).
+/// Infix operator for `Parsec.alternative`. It has the same precedence as the equality operator (`&&`).
 ///
 /// - parameters:
 ///   - leftParser: The first parser to try.
