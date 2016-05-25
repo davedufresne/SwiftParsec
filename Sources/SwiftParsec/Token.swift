@@ -10,7 +10,7 @@
 import Foundation
 
 /// Types implementing this protocol hold lexical parsers.
-public protocol TokenParserType {
+public protocol TokenParser {
     
     /// The state supplied by the user.
     associatedtype UserState
@@ -78,7 +78,7 @@ public protocol TokenParserType {
     
 }
 
-extension TokenParserType {
+extension TokenParser {
     
     // Type aliases used internally to simplify the code.
     typealias StrParser = GenericParser<String, UserState, String>
@@ -838,8 +838,8 @@ extension TokenParserType {
 
 }
 
-/// Generic implementation of the `TokenParserType`.
-public struct GenericTokenParser<UserState>: TokenParserType {
+/// Generic implementation of the `TokenParser`.
+public struct GenericTokenParser<UserState>: TokenParser {
     
     /// Language definition parameterizing the lexer.
     public let languageDefinition: LanguageDefinition<UserState>
