@@ -8,8 +8,6 @@
 // The primitive parser combinators.
 //
 
-import Foundation
-
 /// `GenericParser` is a generic implementation of the `Parsec`.
 ///
 /// - requires: StreamType has to be a value type.
@@ -307,7 +305,7 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
                         
                     case .Ok:
                         
-                        let failureMsg = NSLocalizedString("Combinator 'many' is applied to a parser that accepts an empty string.", comment: "Primitive parsers.")
+                        let failureMsg = LocalizedString("Combinator 'many' is applied to a parser that accepts an empty string.")
                         assertionFailure(failureMsg)
                         
                     case .Error(let error):

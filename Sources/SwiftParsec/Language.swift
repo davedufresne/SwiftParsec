@@ -7,7 +7,7 @@
 //
 //  A helper module that defines some language definitions that can be used to instantiate a token parser (see "Token").
 
-import Foundation
+import class Foundation.NSCharacterSet
 
 /// The `LanguageDefinition` structure contains all parameterizable features of the token parser. There is some default definitions provided by SwiftParsec.
 public struct LanguageDefinition<UserState> {
@@ -125,18 +125,18 @@ public extension LanguageDefinition {
                 let cps = [cp1, cp2]
                 guard let str = String(codeUnits: cps, codec: UTF16()) else {
                     
-                    let decodingErrorMsg = NSLocalizedString("decoding error", comment: "JSON language definition.")
+                    let decodingErrorMsg = LocalizedString("decoding error")
                     return GenericParser.fail(decodingErrorMsg)
                     
                 }
                 
                 return GenericParser(result: str[str.startIndex])
                 
-            } <?> NSLocalizedString("surrogate pair", comment: "JSON language definition.")
+            } <?> LocalizedString("surrogate pair")
             
         }
         
-        let escapeCodeMsg = NSLocalizedString("escape code", comment: "JSON language definition.")
+        let escapeCodeMsg = LocalizedString("escape code")
         let characterEscape = backslash *>
             (charEscape <|> encodedChar <?> escapeCodeMsg)
         jsonDef.characterEscape = characterEscape
@@ -192,14 +192,14 @@ public extension LanguageDefinition {
                 
                 GenericTokenParser.characterFromInt(intVal)
                 
-            } <?> NSLocalizedString("escape sequence", comment: "Swift language definition.")
+            } <?> LocalizedString("escape sequence")
             
-        } <?> NSLocalizedString("hexadecimal digit(s)", comment: "Swift language definition.")
+        } <?> LocalizedString("hexadecimal digit(s)")
         
         let charNumber = GenericParser<String, UserState, Character>.string("u{") *>
             hexaChar <* GenericParser.character("}")
         
-        let escapeCodeMsg = NSLocalizedString("escape code", comment: "Swift language definition.")
+        let escapeCodeMsg = LocalizedString("escape code")
         let characterEscape = GenericParser.character("\\") *>
             (charEscape <|> charNumber <?> escapeCodeMsg)
         swiftDef.characterEscape = characterEscape

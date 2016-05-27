@@ -7,8 +7,6 @@
 //
 //  A helper module to parse "expressions". Builds a parser given a table of operators and associativities.
 
-import Foundation
-
 /// This enumeration specifies the associativity of operators: right, left or none.
 public enum Associativity {
     
@@ -158,13 +156,13 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
         let prefixOp = GenericParser.choice(ops.prefix)
         let postfixOp = GenericParser.choice(ops.postfix)
         
-        let rightAssocMsg = NSLocalizedString("right", comment: "Right-associative parser.")
+        let rightAssocMsg = LocalizedString("right")
         let ambigiousRight = ambigious(rightAssocOp, assoc: rightAssocMsg)
         
-        let leftAssocMsg = NSLocalizedString("left", comment: "Left-associative parser.")
+        let leftAssocMsg = LocalizedString("left")
         let ambigiousLeft = ambigious(leftAssocOp, assoc: leftAssocMsg)
         
-        let nonAssocMsg = NSLocalizedString("non", comment: "Non-associative parser.")
+        let nonAssocMsg = LocalizedString("non")
         let ambigiousNon = ambigious(rightAssocOp, assoc: nonAssocMsg)
         
         let prefixParser = prefixOp <|> GenericParser(result: { $0 })
@@ -244,7 +242,7 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
         return termParser >>- { t in
             
             rightAssocParser(t) <|> leftAssocParser(t) <|> nonAssocParser(t) <|>
-                GenericParser(result: t) <?> NSLocalizedString("operator", comment: "Expression parser label.")
+                GenericParser(result: t) <?> LocalizedString("operator")
             
         }
         
@@ -305,7 +303,7 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
     
     private func ambigious(_ op: InfixOperatorParser, assoc: String) -> GenericParser<StreamType, UserState, Result> {
         
-        let msg = NSLocalizedString("ambiguous use of a %@ associative operator", comment: "Expression parser.")
+        let msg = LocalizedString("ambiguous use of a %@ associative operator")
         let localizedMsg = String.localizedStringWithFormat(msg, assoc as CVarArg)
         
         return (op *> GenericParser.fail(localizedMsg)).attempt

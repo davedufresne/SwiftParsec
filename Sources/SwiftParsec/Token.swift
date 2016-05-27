@@ -7,7 +7,7 @@
 //
 // A helper module to parse lexical elements (tokens). See the initializer for the `TokenParser` structure for a description of how to use it.
 
-import Foundation
+import func Foundation.pow
 
 /// Types implementing this protocol hold lexical parsers.
 public protocol TokenParser {
@@ -106,7 +106,7 @@ extension TokenParser {
                 
             }
             
-            } <?> NSLocalizedString("identifier", comment: "Token parser.")
+            } <?> LocalizedString("identifier")
         
         let identCheck: StrParser = ident >>- { name in
             
@@ -127,7 +127,7 @@ extension TokenParser {
             
             guard !reservedNames.contains(n) else {
                 
-                let reservedWordMsg = NSLocalizedString("reserved word ", comment: "Token parser.")
+                let reservedWordMsg = LocalizedString("reserved word ")
                 return GenericParser.unexpected(reservedWordMsg + name)
                 
             }
@@ -149,7 +149,7 @@ extension TokenParser {
         let lastChar = name.last!
         let reserved = caseString(name) *>
             languageDefinition.identifierLetter(lastChar).noOccurence <?>
-            NSLocalizedString("end of ", comment: "Token parser, end of reserved name.") + name
+            LocalizedString("end of ") + name
         
         return lexeme(reserved.attempt)
         
@@ -173,13 +173,13 @@ extension TokenParser {
                 
             }
             
-        } <?> NSLocalizedString("operator", comment: "Token parser.")
+        } <?> LocalizedString("operator")
         
         let opCheck: StrParser = op >>- { name in
             
             guard !langDef.reservedOperators.contains(name) else {
                 
-                let reservedOperatorMsg = NSLocalizedString("reserved operator ", comment: "Token parser label.")
+                let reservedOperatorMsg = LocalizedString("reserved operator ")
                 return GenericParser.unexpected(reservedOperatorMsg + name)
                 
             }
@@ -200,7 +200,7 @@ extension TokenParser {
         
         let op = VoidParser.string(name) *>
             languageDefinition.operatorLetter.noOccurence <?>
-            NSLocalizedString("end of ", comment: "Token parser, end of reserved operator.") + name
+            LocalizedString("end of ") + name
         
         return lexeme(op.attempt)
         
@@ -224,13 +224,13 @@ extension TokenParser {
         let characterEscape = languageDefinition.characterEscape ?? defaultCharEscape
         
         let character = characterLetter <|> characterEscape <?>
-            NSLocalizedString("literal character", comment: "Token parser.")
+            LocalizedString("literal character")
         
         let quote = CharacterParser.character("'")
         
-        let endOfCharMsg = NSLocalizedString("end of character", comment: "Token parser.")
+        let endOfCharMsg = LocalizedString("end of character")
         return lexeme(character.between(quote, quote <?> endOfCharMsg)) <?>
-            NSLocalizedString("character", comment: "Token parser, character literal.")
+            LocalizedString("character")
         
     }
     
@@ -246,7 +246,7 @@ extension TokenParser {
         let escapeGap: GenericParser<String, UserState, Character?> =
         GenericParser.space.many1 *> GenericParser.character("\\") *>
             GenericParser(result: nil) <?>
-            NSLocalizedString("end of string gap", comment: "Token parser.")
+            LocalizedString("end of string gap")
         
         let escapeEmpty: GenericParser<String, UserState, Character?> =
         GenericParser.character("&") *> GenericParser(result: nil)
@@ -259,7 +259,7 @@ extension TokenParser {
         let stringChar = stringLetter.map { $0 } <|> stringEscape
         
         let doubleQuote = CharacterParser.character("\"")
-        let endOfStringMsg = NSLocalizedString("end of string", comment: "Token parser.")
+        let endOfStringMsg = LocalizedString("end of string")
         let string = stringChar.many.between(doubleQuote, doubleQuote <?> endOfStringMsg)
             
         let literalString = string.map({ str in
@@ -272,7 +272,7 @@ extension TokenParser {
                 
             }
             
-        }) <?> NSLocalizedString("literal string", comment: "Token parser.")
+        }) <?> LocalizedString("literal string")
         
         return lexeme(literalString)
         
@@ -286,7 +286,7 @@ extension TokenParser {
     public var natural: GenericParser<String, UserState, Int> {
         
         return lexeme(GenericTokenParser.naturalNumber) <?>
-            NSLocalizedString("natural", comment: "Token parser, natural number.")
+            LocalizedString("natural")
         
     }
     
@@ -299,7 +299,7 @@ extension TokenParser {
             
         }
         
-        return lexeme(int) <?> NSLocalizedString("integer", comment: "Token parser.")
+        return lexeme(int) <?> LocalizedString("integer")
         
     }
     
@@ -328,7 +328,7 @@ extension TokenParser {
             
         }
         
-        return lexeme(double) <?> NSLocalizedString("integer", comment: "Token parser.")
+        return lexeme(double) <?> LocalizedString("integer")
         
     }
     
@@ -345,7 +345,7 @@ extension TokenParser {
             
         }
         
-        return lexeme(double) <?> NSLocalizedString("float", comment: "Token parser.")
+        return lexeme(double) <?> LocalizedString("float")
         
     }
     
@@ -355,7 +355,7 @@ extension TokenParser {
         let intDouble = float.map({ Either.Right($0) }).attempt <|>
             integer.map({ Either.Left($0) })
         
-        return lexeme(intDouble) <?> NSLocalizedString("number", comment: "Token parser.")
+        return lexeme(intDouble) <?> LocalizedString("number")
     }
     
     /// Parses a positive whole number in the decimal system. Returns the value of the number.
@@ -580,7 +580,7 @@ extension TokenParser {
                 self.multiLineComment *> self.inNestedComment <|>
                 GenericParser.noneOf(startEnd).skipMany1 *> self.inNestedComment <|>
                 GenericParser.oneOf(startEnd) *> self.inNestedComment <?>
-                NSLocalizedString("end of comment", comment: "Token parser.")
+                LocalizedString("end of comment")
             
         }
         
@@ -598,7 +598,7 @@ extension TokenParser {
             return commentEnd.attempt *> GenericParser(result: ()) <|>
                 GenericParser.noneOf(startEnd).skipMany1 *> self.inNonNestedComment <|>
                 GenericParser.oneOf(startEnd) *> self.inNonNestedComment <?>
-                NSLocalizedString("end of comment", comment: "Token parser.")
+                LocalizedString("end of comment")
             
         }
         
@@ -607,7 +607,7 @@ extension TokenParser {
     private static var escapeCode: CharacterParser {
         
         return charEscape <|> charNumber <|> charAscii <|> charControl <?>
-            NSLocalizedString("escape code", comment: "Token parser, character escape.")
+            LocalizedString("escape code")
         
     }
     
@@ -675,7 +675,7 @@ extension TokenParser {
         
         guard let us = UnicodeScalar.fromInt(v) else {
             
-            let outsideMsg = NSLocalizedString("value outside of Unicode codespace", comment: "Token parser.")
+            let outsideMsg = LocalizedString("value outside of Unicode codespace")
             return GenericParser.fail(outsideMsg)
             
         }
@@ -698,7 +698,7 @@ extension TokenParser {
         
         guard let integer = Int(digits, radix: base) else {
             
-            let overflowMsg = NSLocalizedString("Int overflow", comment: "Token parser.")
+            let overflowMsg = LocalizedString("Int overflow")
             return GenericParser.fail(overflowMsg)
             
         }
@@ -754,7 +754,7 @@ extension TokenParser {
     
     private static func fractionalExponent(_ number: Double) -> DoubleParser {
         
-        let fractionMsg = NSLocalizedString("fraction", comment: "Token parser, double number.")
+        let fractionMsg = LocalizedString("fraction")
         
         let fract = CharacterParser.character(".") *>
             (GenericParser.decimalDigit.many1 <?> fractionMsg).map { digits in
@@ -767,7 +767,7 @@ extension TokenParser {
                 
             }
         
-        let exponentMsg = NSLocalizedString("exponent", comment: "Token parser, double number.")
+        let exponentMsg = LocalizedString("exponent")
         
         let expo = GenericParser.oneOf("eE") *> sign() >>- { sign in
             

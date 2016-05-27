@@ -8,8 +8,6 @@
 // Textual source positions.
 //
 
-import Foundation
-
 /// SourcePosition represents source positions. It contains the name of the source (i.e. file name), a line number and a column number. The upper left is 1, 1. It implements the `Comparable` and `CustomStringConvertible` protocols. The comparison is made using line and column number.
 public struct SourcePosition: Comparable, CustomStringConvertible {
     
@@ -25,8 +23,8 @@ public struct SourcePosition: Comparable, CustomStringConvertible {
     /// A textual representation of `self`.
     public var description: String {
         
-        let lineMsg = NSLocalizedString("line", comment: "Error messages.")
-        let columnMsg = NSLocalizedString("column", comment: "Error messages.")
+        let lineMsg = LocalizedString("line")
+        let columnMsg = LocalizedString("column")
         
         var desc = "(" + lineMsg + " \(line), " + columnMsg + " \(column))"
         

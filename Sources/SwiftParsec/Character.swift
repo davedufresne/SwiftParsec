@@ -8,7 +8,7 @@
 // Commonly used character parsers.
 //
 
-import Foundation
+import class Foundation.NSCharacterSet
 
 /// String parser with an empty `UserState`.
 public typealias StringParser = GenericParser<String, (), Character>
@@ -82,28 +82,28 @@ public extension Parsec where StreamType.Element == Character, Result == Charact
     /// - SeeAlso: `GenericParser.skipMany`.
     public static var spaces: GenericParser<StreamType, UserState, ()> {
         
-        return space.skipMany <?> NSLocalizedString("white space", comment: "Character parsers.")
+        return space.skipMany <?> LocalizedString("white space")
         
     }
     
     /// A Parser that parses a white space character (any Unicode space character, and the control characters \t, \n, \r, \f, \v). It returns the parsed character.
     public static var unicodeSpace: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isUnicodeSpace } <?> NSLocalizedString("unicode space", comment: "Character parsers.")
+        return satisfy { $0.isUnicodeSpace } <?> LocalizedString("unicode space")
         
     }
     
     /// A Parser that parses any space character, and the control characters \t, \n, \r, \f, \v. It returns the parsed character.
     public static var space: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isSpace } <?> NSLocalizedString("space", comment: "Character parsers.")
+        return satisfy { $0.isSpace } <?> LocalizedString("space")
         
     }
     
     /// A Parser that parses a newline character ("\n"). It returns a newline character.
     public static var newLine: GenericParser<StreamType, UserState, Result> {
         
-        return character("\n") <?> NSLocalizedString("lf new-line", comment: "Character parsers.")
+        return character("\n") <?> LocalizedString("lf new-line")
         
     }
     
@@ -111,7 +111,7 @@ public extension Parsec where StreamType.Element == Character, Result == Charact
     public static var crlf: GenericParser<StreamType, UserState, Result> {
         
         return character("\r\n") *> GenericParser(result: "\n") <|> // "\r\n" is combined in one Unicode Scalar.
-            character("\r") *> character("\n") <?> NSLocalizedString("crlf new-line", comment: "Character parsers.")
+            character("\r") *> character("\n") <?> LocalizedString("crlf new-line")
         
     }
     
@@ -120,77 +120,77 @@ public extension Parsec where StreamType.Element == Character, Result == Charact
     ///     let endOfLine = StringParser.newline <|> StringParser.crlf
     public static var endOfLine: GenericParser<StreamType, UserState, Result> {
         
-        return newLine <|> crlf <?> NSLocalizedString("new-line", comment: "Character parsers.")
+        return newLine <|> crlf <?> LocalizedString("new-line")
         
     }
     
     /// A Parser that parses a tab character ("\t"). It returns a tab character.
     public static var tab: GenericParser<StreamType, UserState, Result> {
         
-        return character("\t") <?> NSLocalizedString("tab", comment: "Character parsers.")
+        return character("\t") <?> LocalizedString("tab")
         
     }
     
     /// A Parser that parses a character in the category of Uppercase and Titlecase Letters. It returns the parsed character.
     public static var uppercase: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isUppercase } <?> NSLocalizedString("uppercase letter", comment: "Character parsers.")
+        return satisfy { $0.isUppercase } <?> LocalizedString("uppercase letter")
         
     }
     
     /// A Parser that parses a character in the category of Lowercase Letters. It returns the parsed character.
     public static var lowercase: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isLowercase } <?> NSLocalizedString("lowercase letter", comment: "Character parsers.")
+        return satisfy { $0.isLowercase } <?> LocalizedString("lowercase letter")
         
     }
     
     /// A Parser that parses a character in the categories of Letters, Marks, and Numbers. It returns the parsed character.
     public static var alphaNumeric: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isAlphaNumeric } <?> NSLocalizedString("letter or digit", comment: "Character parsers.")
+        return satisfy { $0.isAlphaNumeric } <?> LocalizedString("letter or digit")
         
     }
     
     /// A Parser that parses a character in the categories of Letters and Marks. It returns the parsed character.
     public static var letter: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isAlpha } <?> NSLocalizedString("letter", comment: "Character parsers.")
+        return satisfy { $0.isAlpha } <?> LocalizedString("letter")
         
     }
     
     /// A Parser that parses a character in the categories of Symbols. It returns the parsed character.
     public static var symbol: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isSymbol } <?> NSLocalizedString("symbol", comment: "Character parsers.")
+        return satisfy { $0.isSymbol } <?> LocalizedString("symbol")
         
     }
     
     /// A Parser that parses a character in the category of Numbers. It returns the parsed character.
     public static var digit: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isDigit } <?> NSLocalizedString("digit", comment: "Character parsers.")
+        return satisfy { $0.isDigit } <?> LocalizedString("digit")
         
     }
     
     /// A Parser that parses an ASCII decimal digit, i.e. between "0" and "9". It returns the parsed character.
     public static var decimalDigit: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isDecimalDigit } <?> NSLocalizedString("digit", comment: "Character parsers.")
+        return satisfy { $0.isDecimalDigit } <?> LocalizedString("digit")
         
     }
     
     /// A Parser that parses an ASCII hexadecimal digit, i.e. "0"..."9", "a"..."f", "A"..."F". It returns the parsed character.
     public static var hexadecimalDigit: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isHexadecimalDigit } <?>  NSLocalizedString("hexadecimal digit", comment: "Character parsers.")
+        return satisfy { $0.isHexadecimalDigit } <?>  LocalizedString("hexadecimal digit")
         
     }
     
     /// A Parser that parses an octal digit (a character between "0" and "7"). It returns the parsed character.
     public static var octalDigit: GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isOctalDigit } <?>  NSLocalizedString("octal digit", comment: "Character parsers.")
+        return satisfy { $0.isOctalDigit } <?>  LocalizedString("octal digit")
         
     }
     

@@ -8,8 +8,6 @@
 // Commonly used generic combinators
 //
 
-import Foundation
-
 public extension GenericParser {
     
     /// Return a parser that tries to apply the parsers in the array `parsers` in order, until one of them succeeds. It returns the value of the succeeding parser.
@@ -380,7 +378,7 @@ public extension Parsec where StreamType.Element == Result {
     /// - returns: A parser that only succeeds at the end of the input.
     public static var eof: GenericParser<StreamType, UserState, ()> {
         
-        return GenericParser.anyToken.noOccurence <?> NSLocalizedString("end of input", comment: "Parser combinators.")
+        return GenericParser.anyToken.noOccurence <?> LocalizedString("end of input")
         
     }
     
