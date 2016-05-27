@@ -7,7 +7,7 @@
 //
 //  A helper module that defines some language definitions that can be used to instantiate a token parser (see "Token").
 
-import Foundation
+import class Foundation.NSCharacterSet
 
 /// The `LanguageDefinition` structure contains all parameterizable features of the token parser. There is some default definitions provided by SwiftParsec.
 public struct LanguageDefinition<UserState> {

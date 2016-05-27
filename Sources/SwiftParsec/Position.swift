@@ -8,8 +8,6 @@
 // Textual source positions.
 //
 
-import Foundation
-
 /// SourcePosition represents source positions. It contains the name of the source (i.e. file name), a line number and a column number. The upper left is 1, 1. It implements the `Comparable` and `CustomStringConvertible` protocols. The comparison is made using line and column number.
 public struct SourcePosition: Comparable, CustomStringConvertible {
     

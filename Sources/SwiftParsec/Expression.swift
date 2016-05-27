@@ -7,8 +7,6 @@
 //
 //  A helper module to parse "expressions". Builds a parser given a table of operators and associativities.
 
-import Foundation
-
 /// This enumeration specifies the associativity of operators: right, left or none.
 public enum Associativity {
     

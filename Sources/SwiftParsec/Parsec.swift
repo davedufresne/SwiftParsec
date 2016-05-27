@@ -6,8 +6,6 @@
 //  Copyright © 2016 David Dufresne. All rights reserved.
 //
 
-import Foundation
-
 // TODO: - Make `Parsec` the model of a true monad when Swift will allow it.
 /// `Parsec` is a parser with stream type `Stream`, user state type `UserState` and return type `Result`.
 public protocol Parsec {

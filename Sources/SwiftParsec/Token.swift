@@ -7,7 +7,7 @@
 //
 // A helper module to parse lexical elements (tokens). See the initializer for the `TokenParser` structure for a description of how to use it.
 
-import Foundation
+import func Foundation.pow
 
 /// Types implementing this protocol hold lexical parsers.
 public protocol TokenParser {

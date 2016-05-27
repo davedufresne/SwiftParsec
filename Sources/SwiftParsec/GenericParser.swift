@@ -8,8 +8,6 @@
 // The primitive parser combinators.
 //
 
-import Foundation
-
 /// `GenericParser` is a generic implementation of the `Parsec`.
 ///
 /// - requires: StreamType has to be a value type.

@@ -8,8 +8,6 @@
 // Commonly used generic combinators
 //
 
-import Foundation
-
 public extension GenericParser {
     
     /// Return a parser that tries to apply the parsers in the array `parsers` in order, until one of them succeeds. It returns the value of the succeeding parser.
