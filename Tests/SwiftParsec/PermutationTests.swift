@@ -39,7 +39,7 @@ class PermutationTests: XCTestCase {
             
         ]
         
-        let parser = permutation.parser.stringValue
+        let parser = permutation.makeParser().stringValue
         
         // Test for success.
         let matching = ["abc", "acb", "bac", "bca", "cab", "cba"]
@@ -73,8 +73,8 @@ class PermutationTests: XCTestCase {
             
         ]
         
-        let separator = StringParser.character(",")
-        let parser = permutation.parserWithSeparator(separator).stringValue
+        let comma = StringParser.character(",")
+        let parser = permutation.makeParser(separator: comma).stringValue
         
         // Test for success.
         let matching = ["a,b,c", "a,c,b", "b,a,c", "b,c,a", "c,a,b", "c,b,a"]
@@ -108,7 +108,7 @@ class PermutationTests: XCTestCase {
             
         ]
         
-        let parser = permutation.parser.stringValue
+        let parser = permutation.makeParser().stringValue
         
         // Test for success.
         let matching1 = ["abc", "acb", "bac", "bca", "cab", "cba"]
@@ -158,8 +158,8 @@ class PermutationTests: XCTestCase {
             
         ]
         
-        let separator = StringParser.character(",")
-        let parser = permutation.parserWithSeparator(separator).stringValue
+        let comma = StringParser.character(",")
+        let parser = permutation.makeParser(separator: comma).stringValue
         
         // Test for success.
         let matching1 = ["a,b,c,d", "a,c,b,d", "b,a,c,d", "b,c,a,d", "c,a,b,d", "c,b,a,d"]
@@ -221,7 +221,7 @@ class PermutationTests: XCTestCase {
         permutation.appendOptionalParser(heightAttr, otherwise: nil)
         permutation.appendOptionalParser(widthAttr, otherwise: nil)
         
-        let imgAttrs = permutation.parser
+        let imgAttrs = permutation.makeParser()
         
         let img = symbol("img") *> imgAttrs <* symbol("/")
         let imgTag = lexer.angles(img)
