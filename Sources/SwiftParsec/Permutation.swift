@@ -61,16 +61,16 @@ public struct Permutation<StreamType: Stream, UserState, Result>: RangeReplaceab
     }
     
     /// A parser applying to the permutation of all the parsers contained in `self`.
-    public var parser: GenericParser<StreamType, UserState, [Result]> {
+    public func makeParser() -> GenericParser<StreamType, UserState, [Result]> {
         
-        return parserWithSeparator(GenericParser(result: ()))
+        return makeParser(separator: GenericParser(result: ()))
         
     }
     
     /// A parser applying to the permutation of all the parsers contained in `self` separated by `separator`.
     ///
     /// - parameter separator: A separator to apply between each element of the permutation.
-    public func parserWithSeparator<Separator>(_ separator: GenericParser<StreamType, UserState, Separator>) -> GenericParser<StreamType, UserState, [Result]> {
+    public func makeParser<Separator>(separator: GenericParser<StreamType, UserState, Separator>) -> GenericParser<StreamType, UserState, [Result]> {
         
         let ps = parsers.map { elem in
             
