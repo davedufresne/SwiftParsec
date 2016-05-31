@@ -50,7 +50,7 @@ class ExpressionTests: XCTestCase {
         let closingParen = StringParser.character(")")
         let decimal = GenericTokenParser<()>.decimal
         
-        let expr = opTable.expressionParser { expr in
+        let expr = opTable.makeExpressionParser { expr in
             
             expr.between(openingParen, closingParen) <|> decimal
             
