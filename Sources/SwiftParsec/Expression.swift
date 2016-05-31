@@ -128,13 +128,13 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
     /// - parameter combine: A function receiving a 'simple expression' as parameter that can be nested in other expressions.
     /// - returns: An expression parser for terms returned by `combined` with operators from `self`.
     /// - SeeAlso: GenericParser.recursive(combine: GenericParser -> GenericParser) -> GenericParser
-    public func expressionParser(_ combine: @noescape(GenericParser<StreamType, UserState, Result>) -> GenericParser<StreamType, UserState, Result>) -> GenericParser<StreamType, UserState, Result> {
+    public func makeExpressionParser(_ combine: @noescape (expression: GenericParser<StreamType, UserState, Result>) -> GenericParser<StreamType, UserState, Result>) -> GenericParser<StreamType, UserState, Result> {
         
         var term: GenericParser<StreamType, UserState, Result>!
         let lazyTerm = GenericParser<StreamType, UserState, Result> { term }
         
         let expr = reduce(lazyTerm) { buildParser($0, operators: $1) }
-        term = combine(expr)
+        term = combine(expression: expr)
         
         return expr
         
