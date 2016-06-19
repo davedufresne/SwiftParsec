@@ -20,7 +20,7 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
         
         parse = { state in
             
-            .None(.Ok(result, state, ParseError.unknownParseError(state.position)))
+            .none(.ok(result, state, ParseError.unknownParseError(state.position)))
             
         }
         
@@ -92,8 +92,8 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
         return GenericParser(parse: { state in
             
             let consumed = self.parse(state: state)
-            guard case .None(let reply) = consumed,
-                case .Error(let error) = reply else {
+            guard case .none(let reply) = consumed,
+                case .error(let error) = reply else {
                 
                 return consumed
                 
@@ -102,11 +102,11 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
             let altConsumed = altParser.parse(state: state)
             switch altConsumed {
                 
-            case .Some: return altConsumed
+            case .some: return altConsumed
                 
-            case .None(let reply):
+            case .none(let reply):
                 
-                return .None(reply.mergeParseError(error))
+                return .none(reply.mergeParseError(error))
                 
             }
             
@@ -130,9 +130,9 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
             switch consumed {
                 
             // If parser consumes, return the result right away.
-            case .Some: return consumed
+            case .some: return consumed
                 
-            case .None(let reply):
+            case .none(let reply):
                 
                 // If the left parser consumes and the right parser doesn't consume input, but is okay, we return that it successfully consumed some input. But if the left and right parser didn't consume we return that it successfully didn't consumed some input.
                 // If the left parser consumes and the right parser doesn't consume input, but errors, we return that it failed while consuming some input. But if the left and right parser didn't consume we return that it failed while not consuming any input.
@@ -146,13 +146,13 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
             
             switch reply {
                 
-            case .Ok(let result, let state, let error):
+            case .ok(let result, let state, let error):
                 
                 return runRightParser(constructor, result: result, state: state, error: error)
                 
-            case .Error(let error):
+            case .error(let error):
                 
-                return constructor(.Error(error))
+                return constructor(.error(error))
                 
             }
             
@@ -162,13 +162,13 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
             
             switch self.parse(state: state) {
                 
-            case .Some(let reply):
+            case .some(let reply):
                 
-                return consumed(Consumed.Some, reply: reply)
+                return consumed(Consumed.some, reply: reply)
                 
-            case .None(let reply):
+            case .none(let reply):
                 
-                return consumed(Consumed.None, reply: reply)
+                return consumed(Consumed.none, reply: reply)
                 
             }
             
@@ -198,9 +198,9 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
         return GenericParser(parse: { state in
             
             let consumed = self.parse(state: state)
-            if case .Some(let reply) = consumed, .Error = reply {
+            if case .some(let reply) = consumed, .error = reply {
                 
-                return .None(reply)
+                return .none(reply)
                 
             }
             
@@ -220,9 +220,9 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
         return GenericParser(parse: { state in
             
             let consumed = self.parse(state: state)
-            if case .Some(let reply) = consumed, .Ok(let result, _, _) = reply {
+            if case .some(let reply) = consumed, .ok(let result, _, _) = reply {
                 
-                return .None(.Ok(result, state, ParseError.unknownParseError(state.position)))
+                return .none(.ok(result, state, ParseError.unknownParseError(state.position)))
                 
             }
             
@@ -284,37 +284,37 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
                 let consumed = self.parse(state: newState)
                 switch consumed {
                     
-                case .Some(let reply):
+                case .some(let reply):
                     
                     switch reply {
                         
-                    case .Ok(let result, let state, _):
+                    case .ok(let result, let state, _):
                         
                         results = accumulator(result, results)
                         newState = state
                         
-                    case .Error(let error):
+                    case .error(let error):
                         
-                        return .Some(.Error(error))
+                        return .some(.error(error))
                         
                     }
                     
-                case .None(let reply):
+                case .none(let reply):
                     
                     switch reply {
                         
-                    case .Ok:
+                    case .ok:
                         
                         let failureMsg = LocalizedString("Combinator 'many' is applied to a parser that accepts an empty string.")
                         assertionFailure(failureMsg)
                         
-                    case .Error(let error):
+                    case .error(let error):
                         
-                        let reply = ParserReply.Ok(results, newState, error)
+                        let reply = ParserReply.ok(results, newState, error)
                         
-                        if hasConsumed { return .Some(reply) }
+                        if hasConsumed { return .some(reply) }
             
-                        return .None(reply)
+                        return .none(reply)
                         
                     }
             
@@ -334,7 +334,7 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
         return GenericParser(parse: { state in
             
             let position = state.position
-            return .None(.Error(ParseError.unknownParseError(position)))
+            return .none(.error(ParseError.unknownParseError(position)))
             
         })
         
@@ -355,13 +355,13 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
             let consumed = self.parse(state: state)
             switch consumed {
                 
-            case .Some: return consumed
+            case .some: return consumed
                 
-            case .None(let reply):
+            case .none(let reply):
                 
                 switch reply {
                     
-                case .Ok(let result, let state, var error):
+                case .ok(let result, let state, var error):
                     
                     if !error.isUnknown {
                         
@@ -369,12 +369,12 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
                         
                     }
                     
-                    return .None(.Ok(result, state, error))
+                    return .none(.ok(result, state, error))
                     
-                case .Error(var error):
+                case .error(var error):
                     
                     error.insertLabelsAsExpected(messages)
-                    return .None(.Error(error))
+                    return .none(.error(error))
                     
                 }
                 
@@ -395,7 +395,7 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
         
         return GenericParser { state in
 
-            .None(.Error(ParseError(position: state.position, messages: [.Unexpected(message)])))
+            .none(.error(ParseError(position: state.position, messages: [.unexpected(message)])))
             
         }
         
@@ -410,9 +410,9 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
         return GenericParser(parse: { state in
             
             let position = state.position
-            let error = ParseError(position: position, messages: [.Generic(message)])
+            let error = ParseError(position: position, messages: [.generic(message)])
             
-            return .None(.Error(error))
+            return .none(.error(error))
             
         })
         
@@ -554,7 +554,7 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
             
             let position = state.position
             
-            return .None(.Ok((), state, ParseError.unknownParseError(position)))
+            return .none(.ok((), state, ParseError.unknownParseError(position)))
             
         })
         
@@ -576,11 +576,11 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
         let reply = parse(state: state).parserReply
         switch reply {
             
-        case .Ok(let result, let state, _):
+        case .ok(let result, let state, _):
             
             return (result, state.userState)
             
-        case .Error(let error):
+        case .error(let error):
             
             throw error
             
@@ -631,14 +631,14 @@ public extension Parsec {
             guard let tok = input.popFirst() else {
                 
                 let error = ParseError.unexpectedParseError(position, message: "")
-                return .None(.Error(error))
+                return .none(.error(error))
                 
             }
             
             guard let result = match(tok) else {
                 
                 let error = ParseError.unexpectedParseError(position, message: tokenDescription(tok))
-                return .None(.Error(error))
+                return .none(.error(error))
                 
             }
             
@@ -646,7 +646,7 @@ public extension Parsec {
             let newState = ParserState(input: input, position: newPosition, userState: state.userState)
             let unknownError = ParseError.unknownParseError(newPosition)
             
-            return .Some(.Ok(result, newState, unknownError))
+            return .some(.ok(result, newState, unknownError))
             
         })
         
@@ -677,23 +677,23 @@ public extension Parsec where StreamType.Element: Equatable {
             guard token != nil else {
                 
                 let error = ParseError.unknownParseError(position)
-                return .None(.Ok([], state, error))
+                return .none(.ok([], state, error))
                 
             }
             
             var input = state.input
             
             var hasConsumed = false
-            var consumedConstructor = Consumed<StreamType, UserState, StreamType>.None
+            var consumedConstructor = Consumed<StreamType, UserState, StreamType>.none
             
             repeat {
                 
                 guard let inputToken = input.popFirst() else {
                     
                     var eofError = ParseError.unexpectedParseError(position, message: "")
-                    eofError.insertMessage(.Expected(tokensDescription(tokens)))
+                    eofError.insertMessage(.expected(tokensDescription(tokens)))
                     
-                    return consumedConstructor(.Error(eofError))
+                    return consumedConstructor(.error(eofError))
                     
                 }
                 
@@ -702,16 +702,16 @@ public extension Parsec where StreamType.Element: Equatable {
                     let tokDesc = tokensDescription([inputToken])
                     
                     var expectedError = ParseError.unexpectedParseError(position, message: tokDesc)
-                    expectedError.insertMessage(.Expected(tokensDescription(tokens)))
+                    expectedError.insertMessage(.expected(tokensDescription(tokens)))
                     
-                    return consumedConstructor(.Error(expectedError))
+                    return consumedConstructor(.error(expectedError))
                     
                 }
                 
                 if !hasConsumed {
                     
                     hasConsumed = true
-                    consumedConstructor = Consumed.Some
+                    consumedConstructor = Consumed.some
                     
                 }
                 
@@ -723,7 +723,7 @@ public extension Parsec where StreamType.Element: Equatable {
             let newState = ParserState(input: input, position: newPosition, userState: state.userState)
             let error = ParseError.unknownParseError(newPosition)
             
-            return .Some(.Ok(tokens, newState, error))
+            return .some(.ok(tokens, newState, error))
             
         })
         
@@ -735,19 +735,19 @@ public extension Parsec where StreamType.Element: Equatable {
 enum Consumed<StreamType, UserState, Result> {
     
     /// Indicates that some of the input was consumed.
-    case Some(ParserReply<StreamType, UserState, Result>)
+    case some(ParserReply<StreamType, UserState, Result>)
     
     /// Indicates that none of the input was consumed.
-    case None(ParserReply<StreamType, UserState, Result>)
+    case none(ParserReply<StreamType, UserState, Result>)
     
-    /// The `ParserReply` either from `.Some` or `.None`.
+    /// The `ParserReply` either from `.some` or `.none`.
     var parserReply: ParserReply<StreamType, UserState, Result> {
         
         switch self {
             
-        case .Some(let reply): return reply
+        case .some(let reply): return reply
             
-        case .None(let reply): return reply
+        case .none(let reply): return reply
             
         }
         
@@ -761,13 +761,13 @@ enum Consumed<StreamType, UserState, Result> {
         
         switch self {
             
-        case .Some(let reply):
+        case .some(let reply):
             
-            return .Some(reply.map(transform))
+            return .some(reply.map(transform))
             
-        case .None(let reply):
+        case .none(let reply):
             
-            return .None(reply.map(transform))
+            return .none(reply.map(transform))
         }
         
     }
@@ -778,10 +778,10 @@ enum Consumed<StreamType, UserState, Result> {
 enum ParserReply<StreamType, UserState, Result> {
     
     /// Indicates that the parsing was successfull. It contains a `Result` type, the `ParserState` and a `ParseError` as associated values.
-    case Ok(Result, ParserState<StreamType, UserState>, ParseError)
+    case ok(Result, ParserState<StreamType, UserState>, ParseError)
     
     /// Indicates that the parsing failed. It contains a `ParseError` as an associated value.
-    case Error(ParseError)
+    case error(ParseError)
     
     /// Return a `ParserReply` enumeration containing the result of mapping transform over `self`.
     ///
@@ -791,11 +791,11 @@ enum ParserReply<StreamType, UserState, Result> {
         
         switch self {
             
-        case .Ok(let result, let state, let error):
+        case .ok(let result, let state, let error):
             
-            return .Ok(transform(result), state, error)
+            return .ok(transform(result), state, error)
             
-        case .Error(let error): return .Error(error)
+        case .error(let error): return .error(error)
             
         }
         
@@ -811,15 +811,15 @@ enum ParserReply<StreamType, UserState, Result> {
         
         switch self {
             
-        case .Ok(let parserResult, let parserState, let parserError):
+        case .ok(let parserResult, let parserState, let parserError):
             
             mergedError.merge(parserError)
-            return .Ok(parserResult, parserState, mergedError)
+            return .ok(parserResult, parserState, mergedError)
             
-        case .Error(let parserError):
+        case .error(let parserError):
             
             mergedError.merge(parserError)
-            return .Error(mergedError)
+            return .error(mergedError)
             
         }
         

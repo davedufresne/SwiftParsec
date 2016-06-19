@@ -352,8 +352,8 @@ extension TokenParser {
     /// This lexeme parser parses either `integer` or a `float` and returns the value of the number. This parser deals with any overlap in the grammar rules for integers and floats.
     public var number: GenericParser<String, UserState, Either<Int, Double>> {
         
-        let intDouble = float.map({ Either.Right($0) }).attempt <|>
-            integer.map({ Either.Left($0) })
+        let intDouble = float.map({ Either.right($0) }).attempt <|>
+            integer.map({ Either.left($0) })
         
         return lexeme(intDouble) <?> LocalizedString("number")
     }
@@ -871,10 +871,10 @@ public struct GenericTokenParser<UserState>: TokenParser {
 public enum Either<L, R> {
     
     /// Left posibility.
-    case Left(L)
+    case left(L)
     
     /// Right posibility.
-    case Right(R)
+    case right(R)
     
 }
 

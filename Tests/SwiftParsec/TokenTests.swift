@@ -450,7 +450,7 @@ class TokenTests: XCTestCase {
         
         // Test for success.
         let matching = ["1", "1234", "0xf", "0xF", "0xffff", "0xFFFF", "0o1", "0o1234", "0", "-1", "-1234", "-0xf", "+0xF", "-0xffff", "+0xFFFF", "-0o1", "-0o1234", "-0", "1.0", "1234.0", "0.0", "-1.0", "-1234.0", "-0.0", "1234e5", "1.234E5", "1.234e-5", "1234E-5", "-1234e5", "-1.234E5", "-1.234e-5", "-1234e-5"]
-        let expected: [Either<Int, Double>] = [.Left(1), .Left(1234), .Left(0xF), .Left(0xF), .Left(0xffff), .Left(0xFFFF), .Left(0o1), .Left(0o1234), .Left(0), .Left(-1), .Left(-1234), .Left(-0xF), .Left(0xF), .Left(-0xffff), .Left(0xFFFF), .Left(-0o1), .Left(-0o1234), .Left(-0), .Right(1.0), .Right(1234.0), .Right(0.0), .Right(-1.0), .Right(-1234.0), .Right(-0.0), .Right(1234e5), .Right(1.234E5), .Right(1.234e-5), .Right(1234E-5), .Right(-1234e5), .Right(-1.234E5), .Right(-1.234e-5), .Right(-1234e-5)]
+        let expected: [Either<Int, Double>] = [.left(1), .left(1234), .left(0xF), .left(0xF), .left(0xffff), .left(0xFFFF), .left(0o1), .left(0o1234), .left(0), .left(-1), .left(-1234), .left(-0xF), .left(0xF), .left(-0xffff), .left(0xFFFF), .left(-0o1), .left(-0o1234), .left(-0), .right(1.0), .right(1234.0), .right(0.0), .right(-1.0), .right(-1234.0), .right(-0.0), .right(1234e5), .right(1.234E5), .right(1.234e-5), .right(1234E-5), .right(-1234e5), .right(-1.234E5), .right(-1.234e-5), .right(-1234e-5)]
         var index = 0
         
         let errorMessage = "GenericTokenParser.number did not succeed."
@@ -462,17 +462,17 @@ class TokenTests: XCTestCase {
             
             switch result {
                 
-            case .Left(let intRes):
+            case .left(let intRes):
                 
-                if case .Left(let val) = expect where intRes == val {
+                if case .left(let val) = expect where intRes == val {
                     
                     return
                     
                 }
                 
-            case .Right(let doubleRes):
+            case .right(let doubleRes):
                 
-                if case .Right(let val) = expect where doubleRes == val {
+                if case .right(let val) = expect where doubleRes == val {
                     
                     return
                     
