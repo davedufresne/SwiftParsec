@@ -10,7 +10,7 @@
 /// This enumeration specifies the associativity of operators: right, left or none.
 public enum Associativity {
     
-    case Right, Left, None
+    case right, left, none
     
 }
 
@@ -18,13 +18,13 @@ public enum Associativity {
 public enum Operator<StreamType: Stream, UserState, Result> {
     
     /// Infix operator and associativity.
-    case Infix(GenericParser<StreamType, UserState, (Result, Result) -> Result>, Associativity)
+    case infix(GenericParser<StreamType, UserState, (Result, Result) -> Result>, Associativity)
     
     /// Prefix operator.
-    case Prefix(GenericParser<StreamType, UserState, (Result) -> Result>)
+    case prefix(GenericParser<StreamType, UserState, (Result) -> Result>)
     
     /// Postfix operator.
-    case Postfix(GenericParser<StreamType, UserState, (Result) -> Result>)
+    case postfix(GenericParser<StreamType, UserState, (Result) -> Result>)
     
 }
 
@@ -254,25 +254,25 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
         
         switch op {
             
-        case .Infix(let parser, let assoc):
+        case .infix(let parser, let assoc):
             
             switch assoc {
                 
-            case .None:
+            case .none:
                 
                 var n = ops.none
                 n.append(parser)
                 
                 ops.none = n
                 
-            case .Left:
+            case .left:
                 
                 var l = ops.left
                 l.append(parser)
                 
                 ops.left = l
                 
-            case .Right:
+            case .right:
                 
                 var r = ops.right
                 r.append(parser)
@@ -281,14 +281,14 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
                 
             }
             
-        case .Prefix(let parser):
+        case .prefix(let parser):
             
             var pre = ops.prefix
             pre.append(parser)
             
             ops.prefix = pre
             
-        case .Postfix(let parser):
+        case .postfix(let parser):
             
             var post = ops.postfix
             post.append(parser)

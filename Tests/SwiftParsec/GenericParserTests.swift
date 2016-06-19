@@ -254,11 +254,11 @@ class GenericParserTests: XCTestCase {
                     
                     switch msg {
                         
-                    case .Expected(let str) where str == labelStr:
+                    case .expected(let str) where str == labelStr:
                         
                         containsExpected = true
                         
-                    case .SystemUnexpected(let str) where str == String(reflecting: input):
+                    case .systemUnexpected(let str) where str == String(reflecting: input):
                         
                         containsSystemUnexpected = true
                         
