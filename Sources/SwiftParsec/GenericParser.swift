@@ -590,6 +590,147 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
     
 }
 
+public extension Parsec {
+    
+    // TODO: Move this function into the `Parsec` protocol extension when Swift will allow to add requirements to `associatedtype` type constraint (Ex.: `associatedtype StreamType: CollectionType where StreamType.SubSequence == Stream`)
+    
+    /// Return a parser that accepts a token `Element` with `Result` when the function `match(Element) -> Result` returns `Optional.SomeWrapped(Result)`. The token can be shown using `tokenDescription(Element) -> String`. The position of the _next_ token should be returned when `nextPosition(SourcePosition, Element, StreamType) -> SourcePosition` is called with the current source position, the current token and the rest of the tokens.
+    ///
+    /// This is the most primitive combinator for accepting tokens. For example, the `GenericParser.character()` parser could be implemented as:
+    ///
+    ///     public static func character(char: Character) -> GenericParser<StreamType, UserState, Result> {
+    ///
+    ///         return tokenPrimitive(
+    ///             tokenDescription: { "\"" + $0 + "\"" },
+    ///             nextPosition: { (var position, elem, _) in
+    ///
+    ///                 position.updatePosition(elem)
+    ///                 return position
+    ///
+    ///             },
+    ///             match: { elem in
+    ///
+    ///                 char == elem ? elem : nil
+    ///
+    ///             })
+    ///
+    ///     }
+    ///
+    /// - parameters:
+    ///   - tokenDescription: A function to describe the token.
+    ///   - nextPosition: A function returning the position of the next token.
+    ///   - match: A function returning an optional result when the token match a predicate.
+    /// - returns: Return a parser that accepts a token `Element` with result `Result` when the token matches.
+    public static func tokenPrimitive(tokenDescription: (StreamType.Element) -> String, nextPosition: (SourcePosition, StreamType.Element, StreamType) -> SourcePosition, match: (StreamType.Element) -> Result?) -> GenericParser<StreamType, UserState, Result> {
+        
+        return GenericParser(parse: { state in
+            
+            var input = state.input
+            let position = state.position
+            
+            guard let tok = input.popFirst() else {
+                
+                let error = ParseError.unexpectedParseError(position, message: "")
+                return .None(.Error(error))
+                
+            }
+            
+            guard let result = match(tok) else {
+                
+                let error = ParseError.unexpectedParseError(position, message: tokenDescription(tok))
+                return .None(.Error(error))
+                
+            }
+            
+            let newPosition = nextPosition(position, tok, input)
+            let newState = ParserState(input: input, position: newPosition, userState: state.userState)
+            let unknownError = ParseError.unknownParseError(newPosition)
+            
+            return .Some(.Ok(result, newState, unknownError))
+            
+        })
+        
+    }
+    
+}
+
+public extension Parsec where StreamType.Element: Equatable {
+    
+    // TODO: Move this function into the `Parsec` protocol extension when Swift will allow to add requirements to `associatedtype` type constraint (Ex.: `associatedtype StreamType: CollectionType where StreamType.SubSequence == Stream`)
+    
+    /// Return a parser that parses a collection of tokens.
+    ///
+    /// - parameters:
+    ///   - tokensDescription: A function to describe the tokens.
+    ///   - nextPosition: A function returning the position after the tokens.
+    ///   - tokens: The collection of tokens to parse.
+    /// - returns: A parser that parses a collection of tokens.
+    public static func tokens(tokensDescription: (StreamType) -> String, nextPosition: (SourcePosition, StreamType) -> SourcePosition, tokens: StreamType) -> GenericParser<StreamType, UserState, StreamType> {
+        
+        return GenericParser(parse: { state in
+            
+            let position = state.position
+            
+            var toks = tokens
+            var token = toks.popFirst()
+            
+            guard token != nil else {
+                
+                let error = ParseError.unknownParseError(position)
+                return .None(.Ok([], state, error))
+                
+            }
+            
+            var input = state.input
+            
+            var hasConsumed = false
+            var consumedConstructor = Consumed<StreamType, UserState, StreamType>.None
+            
+            repeat {
+                
+                guard let inputToken = input.popFirst() else {
+                    
+                    var eofError = ParseError.unexpectedParseError(position, message: "")
+                    eofError.insertMessage(.Expected(tokensDescription(tokens)))
+                    
+                    return consumedConstructor(.Error(eofError))
+                    
+                }
+                
+                if token != inputToken {
+                    
+                    let tokDesc = tokensDescription([inputToken])
+                    
+                    var expectedError = ParseError.unexpectedParseError(position, message: tokDesc)
+                    expectedError.insertMessage(.Expected(tokensDescription(tokens)))
+                    
+                    return consumedConstructor(.Error(expectedError))
+                    
+                }
+                
+                if !hasConsumed {
+                    
+                    hasConsumed = true
+                    consumedConstructor = Consumed.Some
+                    
+                }
+                
+                token = toks.popFirst()
+                
+            } while token != nil
+            
+            let newPosition = nextPosition(position, tokens)
+            let newState = ParserState(input: input, position: newPosition, userState: state.userState)
+            let error = ParseError.unknownParseError(newPosition)
+            
+            return .Some(.Ok(tokens, newState, error))
+            
+        })
+        
+    }
+    
+}
+
 /// The `Consumed` enumeration indicates if a parser consumed some or none from an input.
 enum Consumed<StreamType, UserState, Result> {
     
@@ -747,17 +888,6 @@ public func <*<StreamType, UserState, Param1, Param2>(leftParser: GenericParser<
     
 }
 
-/// Infix operator for `Parsec.alternative`. It has the same precedence as the equality operator (`&&`).
-///
-/// - parameters:
-///   - leftParser: The first parser to try.
-///   - rightParser: The second parser to try.
-public func <|><StreamType, UserState, Result>(leftParser: GenericParser<StreamType, UserState, Result>, rightParser: GenericParser<StreamType, UserState, Result>) -> GenericParser<StreamType, UserState, Result> {
-    
-    return leftParser.alternative(rightParser)
-    
-}
-
 /// Infix operator for `flatMap` named _bind_. It has the same precedence as the `nil` coalescing operator (`??`).
 ///
 /// - parameters:
@@ -766,16 +896,5 @@ public func <|><StreamType, UserState, Result>(leftParser: GenericParser<StreamT
 public func >>-<StreamType, UserState, Result, T>(parser: GenericParser<StreamType, UserState, Result>, transform: (Result) -> GenericParser<StreamType, UserState, T>) -> GenericParser<StreamType, UserState, T> {
     
     return parser.flatMap(transform)
-    
-}
-
-/// Infix operator for `label`. It has the lowest precedence.
-///
-/// - parameters:
-///   - parser: The parser whose error message is to be replaced.
-///   - message: The new error message.
-public func <?><StreamType, UserState, Result>(parser: GenericParser<StreamType, UserState, Result>, message: String) -> GenericParser<StreamType, UserState, Result> {
-    
-    return parser.labels(message)
     
 }
