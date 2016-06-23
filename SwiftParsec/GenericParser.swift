@@ -234,6 +234,21 @@ public final class GenericParser<Stream: StreamType, UserState, Result>: ParsecT
         
     }
     
+    /// A combinator that checks whether `self` is not ahead without consuming any input.
+    ///
+    /// - returns: A parser that parses without consuming any input.
+    public var notAhead: GenericParser<Stream, UserState, ()> {
+        return GenericParser<Stream, UserState, ()>(parse: { state in
+            let consumed = self.parse(state: state)
+
+            if case .Some(let reply) = consumed, .Ok = reply {
+                return .None(.Error(ParseError.unknownParseError(state.position)))
+            }
+
+            return .None(.Ok((), state, ParseError.unknownParseError(state.position)))
+        })
+    }
+
     /// The `many` combinator applies the parser `self` _zero_ or more times. It returns an array of the returned values of `self`.
     ///
     ///     let identifier = identifierStart >>- { char in
