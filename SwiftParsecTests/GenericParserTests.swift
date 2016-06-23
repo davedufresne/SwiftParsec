@@ -172,6 +172,33 @@ class GenericParserTests: XCTestCase {
         
     }
     
+    func testNotAhead() {
+
+        let sample = "asdfg"
+
+        let string1 = StringParser.string("asc")
+        let string2 = String.init <^> StringParser.anyCharacter.many
+        let notAhead = string1.notAhead *> string2
+
+        // Test when not ahead.
+        let notMatching = ["asdfg"]
+        let shouldFailMessage = "GenericParser.notAhead should have failed."
+
+        testStringParserSuccess(notAhead, inputs: notMatching) { input, result in
+            XCTAssertEqual(sample, result, self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+        }
+
+        let matching = ["ascasdfg", "asc"]
+        let errorMessage = "GenericParser.notAhead error."
+        testStringParserFailure(notAhead, inputs: matching) { input, result in
+            XCTFail(self.formatErrorMessage(errorMessage, input: input, result: result))
+
+        }
+
+
+    }
+
+
     func testMany() {
         
         let manyString = StringParser.string("asdf").many
