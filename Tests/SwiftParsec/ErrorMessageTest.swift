@@ -239,7 +239,7 @@ class ErrorMessageTests: XCTestCase {
         
         do {
             
-            try parser.run(sourceName: "test", input: input)
+            try _ = parser.run(sourceName: "test", input: input)
             
         } catch let error {
             

@@ -8,12 +8,12 @@
 
 import Foundation
 
-private let uppercaseSet = NSCharacterSet.uppercaseLetters()
-private let lowercaseSet = NSCharacterSet.lowercaseLetters()
-private let alphaSet = NSCharacterSet.letters()
-private let alphaNumericSet = NSCharacterSet.alphanumerics()
-private let symbolSet = NSCharacterSet.symbols()
-private let digitSet = NSCharacterSet.decimalDigits()
+private let uppercaseSet = CharacterSet.uppercaseLetters
+private let lowercaseSet = CharacterSet.lowercaseLetters
+private let alphaSet = CharacterSet.letters
+private let alphaNumericSet = CharacterSet.alphanumerics
+private let symbolSet = CharacterSet.symbols
+private let digitSet = CharacterSet.decimalDigits
 
 extension Character {
     
@@ -145,14 +145,14 @@ extension Character {
     ///
     /// - parameter set: The `NSCharacterSet` used to test for membership.
     /// - returns: `true` if `self` normalized contains a single code unit that is a member of the supplied character set.
-    func isMember(of set: NSCharacterSet) -> Bool {
+    func isMember(of set: CharacterSet) -> Bool {
         
         let normalized = String(self).precomposedStringWithCanonicalMapping
         let unicodes = normalized.unicodeScalars
         
         guard unicodes.count == 1 else { return false }
         
-        return set.longCharacterIsMember(unicodes.first!.value)
+        return set.contains(unicodes.first!)
         
     }
     

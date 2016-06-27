@@ -111,7 +111,7 @@ class TokenTests: XCTestCase {
             
             for (parser, input) in assocArray {
                 
-                testStringParserSuccess(parser, inputs: [input]) { _, _ in true }
+                testStringParserSuccess(parser, inputs: [input]) { _, _ in }
                 
             }
             
@@ -174,7 +174,7 @@ class TokenTests: XCTestCase {
         
         for (parser, match) in matchingAssociation {
             
-            testStringParserSuccess(parser, inputs: [match]) { _, _ in true }
+            testStringParserSuccess(parser, inputs: [match]) { _, _ in }
             
         }
         

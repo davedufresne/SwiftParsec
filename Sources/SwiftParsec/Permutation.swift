@@ -88,7 +88,7 @@ public struct Permutation<StreamType: Stream, UserState, Result>: RangeReplaceab
         
         var permutation = ContiguousArray<PermParser>()
         
-        let elementsRange = elements.startIndex..<elements.endIndex
+        let elementsRange = elements.indices
         for index in elementsRange {
             
             let element = elements[index]

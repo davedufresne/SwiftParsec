@@ -129,11 +129,11 @@ class CombinatorTests: XCTestCase {
         // Test for success.
         let discardDigit = StringParser.digit.discard
         let matchingDigit = ["1a", "2b", "3c"]
-        testStringParserSuccess(discardDigit, inputs: matchingDigit) { _, _ in true }
+        testStringParserSuccess(discardDigit, inputs: matchingDigit) { _, _ in }
         
         let discardString = StringParser.string("abc").discard
         let matchingString = ["abc", "abc123"]
-        testStringParserSuccess(discardString, inputs: matchingString) { _, _ in true }
+        testStringParserSuccess(discardString, inputs: matchingString) { _, _ in }
         
         // Test when not matching.
         let notMatching = ["ab1", "a12"]
@@ -161,7 +161,7 @@ class CombinatorTests: XCTestCase {
         testStringParserSuccess(digit, inputs: matchingDigit) { inputStr, result in
             
             var input = inputStr
-            input.popFirst()
+            _ = input.popFirst()
             
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: inputStr, result: result))
@@ -205,7 +205,7 @@ class CombinatorTests: XCTestCase {
         // Test for success.
         let matching = ["asdfasdf", "asdfasdfasdf", "asdfasdfasdfasdf"]
         
-        testStringParserSuccess(skipMany1, inputs: matching) { _, _ in true }
+        testStringParserSuccess(skipMany1, inputs: matching) { _, _ in }
         
         // Test when not matching.
         let notMatching = ["asd", "asdfasd", "xasdf"]
@@ -765,7 +765,7 @@ class CombinatorTests: XCTestCase {
         // Test for success.
         let matching = [""]
         
-        testStringParserSuccess(eof, inputs: matching) { _, _ in true }
+        testStringParserSuccess(eof, inputs: matching) { _, _ in }
         
         // Test when not matching.
         let notMatching = ["\n", "\r", "\n\r", "a"]

@@ -202,7 +202,7 @@ class GenericParserTests: XCTestCase {
         let skipManyString = StringParser.string("asdf").skipMany
         
         let matching = ["asdfasdf", "asdfasdfasdf", "asdfasdfasdfasdf", "xasdf"]
-        testStringParserSuccess(skipManyString, inputs: matching) { _, _ in true }
+        testStringParserSuccess(skipManyString, inputs: matching) { _, _ in }
         
         // Test when not matching.
         let notMatching = ["asd", "asdfasd"]
@@ -242,7 +242,7 @@ class GenericParserTests: XCTestCase {
             
             do {
                 
-                try parser.run(sourceName: "", input: input)
+                try _ = parser.run(sourceName: "", input: input)
                 XCTFail("GenericParser.label should fail.")
                 
             } catch let parseError as ParseError {

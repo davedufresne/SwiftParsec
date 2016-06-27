@@ -8,7 +8,7 @@
 // Commonly used character parsers.
 //
 
-import class Foundation.NSCharacterSet
+import struct Foundation.CharacterSet
 
 /// String parser with an empty `UserState`.
 public typealias StringParser = GenericParser<String, (), Character>
@@ -224,7 +224,7 @@ public extension Parsec where StreamType.Element == Character, Result == Charact
     ///
     /// - parameter set: The `NSCharacterSet` used to test for membership.
     /// - returns: The parsed character.
-    static func memberOf(_ set: NSCharacterSet) -> GenericParser<StreamType, UserState, Result> {
+    static func memberOf(_ set: CharacterSet) -> GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isMember(of: set) }
         
