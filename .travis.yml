@@ -1,27 +1,20 @@
 language: objective-c
-osx_image: xcode7.3
+osx_image: xcode8
 env:
-  global:
-    - TOOLCHAINS=swift
   matrix:
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPhone 4S"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPhone 5"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPhone 5S"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPhone 6"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPhone 6 Plus"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPhone 6S"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPhone 6S Plus"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPad 2"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPad Air"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPad Air 2"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPad Pro"
-    - DESTINATION="platform=iOS Simulator,OS=9.3,name=iPad Retina"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 5"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 5s"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6 Plus"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6s"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6s Plus"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone SE"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Air"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Air 2"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Pro (9.7 inch)"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Pro (12.9 inch)"
+    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Retina"
     - SPM="YES"
 
 script: ./scripts/run-tests.sh
 
-before_install:
-  - TOOLCHAIN_VERSION=swift-DEVELOPMENT-SNAPSHOT-2016-05-09-a
-  - curl -O https://swift.org/builds/development/xcode/${TOOLCHAIN_VERSION}/${TOOLCHAIN_VERSION}-osx.pkg
-  - sudo installer -pkg ${TOOLCHAIN_VERSION}-osx.pkg -target /
-  
