@@ -211,21 +211,12 @@ public extension Parsec where UserState == () {
 }
 
 /// A `Stream` instance is responsible for maintaining the position of the parser's stream.
-public protocol Stream: ArrayLiteralConvertible {
-    
-    /// If `!self.isEmpty`, remove the first element and return it, otherwise return `nil`.
-    ///
-    /// - returns: The fhe first element of `self` or `nil`.
-    mutating func popFirst() -> Element?
-    
-}
+public protocol Stream: Collection, ArrayLiteralConvertible {}
 
 extension String: Stream {
     
-    public typealias Element = String.CharacterView.Iterator.Element
-    
     /// Create an instance containing `elements`.
-    public init(arrayLiteral elements: Element...) {
+    public init(arrayLiteral elements: String.Iterator.Element...) {
         
         self.init(elements)
         

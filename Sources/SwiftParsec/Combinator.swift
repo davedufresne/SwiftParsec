@@ -361,14 +361,14 @@ public extension GenericParser {
     
 }
 
-public extension Parsec where StreamType.Element == Result {
+public extension Parsec where StreamType.Iterator.Element == Result {
     
     /// A parser that accepts any kind of token. It is for example used to implement 'eof'. It returns the accepted token.
     public static var anyToken: GenericParser<StreamType, UserState, Result> {
         
         return GenericParser.tokenPrimitive(
             tokenDescription: { String(reflecting: $0) },
-            nextPosition: { pos, _, _ in pos },
+            nextPosition: { pos, _ in pos },
             match: { $0 })
         
     }

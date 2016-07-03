@@ -40,7 +40,7 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
     }
     
     /// Create an instance with the given parse function.
-    init(parse: (ParserState<StreamType, UserState>) -> Consumed<StreamType, UserState, Result>) {
+    init(parse: (ParserState<StreamType.Iterator, UserState>) -> Consumed<StreamType, UserState, Result>) {
         
         self.parse = parse
         
@@ -50,7 +50,7 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
     ///
     /// - Parameter state: The state of the parser.
     /// - returns: The result of the parsing.
-    let parse: (state: ParserState<StreamType, UserState>) -> Consumed<StreamType, UserState, Result>
+    let parse: (state: ParserState<StreamType.Iterator, UserState>) -> Consumed<StreamType, UserState, Result>
     
     /// Return a parser containing the result of mapping transform over `self`.
     ///
@@ -122,7 +122,7 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
     /// - returns: A new parser with the mapped content.
     public func flatMap<T>(_ transform: (Result) -> GenericParser<StreamType, UserState, T>) -> GenericParser<StreamType, UserState, T> {
         
-        func runRightParser(_ constructor: (ParserReply<StreamType, UserState, T>) -> Consumed<StreamType, UserState, T>, result: Result, state: ParserState<StreamType, UserState>, error: ParseError) -> Consumed<StreamType, UserState, T> {
+        func runRightParser(_ constructor: (ParserReply<StreamType, UserState, T>) -> Consumed<StreamType, UserState, T>, result: Result, state: ParserState<StreamType.Iterator, UserState>, error: ParseError) -> Consumed<StreamType, UserState, T> {
             
             let parser = transform(result)
             
@@ -310,11 +310,9 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
                         
                     case .error(let error):
                         
-                        let reply = ParserReply.ok(results, newState, error)
-                        
-                        if hasConsumed { return .some(reply) }
+                        if hasConsumed { return .some(.ok(results, newState, error)) }
             
-                        return .none(reply)
+                        return .none(.ok(results, newState, error))
                         
                     }
             
@@ -571,7 +569,7 @@ public final class GenericParser<StreamType: Stream, UserState, Result>: Parsec 
     public func run(userState: UserState, sourceName: String, input: StreamType) throws -> (result: Result, userState: UserState) {
         
         let position = SourcePosition(name: sourceName, line: 1, column: 1)
-        let state = ParserState(input: input, position: position, userState: userState)
+        let state = ParserState(input: input.makeIterator(), position: position, userState: userState)
         
         let reply = parse(state: state).parserReply
         switch reply {
@@ -621,14 +619,14 @@ public extension Parsec {
     ///   - nextPosition: A function returning the position of the next token.
     ///   - match: A function returning an optional result when the token match a predicate.
     /// - returns: Return a parser that accepts a token `Element` with result `Result` when the token matches.
-    public static func tokenPrimitive(tokenDescription: (StreamType.Element) -> String, nextPosition: (SourcePosition, StreamType.Element, StreamType) -> SourcePosition, match: (StreamType.Element) -> Result?) -> GenericParser<StreamType, UserState, Result> {
+    public static func tokenPrimitive(tokenDescription: (StreamType.Iterator.Element) -> String, nextPosition: (SourcePosition, StreamType.Iterator.Element) -> SourcePosition, match: (StreamType.Iterator.Element) -> Result?) -> GenericParser<StreamType, UserState, Result> {
         
         return GenericParser(parse: { state in
             
             var input = state.input
             let position = state.position
             
-            guard let tok = input.popFirst() else {
+            guard let tok = input.next() else {
                 
                 let error = ParseError.unexpectedParseError(position, message: "")
                 return .none(.error(error))
@@ -642,7 +640,7 @@ public extension Parsec {
                 
             }
             
-            let newPosition = nextPosition(position, tok, input)
+            let newPosition = nextPosition(position, tok)
             let newState = ParserState(input: input, position: newPosition, userState: state.userState)
             let unknownError = ParseError.unknownParseError(newPosition)
             
@@ -654,7 +652,7 @@ public extension Parsec {
     
 }
 
-public extension Parsec where StreamType.Element: Equatable {
+public extension Parsec where StreamType.Element == StreamType.Iterator.Element, StreamType.Iterator.Element: Equatable {
     
     // TODO: Move this function into the `Parsec` protocol extension when Swift will allow to add requirements to `associatedtype` type constraint (Ex.: `associatedtype StreamType: CollectionType where StreamType.SubSequence == Stream`)
     
@@ -671,8 +669,8 @@ public extension Parsec where StreamType.Element: Equatable {
             
             let position = state.position
             
-            var toks = tokens
-            var token = toks.popFirst()
+            var tokensIterator = tokens.makeIterator()
+            var token = tokensIterator.next()
             
             guard token != nil else {
                 
@@ -688,7 +686,7 @@ public extension Parsec where StreamType.Element: Equatable {
             
             repeat {
                 
-                guard let inputToken = input.popFirst() else {
+                guard let inputToken = input.next() else {
                     
                     var eofError = ParseError.unexpectedParseError(position, message: "")
                     eofError.insertMessage(.expected(tokensDescription(tokens)))
@@ -697,7 +695,7 @@ public extension Parsec where StreamType.Element: Equatable {
                     
                 }
                 
-                if token != inputToken {
+                if token! != inputToken {
                     
                     let tokDesc = tokensDescription([inputToken])
                     
@@ -715,7 +713,7 @@ public extension Parsec where StreamType.Element: Equatable {
                     
                 }
                 
-                token = toks.popFirst()
+                token = tokensIterator.next()
                 
             } while token != nil
             
@@ -732,7 +730,7 @@ public extension Parsec where StreamType.Element: Equatable {
 }
 
 /// The `Consumed` enumeration indicates if a parser consumed some or none from an input.
-enum Consumed<StreamType, UserState, Result> {
+enum Consumed<StreamType: Stream, UserState, Result> {
     
     /// Indicates that some of the input was consumed.
     case some(ParserReply<StreamType, UserState, Result>)
@@ -775,10 +773,10 @@ enum Consumed<StreamType, UserState, Result> {
 }
 
 /// The `ParserReply` enumeration indicates the result of a parse.
-enum ParserReply<StreamType, UserState, Result> {
+enum ParserReply<StreamType: Stream, UserState, Result> {
     
     /// Indicates that the parsing was successfull. It contains a `Result` type, the `ParserState` and a `ParseError` as associated values.
-    case ok(Result, ParserState<StreamType, UserState>, ParseError)
+    case ok(Result, ParserState<StreamType.Iterator, UserState>, ParseError)
     
     /// Indicates that the parsing failed. It contains a `ParseError` as an associated value.
     case error(ParseError)
@@ -828,10 +826,10 @@ enum ParserReply<StreamType, UserState, Result> {
 }
 
 /// ParserState contains the state of the parser and the user state.
-struct ParserState<StreamType, UserState> {
+struct ParserState<StreamTypeIterator, UserState> {
     
     /// The input StreamType of the parser.
-    var input: StreamType
+    var input: StreamTypeIterator
     
     /// The position in the input StreamType.
     var position: SourcePosition

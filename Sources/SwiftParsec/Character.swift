@@ -13,7 +13,7 @@ import struct Foundation.CharacterSet
 /// String parser with an empty `UserState`.
 public typealias StringParser = GenericParser<String, (), Character>
 
-public extension Parsec where StreamType.Element == Character, Result == Character {
+public extension Parsec where StreamType.Iterator.Element == Character, Result == Character {
     
     /// Return a parser that succeeds for any character for which the supplied function `predicate` returns `true`. The parser returns the character that is actually parsed.
     ///
@@ -23,7 +23,7 @@ public extension Parsec where StreamType.Element == Character, Result == Charact
         
         return tokenPrimitive(
             tokenDescription: { String(reflecting: $0) },
-            nextPosition: { position, elem, _ in
+            nextPosition: { position, elem in
                 
                 var pos = position
                 pos.updatePosition(elem)
@@ -243,7 +243,7 @@ public extension Parsec where Result: Sequence, Result.Iterator.Element == Chara
     
 }
 
-public extension Parsec where StreamType.Element == Character {
+public extension Parsec where StreamType.Element == StreamType.Iterator.Element, StreamType.Iterator.Element == Character {
     
     /// Return a parser that parses a `String`. It returns the parsed string (i.e. `str`).
     ///
@@ -259,13 +259,9 @@ public extension Parsec where StreamType.Element == Character {
             nextPosition: { position, charStreamType in
                 
                 var pos = position
-                var cs = charStreamType
-                
-                var char: Character? = cs.popFirst()
-                while char != nil {
+                for char in charStreamType {
                     
-                    pos.updatePosition(char!)
-                    char = cs.popFirst()
+                    pos.updatePosition(char)
                     
                 }
                 
