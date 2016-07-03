@@ -27,7 +27,7 @@
 		578435561BF66B3A0067B3E9 /* PositionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578435551BF66B3A0067B3E9 /* PositionTests.swift */; };
 		578E3B101CA4B014005B83B8 /* SwiftParsec.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 578E3B0F1CA4B014005B83B8 /* SwiftParsec.podspec */; };
 		579C00C81C0277CA009282A6 /* UInt16Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 579C00C71C0277CA009282A6 /* UInt16Extension.swift */; };
-		57A86B0B1BC862CC00A7F45F /* CollectionTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A86B0A1BC862CC00A7F45F /* CollectionTypeExtension.swift */; };
+		57A86B0B1BC862CC00A7F45F /* CollectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A86B0A1BC862CC00A7F45F /* CollectionExtension.swift */; };
 		57A86B0D1BC983B400A7F45F /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A86B0C1BC983B400A7F45F /* StringExtension.swift */; };
 		57A86B0F1BC9990B00A7F45F /* SetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A86B0E1BC9990B00A7F45F /* SetExtension.swift */; };
 		57AA4E011BB777FF0026DF01 /* Combinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AA4E001BB777FF0026DF01 /* Combinator.swift */; };
@@ -36,8 +36,8 @@
 		57C459781CE2150D0014764F /* UnicodeScalarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C459771CE2150D0014764F /* UnicodeScalarTests.swift */; };
 		57C956691BDAE01D00057A4F /* Expression.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C956681BDAE01D00057A4F /* Expression.swift */; };
 		57C995DB1CF86906000DA292 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C995DA1CF86906000DA292 /* Configuration.swift */; };
-		57E5A60B1BA36FD10062F479 /* RangeReplaceableCollectionTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E5A60A1BA36FD10062F479 /* RangeReplaceableCollectionTypeExtension.swift */; };
-		57E6F77F1BA7414B0015E875 /* SequenceTypeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E6F77E1BA7414B0015E875 /* SequenceTypeExtension.swift */; };
+		57E5A60B1BA36FD10062F479 /* RangeReplaceableCollectionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E5A60A1BA36FD10062F479 /* RangeReplaceableCollectionExtension.swift */; };
+		57E6F77F1BA7414B0015E875 /* SequenceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E6F77E1BA7414B0015E875 /* SequenceExtension.swift */; };
 		57E6F7831BAA1C260015E875 /* Character.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E6F7821BAA1C260015E875 /* Character.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,7 +80,7 @@
 		579C00C71C0277CA009282A6 /* UInt16Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UInt16Extension.swift; sourceTree = "<group>"; };
 		579C00CD1C03EC60009282A6 /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = Sources/SwiftParsec/en.lproj; sourceTree = "<group>"; };
 		579C00D31C03F16E009282A6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		57A86B0A1BC862CC00A7F45F /* CollectionTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionTypeExtension.swift; sourceTree = "<group>"; };
+		57A86B0A1BC862CC00A7F45F /* CollectionExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionExtension.swift; sourceTree = "<group>"; };
 		57A86B0C1BC983B400A7F45F /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		57A86B0E1BC9990B00A7F45F /* SetExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetExtension.swift; sourceTree = "<group>"; };
 		57AA4E001BB777FF0026DF01 /* Combinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Combinator.swift; sourceTree = "<group>"; };
@@ -90,8 +90,8 @@
 		57C459771CE2150D0014764F /* UnicodeScalarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalarTests.swift; sourceTree = "<group>"; };
 		57C956681BDAE01D00057A4F /* Expression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expression.swift; sourceTree = "<group>"; };
 		57C995DA1CF86906000DA292 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
-		57E5A60A1BA36FD10062F479 /* RangeReplaceableCollectionTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeReplaceableCollectionTypeExtension.swift; sourceTree = "<group>"; };
-		57E6F77E1BA7414B0015E875 /* SequenceTypeExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceTypeExtension.swift; sourceTree = "<group>"; };
+		57E5A60A1BA36FD10062F479 /* RangeReplaceableCollectionExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeReplaceableCollectionExtension.swift; sourceTree = "<group>"; };
+		57E6F77E1BA7414B0015E875 /* SequenceExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceExtension.swift; sourceTree = "<group>"; };
 		57E6F7821BAA1C260015E875 /* Character.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Character.swift; sourceTree = "<group>"; };
 		57FA9BA81BB97463000DCC03 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -186,9 +186,9 @@
 			isa = PBXGroup;
 			children = (
 				571730DB1BADEAB90073BBB7 /* CharacterExtension.swift */,
-				57A86B0A1BC862CC00A7F45F /* CollectionTypeExtension.swift */,
-				57E5A60A1BA36FD10062F479 /* RangeReplaceableCollectionTypeExtension.swift */,
-				57E6F77E1BA7414B0015E875 /* SequenceTypeExtension.swift */,
+				57A86B0A1BC862CC00A7F45F /* CollectionExtension.swift */,
+				57E5A60A1BA36FD10062F479 /* RangeReplaceableCollectionExtension.swift */,
+				57E6F77E1BA7414B0015E875 /* SequenceExtension.swift */,
 				57A86B0E1BC9990B00A7F45F /* SetExtension.swift */,
 				57A86B0C1BC983B400A7F45F /* StringExtension.swift */,
 				579C00C71C0277CA009282A6 /* UInt16Extension.swift */,
@@ -309,14 +309,14 @@
 			files = (
 				570DB5B51BC3422B0058D186 /* Token.swift in Sources */,
 				570B24891CD7F4400060E452 /* Parsec.swift in Sources */,
-				57E6F77F1BA7414B0015E875 /* SequenceTypeExtension.swift in Sources */,
+				57E6F77F1BA7414B0015E875 /* SequenceExtension.swift in Sources */,
 				57C995DB1CF86906000DA292 /* Configuration.swift in Sources */,
 				57AA4E011BB777FF0026DF01 /* Combinator.swift in Sources */,
 				5714D8C01BCEAE3B00FE4BF0 /* Language.swift in Sources */,
 				579C00C81C0277CA009282A6 /* UInt16Extension.swift in Sources */,
 				57167F1F1B99EEA500F35A29 /* Error.swift in Sources */,
 				57167F1D1B99E6E200F35A29 /* GenericParser.swift in Sources */,
-				57A86B0B1BC862CC00A7F45F /* CollectionTypeExtension.swift in Sources */,
+				57A86B0B1BC862CC00A7F45F /* CollectionExtension.swift in Sources */,
 				571730DC1BADEAB90073BBB7 /* CharacterExtension.swift in Sources */,
 				57E6F7831BAA1C260015E875 /* Character.swift in Sources */,
 				57167F211B99EF1300F35A29 /* Position.swift in Sources */,
@@ -325,7 +325,7 @@
 				57A86B0F1BC9990B00A7F45F /* SetExtension.swift in Sources */,
 				571C73FC1BD6F3A60055B359 /* UnicodeScalarExtension.swift in Sources */,
 				5703BE191BE6AC09003FF5FA /* Permutation.swift in Sources */,
-				57E5A60B1BA36FD10062F479 /* RangeReplaceableCollectionTypeExtension.swift in Sources */,
+				57E5A60B1BA36FD10062F479 /* RangeReplaceableCollectionExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
