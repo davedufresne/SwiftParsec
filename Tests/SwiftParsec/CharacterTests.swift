@@ -534,7 +534,7 @@ class CharacterTests: XCTestCase {
         
         testStringParserSuccess(string1, inputs: matching) { input, result in
             
-            let isMatch = input.hasPrefix(String(result))
+            let isMatch = input.hasPrefix(result)
             XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
             
         }
