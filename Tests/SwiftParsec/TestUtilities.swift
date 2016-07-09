@@ -11,7 +11,9 @@ import XCTest
 
 extension XCTestCase {
     
-    /// Run `parser` in a `do-catch` block on the supplied input strings. The assertions are performed in the `assert` function. If an error is thrown it is reported with `XCTFail()`.
+    /// Run `parser` in a `do-catch` block on the supplied input strings. The
+    /// assertions are performed in the `assert` function. If an error is thrown
+    /// it is reported with `XCTFail()`.
     func testStringParserSuccess<Result, Input: Collection where Input.Iterator.Element == String>(_ parser: GenericParser<String, (), Result>, inputs: Input, assert: (String, Result) -> Void) {
         
         do {
@@ -35,14 +37,18 @@ extension XCTestCase {
         
     }
     
-    /// Run `parser` in a `do-catch` block. The assertions are performed in the `assert` function. If an error is thrown it is reported with `XCTFail()`.
+    /// Run `parser` in a `do-catch` block. The assertions are performed in the
+    /// `assert` function. If an error is thrown it is reported with
+    /// `XCTFail()`.
     func testParserSuccess<Result>(_ parser: GenericParser<String, (), Result>, assert: (String, Result) -> Void) {
         
         testStringParserSuccess(parser, inputs: [""], assert: assert)
         
     }
     
-    /// Run `parser` in a `do-catch` block on the supplied input strings. The assertions are performed in the `assert` function. If an error is thrown it is reported with `XCTFail()`.
+    /// Run `parser` in a `do-catch` block on the supplied input strings. The
+    /// assertions are performed in the `assert` function. If an error is thrown
+    /// it is reported with `XCTFail()`.
     func testStringParserFailure<Result, Input: Collection where Input.Iterator.Element == String>(_ parser: GenericParser<String, (), Result>, inputs: Input, assert: (String, Result) -> Void) {
         
         for input in inputs {

@@ -206,7 +206,8 @@ class CharacterTests: XCTestCase {
         let newLine = StringParser.crlf
         
         // Test for success.
-        let matching = ["\r\n", "\u{000D}\u{000A}"] // "\r\n" is combined in one Unicode Scalar.
+        // "\r\n" is combined in one Unicode Scalar.
+        let matching = ["\r\n", "\u{000D}\u{000A}"]
         let errorMessage = "GenericParser.crlf did not succeed."
         
         testStringParserSuccess(newLine, inputs: matching) { input, result in
@@ -232,7 +233,8 @@ class CharacterTests: XCTestCase {
         let endOfLine = StringParser.endOfLine
         
         // Test for success.
-        let matching = ["\r\n", "\u{000D}\u{000A}", "\n"] // "\r\n" is combined in one Unicode Scalar.
+        // "\r\n" is combined in one Unicode Scalar.
+        let matching = ["\r\n", "\u{000D}\u{000A}", "\n"]
         let errorMessage = "GenericParser.endOfLine did not succeed."
         
         testStringParserSuccess(endOfLine, inputs: matching) { input, result in

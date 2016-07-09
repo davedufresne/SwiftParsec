@@ -434,7 +434,8 @@ class GenericParserTests: XCTestCase {
     
 }
 
-/// Types implementing the `PlusOperator` protocol have to have an implementation for the `+` operator.
+/// Types implementing the `PlusOperator` protocol have to have an
+/// implementation for the `+` operator.
 protocol PlusOperator {
     
     func +(lhs: Self, rhs: Self) -> Self

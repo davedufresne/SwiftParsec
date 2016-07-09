@@ -8,7 +8,8 @@
 
 public extension RangeReplaceableCollection {
     
-    /// If `!self.isEmpty`, remove the first element and return it, otherwise return `nil`.
+    /// If `!self.isEmpty`, remove the first element and return it, otherwise
+    /// return `nil`.
     ///
     /// - returns: The fhe first element of `self` or `nil`.
     public mutating func popFirst() -> Iterator.Element? {
@@ -28,7 +29,8 @@ public extension RangeReplaceableCollection {
         
     }
     
-    /// Returns a new collection containing the elements of `self` with `newElement` prepended at the beginning.
+    /// Returns a new collection containing the elements of `self` with
+    /// `newElement` prepended at the beginning.
     ///
     /// - parameter newElement: New element to prepend.
     /// - returns: A copy of `self` plus `newElement` prepended.
@@ -41,7 +43,8 @@ public extension RangeReplaceableCollection {
         
     }
     
-    /// Returns a new collection containing the elements of `self` with `newElement` appended to the end.
+    /// Returns a new collection containing the elements of `self` with
+    /// `newElement` appended to the end.
     ///
     /// - parameter newElement: New element to append.
     /// - returns: A copy of `self` plus `newElement` appended.

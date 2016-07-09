@@ -7,7 +7,12 @@
 //
 // This module implements permutation parsers.
 
-/// The type `Permutation` denotes a permutation that can be converted to a `GenericParser` that returns an array of values of type `Result` on success. The values in the array have the same order as the parsers in the permutation. In the following exemple `parser` applies to any permutation of the characters 'a', 'b' and 'c' and always returns the string `"abc"` on success.
+/// The type `Permutation` denotes a permutation that can be converted to a
+/// `GenericParser` that returns an array of values of type `Result` on success.
+/// The values in the array have the same order as the parsers in the
+/// permutation. In the following exemple `parser` applies to any permutation of
+/// the characters 'a', 'b' and 'c' and always returns the string `"abc"` on
+/// success.
 ///
 ///     let permutation: Permutation = [
 ///
@@ -41,7 +46,8 @@ public struct Permutation<StreamType: Stream, UserState, Result>: RangeReplaceab
     
     /// Create an instance initialized with elements.
     ///
-    /// - parameter arrayLiteral: Arrays of tuple containing a parser and an optional default value.
+    /// - parameter arrayLiteral: Arrays of tuple containing a parser and an
+    ///   optional default value.
     public init(arrayLiteral elements: Element...) {
         
         parsers = elements
@@ -60,16 +66,19 @@ public struct Permutation<StreamType: Stream, UserState, Result>: RangeReplaceab
         
     }
     
-    /// A parser applying to the permutation of all the parsers contained in `self`.
+    /// A parser applying to the permutation of all the parsers contained in
+    /// `self`.
     public func makeParser() -> GenericParser<StreamType, UserState, [Result]> {
         
         return makeParser(separator: GenericParser(result: ()))
         
     }
     
-    /// A parser applying to the permutation of all the parsers contained in `self` separated by `separator`.
+    /// A parser applying to the permutation of all the parsers contained in
+    /// `self` separated by `separator`.
     ///
-    /// - parameter separator: A separator to apply between each element of the permutation.
+    /// - parameter separator: A separator to apply between each element of the
+    ///   permutation.
     public func makeParser<Separator>(separator: GenericParser<StreamType, UserState, Separator>) -> GenericParser<StreamType, UserState, [Result]> {
         
         let ps = parsers.map { elem in
@@ -144,7 +153,8 @@ public struct Permutation<StreamType: Stream, UserState, Result>: RangeReplaceab
         
     }
     
-    /// Append a parser to the permutation. The added parser is not allowed to accept empty input - use `appendOptionalParser` instead.
+    /// Append a parser to the permutation. The added parser is not allowed to
+    /// accept empty input - use `appendOptionalParser` instead.
     ///
     /// - parameter parser: The parser to append to the permutation.
     public mutating func appendParser(_ parser: GenericParser<StreamType, UserState, Result>) {
@@ -153,7 +163,9 @@ public struct Permutation<StreamType: Stream, UserState, Result>: RangeReplaceab
         
     }
     
-    /// Append an optional parser to the permutation. The parser is optional - if it cannot be applied, the default value `otherwise` will be used instead.
+    /// Append an optional parser to the permutation. The parser is optional -
+    /// if it cannot be applied, the default value `otherwise` will be used
+    /// instead.
     ///
     /// - parameters:
     ///   - parser: The optional parser to append to the permutation.
@@ -168,7 +180,8 @@ public struct Permutation<StreamType: Stream, UserState, Result>: RangeReplaceab
     ///
     /// - parameters:
     ///   - subRange: Range of elements to replace.
-    ///   - newElements: New elements replacing the previous elements contained in `subRange`.
+    ///   - newElements: New elements replacing the previous elements contained
+    ///     in `subRange`.
     public mutating func replaceSubrange<C: Collection where C.Iterator.Element == Iterator.Element>(_ subrange: Range<Index>, with newElements: C) {
         
         parsers.replaceSubrange(subrange, with: newElements)

@@ -5,35 +5,48 @@
 //  Created by David Dufresne on 2015-10-14.
 //  Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  A helper module that defines some language definitions that can be used to instantiate a token parser (see "Token").
+//  A helper module that defines some language definitions that can be used to
+//  instantiate a token parser (see "Token").
 
 import struct Foundation.CharacterSet
 
-/// The `LanguageDefinition` structure contains all parameterizable features of the token parser. There is some default definitions provided by SwiftParsec.
+/// The `LanguageDefinition` structure contains all parameterizable features of
+/// the token parser. There is some default definitions provided by SwiftParsec.
 public struct LanguageDefinition<UserState> {
     
-    /// Describe the start of a block comment. Use the empty string if the language doesn't support block comments. For example "/*".
+    /// Describe the start of a block comment. Use the empty string if the
+    /// language doesn't support block comments. For example "/*".
     public var commentStart: String
     
-    /// Describe the end of a block comment. Use the empty string if the language doesn't support block comments. For example "*/".
+    /// Describe the end of a block comment. Use the empty string if the
+    /// language doesn't support block comments. For example "*/".
     public var commentEnd: String
     
-    /// Describe the start of a line comment. Use the empty string if the language doesn't support line comments. For example "//".
+    /// Describe the start of a line comment. Use the empty string if the
+    /// language doesn't support line comments. For example "//".
     public var commentLine: String
     
     /// Set to `true` if the language supports nested block comments.
     public var allowNestedComments: Bool
     
-    /// This parser should accept any start characters of identifiers. For example `letter <|> character("_")`.
+    /// This parser should accept any start characters of identifiers. For
+    /// example `letter <|> character("_")`.
     public var identifierStart: GenericParser<String, UserState, Character>
     
-    /// This parser should accept any legal tail characters of identifiers. For example `alphaNum <|> character("_")`. The function receives the character parsed by `identifierStart` as parameter, allowing to handle special cases (i.e. implicit parameters in swift start with a '$' that must be followed by decimal digits only).
+    /// This parser should accept any legal tail characters of identifiers. For
+    /// example `alphaNum <|> character("_")`. The function receives the
+    /// character parsed by `identifierStart` as parameter, allowing to handle
+    /// special cases (i.e. implicit parameters in swift start with a '$' that
+    /// must be followed by decimal digits only).
     public var identifierLetter: (Character) -> GenericParser<String, UserState, Character>
     
-    /// This parser should accept any start characters of operators. For example `oneOf(":!#$%&*+./<=>?@\\^|-~")`
+    /// This parser should accept any start characters of operators. For example
+    /// `oneOf(":!#$%&*+./<=>?@\\^|-~")`
     public var operatorStart: GenericParser<String, UserState, Character>
     
-    /// This parser should accept any legal tail characters of operators. Note that this parser should even be defined if the language doesn't support user-defined operators, or otherwise the `reservedOperators` parser won't work correctly.
+    /// This parser should accept any legal tail characters of operators. Note
+    /// that this parser should even be defined if the language doesn't support
+    /// user-defined operators, or otherwise the `reservedOperators` parser won't work correctly.
     public var operatorLetter: GenericParser<String, UserState, Character>
     
     /// The set of reserved identifiers.
@@ -42,7 +55,10 @@ public struct LanguageDefinition<UserState> {
     /// The set of reserved operators.
     public var reservedOperators: Set<String>
     
-    /// This optional parser should accept escaped characters. This parser will also replace the string gap and zero-width escape sequence parsers. The default escape sequences have the following form: '\97' '\x61', '\o141', '\^@', '\n', \NUL.
+    /// This optional parser should accept escaped characters. This parser will
+    /// also replace the string gap and zero-width escape sequence parsers. The
+    /// default escape sequences have the following form: '\97' '\x61', '\o141',
+    /// '\^@', '\n', \NUL.
     public var characterEscape: GenericParser<String, UserState, Character>?
     
     /// Set to `true` if the language is case sensitive.
@@ -52,7 +68,10 @@ public struct LanguageDefinition<UserState> {
 
 public extension LanguageDefinition {
     
-    /// This is the most minimal token definition. It is recommended to use this definition as the basis for other definitions. `empty` has no reserved names or operators, is case sensitive and doesn't accept comments, identifiers or operators.
+    /// This is the most minimal token definition. It is recommended to use this
+    /// definition as the basis for other definitions. `empty` has no reserved
+    /// names or operators, is case sensitive and doesn't accept comments,
+    /// identifiers or operators.
     public static var empty: LanguageDefinition {
         
         return LanguageDefinition(
@@ -72,7 +91,9 @@ public extension LanguageDefinition {
         
     }
     
-    /// This is a minimal token definition for Java style languages. It defines the style of comments, valid identifiers and case sensitivity. It does not define any reserved words or operators.
+    /// This is a minimal token definition for Java style languages. It defines
+    /// the style of comments, valid identifiers and case sensitivity. It does
+    /// not define any reserved words or operators.
     public static var javaStyle: LanguageDefinition {
         
         var javaDef = empty
@@ -85,7 +106,8 @@ public extension LanguageDefinition {
         
     }
     
-    // This is a definition for the JSON language-independent data interchange format.
+    // This is a definition for the JSON language-independent data interchange
+    // format.
     public static var json: LanguageDefinition {
         
         var jsonDef = empty
@@ -102,7 +124,8 @@ public extension LanguageDefinition {
         let hexaNum: GenericParser<String, UserState, UInt16> =
         GenericParser.hexadecimalDigit.count(jsonMaxEscapeDigit) >>- { digits in
             
-            // The max possible value of `digits` is 0xFFFF, so no possible overflow.
+            // The max possible value of `digits` is 0xFFFF, so no possible
+            // overflow.
             let integer = UInt16(String(digits), radix: 16)!
             return GenericParser(result: integer)
             
@@ -145,7 +168,9 @@ public extension LanguageDefinition {
         
     }
     
-    /// This is a minimal token definition for the swift 2.1 language. It defines the style of comments, valid identifiers and operators, reserved names and operators, character escaping, and case sensitivity.
+    /// This is a minimal token definition for the swift 2.1 language. It
+    /// defines the style of comments, valid identifiers and operators, reserved
+    /// names and operators, character escaping, and case sensitivity.
     public static var swift: LanguageDefinition {
         
         var swiftDef = empty
@@ -233,7 +258,9 @@ private let swiftIdentifierStartCharacters =
     swiftIdentifierStartCharacters3 +
     swiftIdentifierStartCharacters4
 
-// Split declaration of swiftIdentifierStartCharacter because "Expression was too complex to be solved in reasonable time; consider breaking up the expression into distinct sub-expressions" error.
+// Split declaration of swiftIdentifierStartCharacter because "Expression was
+// too complex to be solved in reasonable time; consider breaking up the
+// expression into distinct sub-expressions" error.
 private let swiftIdentifierStartCharacters1 =
     (0x0041...0x005A).stringValue + // 'A' to 'Z'
     (0x0061...0x007A).stringValue + // 'a' to 'z'

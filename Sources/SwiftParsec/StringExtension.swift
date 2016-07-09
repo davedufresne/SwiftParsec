@@ -52,7 +52,8 @@ extension String {
         
     }
     
-    /// If `!self.isEmpty`, remove the first `Character` and return it, otherwise return nil.
+    /// If `!self.isEmpty`, remove the first `Character` and return it,
+    /// otherwise return nil.
     ///
     /// - returns: The first `Character` if `!self.isEmpty`.
     mutating public func popFirst() -> Character? {
@@ -66,7 +67,8 @@ extension String {
         
     }
     
-    /// Return a `String` with the duplicate characters removed. In particular, it keeps only the first occurrence of each element.
+    /// Return a `String` with the duplicate characters removed. In particular,
+    /// it keeps only the first occurrence of each element.
     ///
     /// - returns: A `String` with the duplicate characters removed.
     func removingDuplicates() -> String {

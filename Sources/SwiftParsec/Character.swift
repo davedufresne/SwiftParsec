@@ -15,10 +15,13 @@ public typealias StringParser = GenericParser<String, (), Character>
 
 public extension Parsec where StreamType.Iterator.Element == Character, Result == Character {
     
-    /// Return a parser that succeeds for any character for which the supplied function `predicate` returns `true`. The parser returns the character that is actually parsed.
+    /// Return a parser that succeeds for any character for which the supplied
+    /// function `predicate` returns `true`. The parser returns the character
+    /// that is actually parsed.
     ///
     /// - parameter predicate: The predicate to apply on the `Character`.
-    /// - returns: A parser that succeeds for any character for which the supplied function `predicate` returns `true`.
+    /// - returns: A parser that succeeds for any character for which the
+    ///   supplied function `predicate` returns `true`.
     public static func satisfy(_ predicate: (Character) -> Bool) -> GenericParser<StreamType, UserState, Result> {
         
         return tokenPrimitive(
@@ -39,38 +42,51 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
         
     }
     
-    /// Return a parser that succeeds if the current character is in the supplied list of characters. It returns the parsed character.
+    /// Return a parser that succeeds if the current character is in the
+    /// supplied list of characters. It returns the parsed character.
     ///
     ///     let vowel = StringParser.oneOf("aeiou")
     ///
     /// - parameter list: A `String` of possible characters to match.
-    /// - returns: A parser that succeeds if the current character is in the supplied list of characters.
-    /// - SeeAlso: `GenericParser.satisfy(predicate: Character -> Bool) -> GenericParser`
+    /// - returns: A parser that succeeds if the current character is in the
+    ///   supplied list of characters.
+    /// - SeeAlso:
+    ///   `GenericParser.satisfy(
+    ///       predicate: Character -> Bool
+    ///   ) -> GenericParser`
     public static func oneOf(_ list: String) -> GenericParser<StreamType, UserState, Result> {
         
         return satisfy(list.characters.contains)
         
     }
     
-    /// Return a parser that succeeds if the current character is in the supplied interval of characters. It returns the parsed character.
+    /// Return a parser that succeeds if the current character is in the
+    /// supplied interval of characters. It returns the parsed character.
     ///
     ///     let digit = StringParser.oneOf("0"..."9")
     ///
-    /// - parameter interval: A `ClosedInterval` of possible characters to match.
-    /// - returns: A parser that succeeds if the current character is in the supplied interval of characters.
-    /// - SeeAlso: `GenericParser.satisfy(predicate: Character -> Bool) -> GenericParser`
+    /// - parameter interval: A `ClosedInterval` of possible characters to
+    ///   match.
+    /// - returns: A parser that succeeds if the current character is in the
+    ///   supplied interval of characters.
+    /// - SeeAlso:
+    ///   `GenericParser.satisfy(
+    ///       predicate: Character -> Bool
+    ///   ) -> GenericParser`
     public static func oneOf(_ interval: ClosedRange<Character>) -> GenericParser<StreamType, UserState, Result> {
         
         return satisfy(interval.contains)
         
     }
     
-    /// Return a parser that succeeds if the current character is _not_ in the supplied list of characters. It returns the parsed character.
+    /// Return a parser that succeeds if the current character is _not_ in the
+    /// supplied list of characters. It returns the parsed character.
     ///
     ///     let consonant = StringParser.noneOf("aeiou")
     ///
     /// - parameter list: A `String` of possible _not_ to match.
-    /// - returns: A parser that succeeds if the current character is _not_ in the supplied list of characters.
+    /// - returns: A parser that succeeds if the current character is _not_ in
+    ///   the supplied list of characters.
     public static func noneOf(_ list: String) -> GenericParser<StreamType, UserState, Result> {
         
         return satisfy { !list.characters.contains($0) }
@@ -86,36 +102,43 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
         
     }
     
-    /// A Parser that parses a white space character (any Unicode space character, and the control characters \t, \n, \r, \f, \v). It returns the parsed character.
+    /// A Parser that parses a white space character (any Unicode space
+    /// character, and the control characters \t, \n, \r, \f, \v). It returns
+    /// the parsed character.
     public static var unicodeSpace: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isUnicodeSpace } <?> LocalizedString("unicode space")
         
     }
     
-    /// A Parser that parses any space character, and the control characters \t, \n, \r, \f, \v. It returns the parsed character.
+    /// A Parser that parses any space character, and the control characters \t,
+    /// \n, \r, \f, \v. It returns the parsed character.
     public static var space: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isSpace } <?> LocalizedString("space")
         
     }
     
-    /// A Parser that parses a newline character ("\n"). It returns a newline character.
+    /// A Parser that parses a newline character ("\n"). It returns a newline
+    /// character.
     public static var newLine: GenericParser<StreamType, UserState, Result> {
         
         return character("\n") <?> LocalizedString("lf new-line")
         
     }
     
-    /// A Parser that parses a carriage return character ("\r") followed by a newline character ("\n"). It returns a newline character.
+    /// A Parser that parses a carriage return character ("\r") followed by a
+    /// newline character ("\n"). It returns a newline character.
     public static var crlf: GenericParser<StreamType, UserState, Result> {
         
-        return character("\r\n") *> GenericParser(result: "\n") <|> // "\r\n" is combined in one Unicode Scalar.
+        // "\r\n" is combined in one Unicode Scalar.
+        return character("\r\n") *> GenericParser(result: "\n") <|>
             character("\r") *> character("\n") <?> LocalizedString("crlf new-line")
         
     }
     
-    /// A Parser that parses a CRLF (see `crlf`) or LF (see `newLine`) end-of-line. It returns a newline character ("\n").
+    /// A Parser that parses a CRLF (see `crlf`) or LF (see `newLine`)
+    /// end-of-line. It returns a newline character ("\n").
     ///
     ///     let endOfLine = StringParser.newline <|> StringParser.crlf
     public static var endOfLine: GenericParser<StreamType, UserState, Result> {
@@ -131,70 +154,80 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
         
     }
     
-    /// A Parser that parses a character in the category of Uppercase and Titlecase Letters. It returns the parsed character.
+    /// A Parser that parses a character in the category of Uppercase and
+    /// Titlecase Letters. It returns the parsed character.
     public static var uppercase: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isUppercase } <?> LocalizedString("uppercase letter")
         
     }
     
-    /// A Parser that parses a character in the category of Lowercase Letters. It returns the parsed character.
+    /// A Parser that parses a character in the category of Lowercase Letters.
+    /// It returns the parsed character.
     public static var lowercase: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isLowercase } <?> LocalizedString("lowercase letter")
         
     }
     
-    /// A Parser that parses a character in the categories of Letters, Marks, and Numbers. It returns the parsed character.
+    /// A Parser that parses a character in the categories of Letters, Marks,
+    /// and Numbers. It returns the parsed character.
     public static var alphaNumeric: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isAlphaNumeric } <?> LocalizedString("letter or digit")
         
     }
     
-    /// A Parser that parses a character in the categories of Letters and Marks. It returns the parsed character.
+    /// A Parser that parses a character in the categories of Letters and Marks.
+    /// It returns the parsed character.
     public static var letter: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isAlpha } <?> LocalizedString("letter")
         
     }
     
-    /// A Parser that parses a character in the categories of Symbols. It returns the parsed character.
+    /// A Parser that parses a character in the categories of Symbols. It
+    /// returns the parsed character.
     public static var symbol: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isSymbol } <?> LocalizedString("symbol")
         
     }
     
-    /// A Parser that parses a character in the category of Numbers. It returns the parsed character.
+    /// A Parser that parses a character in the category of Numbers. It returns
+    /// the parsed character.
     public static var digit: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isDigit } <?> LocalizedString("digit")
         
     }
     
-    /// A Parser that parses an ASCII decimal digit, i.e. between "0" and "9". It returns the parsed character.
+    /// A Parser that parses an ASCII decimal digit, i.e. between "0" and "9".
+    /// It returns the parsed character.
     public static var decimalDigit: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isDecimalDigit } <?> LocalizedString("digit")
         
     }
     
-    /// A Parser that parses an ASCII hexadecimal digit, i.e. "0"..."9", "a"..."f", "A"..."F". It returns the parsed character.
+    /// A Parser that parses an ASCII hexadecimal digit, i.e. "0"..."9",
+    /// "a"..."f", "A"..."F". It returns the parsed character.
     public static var hexadecimalDigit: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isHexadecimalDigit } <?>  LocalizedString("hexadecimal digit")
         
     }
     
-    /// A Parser that parses an octal digit (a character between "0" and "7"). It returns the parsed character.
+    /// A Parser that parses an octal digit (a character between "0" and "7").
+    /// It returns the parsed character.
     public static var octalDigit: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isOctalDigit } <?>  LocalizedString("octal digit")
         
     }
     
-    /// Return a parser that parses a single character `Character`. It returns the parsed character (i.e. `char`).
+    /// Return a parser that parses a single character `Character`. It returns
+    /// the parsed character (i.e. `char`).
     ///
     ///     let semicolon  = StringParser.character(";")
     ///
@@ -206,7 +239,8 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
         
     }
     
-    /// A Parser that succeeds for any character. It returns the parsed character.
+    /// A Parser that succeeds for any character. It returns the parsed
+    /// character.
     public static var anyCharacter: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { _ in true }
@@ -220,7 +254,8 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
         
     }
     
-    /// Return a parser that succeeds for any character that are member of the supplied `NSCharacterSet`. It returns the parsed character.
+    /// Return a parser that succeeds for any character that are member of the
+    /// supplied `NSCharacterSet`. It returns the parsed character.
     ///
     /// - parameter set: The `NSCharacterSet` used to test for membership.
     /// - returns: The parsed character.
@@ -245,7 +280,8 @@ public extension Parsec where Result: Sequence, Result.Iterator.Element == Chara
 
 public extension Parsec where StreamType.Element == StreamType.Iterator.Element, StreamType.Iterator.Element == Character {
     
-    /// Return a parser that parses a `String`. It returns the parsed string (i.e. `str`).
+    /// Return a parser that parses a `String`. It returns the parsed string
+    /// (i.e. `str`).
     ///
     ///     let divOrMod = StringParser.string("div") <|>
     ///         StringParser.string("mod")

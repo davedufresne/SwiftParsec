@@ -8,7 +8,10 @@
 // Textual source positions.
 //
 
-/// SourcePosition represents source positions. It contains the name of the source (i.e. file name), a line number and a column number. The upper left is 1, 1. It implements the `Comparable` and `CustomStringConvertible` protocols. The comparison is made using line and column number.
+/// SourcePosition represents source positions. It contains the name of the
+/// source (i.e. file name), a line number and a column number. The upper left
+/// is 1, 1. It implements the `Comparable` and `CustomStringConvertible`
+/// protocols. The comparison is made using line and column number.
 public struct SourcePosition: Comparable, CustomStringConvertible {
     
     /// The name of the source (i.e. file name)
@@ -38,9 +41,14 @@ public struct SourcePosition: Comparable, CustomStringConvertible {
         
     }
     
-    /// Update a source position given a character. If the character is a newline ("\n") or carriage return ("\r") the line number is incremented by 1. If the character is a tab ("\t") the column number is incremented to the nearest 8'th column, ie. `column + 8 - ((column - 1) % 8)`. In all other cases, the column is incremented by 1.
+    /// Update a source position given a character. If the character is a
+    /// newline ("\n") or carriage return ("\r") the line number is incremented
+    /// by 1. If the character is a tab ("\t") the column number is incremented
+    /// to the nearest 8'th column, ie. `column + 8 - ((column - 1) % 8)`. In
+    /// all other cases, the column is incremented by 1.
     ///
-    /// - parameter char: The tested character indicating how to update the position.
+    /// - parameter char: The tested character indicating how to update the
+    ///   position.
     mutating func updatePosition(_ char: Character) {
         
         switch char {

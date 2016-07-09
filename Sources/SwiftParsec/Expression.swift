@@ -5,16 +5,20 @@
 //  Created by David Dufresne on 2015-10-23.
 //  Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  A helper module to parse "expressions". Builds a parser given a table of operators and associativities.
+//  A helper module to parse "expressions". Builds a parser given a table of
+//  operators and associativities.
 
-/// This enumeration specifies the associativity of operators: right, left or none.
+/// This enumeration specifies the associativity of operators: right, left or
+/// none.
 public enum Associativity {
     
     case right, left, none
     
 }
 
-/// This data type specifies operators that work on values of type `Result`. An operator is either binary infix or unary prefix or postfix. A binary operator has also an associated associativity.
+/// This data type specifies operators that work on values of type `Result`. An
+/// operator is either binary infix or unary prefix or postfix. A binary
+/// operator has also an associated associativity.
 public enum Operator<StreamType: Stream, UserState, Result> {
     
     /// Infix operator and associativity.
@@ -69,28 +73,52 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
         
     }
     
-    /// Build an expression parser for terms returned by `combined` with operators from `self`, taking the associativity and precedence specified in `self` into account. Prefix and postfix operators of the same precedence can only occur once (i.e. `--2` is not allowed if `-` is prefix negate). Prefix and postfix operators of the same precedence associate to the left (i.e. if `++` is postfix increment, than `-2++` equals `-1`, not `-3`).
+    /// Build an expression parser for terms returned by `combined` with
+    /// operators from `self`, taking the associativity and precedence specified
+    /// in `self` into account. Prefix and postfix operators of the same
+    /// precedence can only occur once (i.e. `--2` is not allowed if `-` is
+    /// prefix negate). Prefix and postfix operators of the same precedence
+    /// associate to the left (i.e. if `++` is postfix increment, than `-2++`
+    /// equals `-1`, not `-3`).
     ///
-    /// It takes care of all the complexity involved in building expression parser. Here is an example of an expression parser that handles prefix signs, postfix increment and basic arithmetic:
+    /// It takes care of all the complexity involved in building expression
+    /// parser. Here is an example of an expression parser that handles prefix
+    /// signs, postfix increment and basic arithmetic:
     ///
-    ///     func binary(name: String, function: (Int, Int) -> Int, assoc: Associativity) -> Operator<String, (), Int> {
+    ///     func binary(
+    ///         name: String,
+    ///         function: (Int, Int) -> Int,
+    ///         assoc: Associativity
+    ///     ) -> Operator<String, (), Int> {
     ///
-    ///         let opParser = StringParser.string(name) *> GenericParser(result: function)
-    ///             return .Infix(opParser, assoc)
+    ///         let opParser = StringParser.string(name) *>
+    ///             GenericParser(result: function)
+    ///
+    ///         return .Infix(opParser, assoc)
     ///
     ///     }
     ///
-    ///     func prefix(name: String, function: Int -> Int) -> Operator<String, (), Int> {
+    ///     func prefix(
+    ///         name: String,
+    ///         function: Int -> Int
+    ///     ) -> Operator<String, (), Int> {
     ///
-    ///         let opParser = StringParser.string(name) *> GenericParser(result: function)
-    ///             return .Prefix(opParser)
+    ///         let opParser = StringParser.string(name) *>
+    ///             GenericParser(result: function)
+    ///
+    ///         return .Prefix(opParser)
     ///
     ///     }
     ///
-    ///     func postfix(name: String, function: Int -> Int) -> Operator<String, (), Int> {
+    ///     func postfix(
+    ///         name: String,
+    ///         function: Int -> Int
+    ///     ) -> Operator<String, (), Int> {
     ///
-    ///         let opParser = StringParser.string(name) *> GenericParser(result: function)
-    ///             return .Postfix(opParser.attempt)
+    ///         let opParser = StringParser.string(name) *>
+    ///             GenericParser(result: function)
+    ///
+    ///         return .Postfix(opParser.attempt)
     ///
     ///     }
     ///
@@ -125,9 +153,14 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
     ///
     ///     } <?> "expression"
     ///
-    /// - parameter combine: A function receiving a 'simple expression' as parameter that can be nested in other expressions.
-    /// - returns: An expression parser for terms returned by `combined` with operators from `self`.
-    /// - SeeAlso: GenericParser.recursive(combine: GenericParser -> GenericParser) -> GenericParser
+    /// - parameter combine: A function receiving a 'simple expression' as
+    ///   parameter that can be nested in other expressions.
+    /// - returns: An expression parser for terms returned by `combined`
+    ///   with operators from `self`.
+    /// - SeeAlso:
+    ///   `GenericParser.recursive(
+    ///       combine: GenericParser -> GenericParser
+    ///   ) -> GenericParser
     public func makeExpressionParser(_ combine: @noescape (expression: GenericParser<StreamType, UserState, Result>) -> GenericParser<StreamType, UserState, Result>) -> GenericParser<StreamType, UserState, Result> {
         
         var term: GenericParser<StreamType, UserState, Result>!
@@ -314,7 +347,8 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
     ///
     /// - parameters:
     ///   - subRange: Range of elements to replace.
-    ///   - newElements: New elements replacing the previous elements contained in `subRange`.
+    ///   - newElements: New elements replacing the previous elements contained
+    ///     in `subRange`.
     public mutating func replaceSubrange<C: Collection where C.Iterator.Element == Iterator.Element>(_ subrange: Range<Index>, with newElements: C) {
         
         table.replaceSubrange(subrange, with: newElements)

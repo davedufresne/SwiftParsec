@@ -10,46 +10,59 @@
 
 public extension GenericParser {
     
-    /// Return a parser that tries to apply the parsers in the array `parsers` in order, until one of them succeeds. It returns the value of the succeeding parser.
+    /// Return a parser that tries to apply the parsers in the array `parsers`
+    /// in order, until one of them succeeds. It returns the value of the
+    /// succeeding parser.
     ///
     /// - parameter parsers: An array of parsers to try.
-    /// - returns: A parser that tries to apply the parsers in the array `parsers` in order, until one of them succeeds.
+    /// - returns: A parser that tries to apply the parsers in the array
+    ///   `parsers` in order, until one of them succeeds.
     public static func choice<S: Sequence where S.Iterator.Element == GenericParser>(_ parsers: S) -> GenericParser {
         
         return parsers.reduce(GenericParser.empty, combine: <|>)
         
     }
     
-    /// A parser that tries to apply `self`. If `self` fails without consuming input, it returns `nil`, otherwise it returns the value returned by `self`.
+    /// A parser that tries to apply `self`. If `self` fails without consuming
+    /// input, it returns `nil`, otherwise it returns the value returned by
+    /// `self`.
     public var optional: GenericParser<StreamType, UserState, Result?> {
         
         return map({ $0 }).otherwise(nil)
         
     }
     
-    /// Return a parser that tries to apply `self`. If `self` fails without consuming input, it returns `result`, or else the value returned by `self`.
+    /// Return a parser that tries to apply `self`. If `self` fails without
+    /// consuming input, it returns `result`, or else the value returned by
+    /// `self`.
     ///
-    /// - parameter result: The result to return if `self` fails without consuming input.
-    /// - returns: A parser that tries to apply `self`. If `self` fails without consuming input, it returns `result`.
+    /// - parameter result: The result to return if `self` fails without
+    ///   consuming input.
+    /// - returns: A parser that tries to apply `self`. If `self` fails without
+    ///   consuming input, it returns `result`.
     public func otherwise(_ result: Result) -> GenericParser {
         
         return self <|> GenericParser(result: result)
         
     }
     
-    /// A parser that tries to apply `self`. It will parse `self` or nothing. It only fails if `self` fails after consuming input. It discards the result of `self`.
+    /// A parser that tries to apply `self`. It will parse `self` or nothing.
+    /// It only fails if `self` fails after consuming input. It discards the
+    /// result of `self`.
     public var discard: GenericParser<StreamType, UserState, ()> {
         
         return map { _ in () } <|> GenericParser<StreamType, UserState, ()>(result: ())
         
     }
     
-    /// Return a parser that parses `opening`, followed by `self` and `closing`. It returns the value returned by `self`.
+    /// Return a parser that parses `opening`, followed by `self` and `closing`.
+    /// It returns the value returned by `self`.
     ///
     /// - parameters:
     ///   - opening: The first parser to apply.
     ///   - closing: The last parser to apply.
-    /// - returns: A parser that parses `opening`, followed by `self` and `closing`.
+    /// - returns: A parser that parses `opening`, followed by `self` and
+    ///   `closing`.
     public func between<U, V>(_ opening: GenericParser<StreamType, UserState, U>, _ closing: GenericParser<StreamType, UserState, V>) -> GenericParser {
         
         return opening *> self <* closing
@@ -63,7 +76,8 @@ public extension GenericParser {
         
     }
     
-    /// A parser that applies `self` _one_ or more times. It returns an array of the returned values of `self`.
+    /// A parser that applies `self` _one_ or more times. It returns an array of
+    /// the returned values of `self`.
     ///
     ///     let word = StringParser.letter.many1
     public var many1: GenericParser<StreamType, UserState, [Result]> {
@@ -81,24 +95,30 @@ public extension GenericParser {
         
     }
     
-    /// Return a parser that parses _zero_ or more occurrences of `self`, separated by `separator`. It returns an array of values returned by `self`.
+    /// Return a parser that parses _zero_ or more occurrences of `self`,
+    /// separated by `separator`. It returns an array of values returned by
+    /// `self`.
     ///
     ///     let comma = StringParser.character(",")
     ///     let letter = StringParser.letter
     ///     let commaSeparated = letter.separatedBy(comma)
     ///
     /// - parameter separator: The separator parser.
-    /// - returns: A parser that parses _zero_ or more occurrences of `self`, separated by `separator`.
+    /// - returns: A parser that parses _zero_ or more occurrences of `self`,
+    ///   separated by `separator`.
     public func separatedBy<Separator>(_ separator: GenericParser<StreamType, UserState, Separator>) -> GenericParser<StreamType, UserState, [Result]> {
         
         return separatedBy1(separator) <|> GenericParser<StreamType, UserState, [Result]>(result: [])
         
     }
     
-    /// Return a parser that parses _one_ or more occurrences of `self`, separated by `separator`. It returns an array of values returned by `self`.
+    /// Return a parser that parses _one_ or more occurrences of `self`,
+    /// separated by `separator`. It returns an array of values returned by
+    /// `self`.
     ///
     /// - parameter separator: The separator parser.
-    /// - returns: A parser that parses _one_ or more occurrences of `self`, separated by `separator`.
+    /// - returns: A parser that parses _one_ or more occurrences of `self`,
+    ///   separated by `separator`.
     public func separatedBy1<Separator>(_ separator: GenericParser<StreamType, UserState, Separator>) -> GenericParser<StreamType, UserState, [Result]> {
         
         return self >>- { result in
@@ -114,16 +134,21 @@ public extension GenericParser {
         
     }
     
-    /// Return a parser that parses _zero_ or more occurrences of `self`, separated and optionally ended by `separator`. It returns an array of values returned by `self`.
+    /// Return a parser that parses _zero_ or more occurrences of `self`,
+    /// separated and optionally ended by `separator`. It returns an array of
+    /// values returned by `self`.
     ///
     ///     let cStatements = cStatement.dividedBy(semicolon)
     ///
-    ///     let swiftStatements = swiftStatement.dividedBy(semicolon, endSeparatorRequired: false)
+    ///     let swiftStatements = swiftStatement.dividedBy(semicolon,
+    ///         endSeparatorRequired: false)
     ///
     /// - parameters:
     ///   - separator: The separator parser.
-    ///   - endSeparatorRequired: Indicates if the separator is required at the end. The default value is true.
-    /// - returns: A parser that parses _zero_ or more occurrences of `self`, separated and optionally ended by `separator`.
+    ///   - endSeparatorRequired: Indicates if the separator is required at the
+    ///     end. The default value is true.
+    /// - returns: A parser that parses _zero_ or more occurrences of `self`,
+    ///   separated and optionally ended by `separator`.
     public func dividedBy<Separator>(_ separator: GenericParser<StreamType, UserState, Separator>, endSeparatorRequired: Bool = true) -> GenericParser<StreamType, UserState, [Result]> {
         
         if endSeparatorRequired {
@@ -137,12 +162,16 @@ public extension GenericParser {
         
     }
     
-    /// Return a parser that parses _one_ or more occurrences of `self`, separated and optionally ended by `separator`. It returns an array of values returned by `self`.
+    /// Return a parser that parses _one_ or more occurrences of `self`,
+    /// separated and optionally ended by `separator`. It returns an array of
+    /// values returned by `self`.
     ///
     /// - parameters:
     ///   - separator: The separator parser.
-    ///   - endSeparatorRequired: Indicates if the separator is required at the end. The default value is true.
-    /// - returns: A parser that parses _one_ or more occurrences of `self`, separated and optionally ended by `separator`.
+    ///   - endSeparatorRequired: Indicates if the separator is required at the
+    ///     end. The default value is true.
+    /// - returns: A parser that parses _one_ or more occurrences of `self`,
+    ///   separated and optionally ended by `separator`.
     public func dividedBy1<Separator>(_ separator: GenericParser<StreamType, UserState, Separator>, endSeparatorRequired: Bool = true) -> GenericParser<StreamType, UserState, [Result]> {
         
         if endSeparatorRequired {
@@ -172,7 +201,9 @@ public extension GenericParser {
         
     }
     
-    /// Return a parser that parses `n` occurrences of `self`. If `n` is smaller or equal to zero, the parser returns `[]`. It returns an array of `n` values returned by `self`.
+    /// Return a parser that parses `n` occurrences of `self`. If `n` is
+    /// smaller or equal to zero, the parser returns `[]`. It returns an array
+    /// of `n` values returned by `self`.
     ///
     /// - parameter n: The number of occurences of `self` to parse.
     /// - returns: A parser that parses `n` occurrences of `self`.
@@ -203,22 +234,32 @@ public extension GenericParser {
         
     }
     
-    /// Return a parser that parses _zero_ or more occurrences of `self`, separated by `oper`. Returns a value obtained by a _right_ associative application of all functions returned by `oper` to the values returned by `self`. If there are no occurrences of `self`, the value `otherwise` is returned.
+    /// Return a parser that parses _zero_ or more occurrences of `self`,
+    /// separated by `oper`. Returns a value obtained by a _right_ associative
+    /// application of all functions returned by `oper` to the values returned
+    /// by `self`. If there are no occurrences of `self`, the value `otherwise`
+    /// is returned.
     ///
     /// - parameters:
     ///   - oper: The operator parser.
-    ///   - otherwise: Default value returned when there are no occurences of `self`.
-    /// - returns: A parser that parses _zero_ or more occurrences of `self`, separated by `oper`.
+    ///   - otherwise: Default value returned when there are no occurences of
+    ///     `self`.
+    /// - returns: A parser that parses _zero_ or more occurrences of `self`,
+    ///   separated by `oper`.
     public func chainRight(_ oper: GenericParser<StreamType, UserState, (Result, Result) -> Result>, otherwise: Result) -> GenericParser {
     
         return chainRight1(oper) <|> GenericParser(result: otherwise)
         
     }
     
-    /// Return a parser that parses _one_ or more occurrences of `self`, separated by `oper`. Returns a value obtained by a _right_ associative application of all functions returned by `op` to the values returned by `self`.
+    /// Return a parser that parses _one_ or more occurrences of `self`,
+    /// separated by `oper`. Returns a value obtained by a _right_ associative
+    /// application of all functions returned by `op` to the values returned by
+    /// `self`.
     ///
     /// - parameter oper: The operator parser.
-    /// - returns: A parser that parses _one_ or more occurrences of `self`, separated by `oper`.
+    /// - returns: A parser that parses _one_ or more occurrences of `self`,
+    ///   separated by `oper`.
     public func chainRight1(_ oper: GenericParser<StreamType, UserState, (Result, Result) -> Result>) -> GenericParser {
         
         func scan() -> GenericParser {
@@ -249,19 +290,29 @@ public extension GenericParser {
         
     }
     
-    /// Return a parser that parses _zero_ or more occurrences of `self`, separated by `oper`. Returns a value obtained by a _left_ associative application of all functions returned by `oper` to the values returned by `self`. If there are zero occurrences of `self`, the value `otherwise` is returned.
+    /// Return a parser that parses _zero_ or more occurrences of `self`,
+    /// separated by `oper`. Returns a value obtained by a _left_ associative
+    /// application of all functions returned by `oper` to the values returned
+    /// by `self`. If there are zero occurrences of `self`, the value
+    /// `otherwise` is returned.
     ///
     /// - parameters:
     ///   - oper: The operator parser.
-    ///   - otherwise: Default value returned when there are no occurences of `self`.
-    /// - returns: A parser that parses _zero_ or more occurrences of `self`, separated by `oper`.
+    ///   - otherwise: Default value returned when there are no occurences of
+    ///     `self`.
+    /// - returns: A parser that parses _zero_ or more occurrences of `self`,
+    ///   separated by `oper`.
     public func chainLeft(_ oper: GenericParser<StreamType, UserState, (Result, Result) -> Result>, otherwise: Result) -> GenericParser {
         
         return chainLeft1(oper) <|> GenericParser(result: otherwise)
         
     }
     
-    /// Return a parser that parses _one_ or more occurrences of `self`, separated by oper`. Returns a value obtained by a _left_ associative application of all functions returned by `oper` to the values returned by `self`. This parser can for example be used to eliminate left recursion which typically occurs in expression grammars.
+    /// Return a parser that parses _one_ or more occurrences of `self`,
+    /// separated by oper`. Returns a value obtained by a _left_ associative
+    /// application of all functions returned by `oper` to the values returned
+    /// by `self`. This parser can for example be used to eliminate left
+    /// recursion which typically occurs in expression grammars.
     ///
     ///     let addOp: GenericParser<String, (), (Int, Int) -> Int> =
     ///         StringParser.character("+") *> GenericParser(result: +) <|>
@@ -270,7 +321,8 @@ public extension GenericParser {
     ///     let expr = number.chainLeft1(addOp)
     ///
     /// - parameter oper: The operator parser.
-    /// - returns: A parser that parses _one_ or more occurrences of `self`, separated by `oper`.
+    /// - returns: A parser that parses _one_ or more occurrences of `self`,
+    ///   separated by `oper`.
     public func chainLeft1(_ oper: GenericParser<StreamType, UserState, (Result, Result) -> Result>) -> GenericParser {
         
         func rest(_ left: Result) -> GenericParser {
@@ -289,7 +341,13 @@ public extension GenericParser {
         
     }
     
-    /// A parser that only succeeds when parser `self` fails. This parser does not consume any input. This parser can be used to implement the 'longest match' rule. For example, when recognizing keywords (for example `let`), we want to make sure that a keyword is not followed by a legal identifier character, in which case the keyword is actually an identifier (for example `lets`). We can program this behaviour as follows:
+    /// A parser that only succeeds when parser `self` fails. This parser does
+    /// not consume any input. This parser can be used to implement the
+    /// 'longest match' rule. For example, when recognizing keywords (for
+    /// example `let`), we want to make sure that a keyword is not followed by a
+    /// legal identifier character, in which case the keyword is actually an
+    /// identifier (for example `lets`). We can program this behaviour as
+    /// follows:
     ///
     ///     let alphaNum = StringParser.alphaNumeric
     ///     let keyworkLet = StringParser.string("let") <* alphaNum.noOccurence
@@ -305,17 +363,21 @@ public extension GenericParser {
         
     }
     
-    /// Return a parser that applies parser `self` _zero_ or more times until parser `end` succeeds. Returns the list of values returned by `self`. This parser can be used to scan comments:
+    /// Return a parser that applies parser `self` _zero_ or more times until
+    /// parser `end` succeeds. Returns the list of values returned by `self`.
+    /// This parser can be used to scan comments:
     ///
     ///     let anyChar = StringParser.anyCharacter
     ///     let start = StringParser.string("<!--")
     ///     let end = StringParser.string("-->")
     ///     let comment = start *> anyChar.manyTill(end.attempt)
     ///
-    /// Note the overlapping parsers `anyChar` and `end`, and therefore the use of the 'attempt' combinator.
+    /// Note the overlapping parsers `anyChar` and `end`, and therefore the use
+    /// of the 'attempt' combinator.
     ///
     /// - parameter end: End parser.
-    /// - returns: A parser that applies parser `self` _zero_ or more times until parser `end` succeeds.
+    /// - returns: A parser that applies parser `self` _zero_ or more times
+    ///   until parser `end` succeeds.
     public func manyTill<End>(_ end: GenericParser<StreamType, UserState, End>) -> GenericParser<StreamType, UserState, [Result]> {
         
         func scan() -> GenericParser<StreamType, UserState, [Result]> {
@@ -339,14 +401,18 @@ public extension GenericParser {
         
     }
     
-    /// Return a recursive parser combined with itself. It can be used to parse nested expressions. As an exemple, an expression inside a pair of parentheses is itself an expression that can be nested inside another pair of parentheses.
+    /// Return a recursive parser combined with itself. It can be used to parse
+    /// nested expressions. As an exemple, an expression inside a pair of
+    /// parentheses is itself an expression that can be nested inside another
+    /// pair of parentheses.
     ///
     ///     let expression = GenericParser<...>.recursive { expression in
     ///         parentheses(expression) <|>
     ///         identifier <|>
     ///         legalOperator <|> ...
     ///
-    /// - parameter combine: A function receiving a placeholder parser as parameter that can be nested in other expressions.
+    /// - parameter combine: A function receiving a placeholder parser as
+    ///   parameter that can be nested in other expressions.
     /// - returns: A recursive parser combined with itself.
     public static func recursive(_ combine: @noescape(GenericParser) -> GenericParser) -> GenericParser {
         
@@ -363,7 +429,8 @@ public extension GenericParser {
 
 public extension Parsec where StreamType.Iterator.Element == Result {
     
-    /// A parser that accepts any kind of token. It is for example used to implement 'eof'. It returns the accepted token.
+    /// A parser that accepts any kind of token. It is for example used to
+    /// implement 'eof'. It returns the accepted token.
     public static var anyToken: GenericParser<StreamType, UserState, Result> {
         
         return GenericParser.tokenPrimitive(
@@ -373,7 +440,8 @@ public extension Parsec where StreamType.Iterator.Element == Result {
         
     }
     
-    /// A parser that only succeeds at the end of the input. This is not a primitive parser but it is defined using `GenericParser.noOccurence`.
+    /// A parser that only succeeds at the end of the input. This is not a
+    /// primitive parser but it is defined using `GenericParser.noOccurence`.
     ///
     /// - returns: A parser that only succeeds at the end of the input.
     public static var eof: GenericParser<StreamType, UserState, ()> {

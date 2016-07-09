@@ -8,7 +8,10 @@
 
 extension Collection {
     
-    /// Return the result of repeatedly calling `combine` with an accumulated value initialized to `initial` and each element of `self`, in turn from the right, i.e. return combine(combine(...combine(combine(initial, self[count-1]), self[count-2]), self[count-3]), ... self[0]).
+    /// Return the result of repeatedly calling `combine` with an accumulated
+    /// value initialized to `initial` and each element of `self`, in turn from
+    /// the right, i.e. return combine(combine(...combine(combine(initial,
+    /// self[count-1]), self[count-2]), self[count-3]), ... self[0]).
     ///
     /// - parameters:
     ///   - initial: The initial value.
