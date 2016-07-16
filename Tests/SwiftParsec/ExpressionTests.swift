@@ -56,7 +56,9 @@ class ExpressionTests: XCTestCase {
             
         }
         
-        let matching = ["1+2*4-8+((3-12)/8)+(-71)+2^2^3", "(+3-3)+5", "3²", "4>>2", "4<<2"]
+        let matching = [
+            "1+2*4-8+((3-12)/8)+(-71)+2^2^3", "(+3-3)+5", "3²", "4>>2", "4<<2"
+        ]
         
         var expected = [1+2*4-8+((3-12)/8)+(-71)+power(2, power(2, 3))]
         expected.append((+3-3)+5)
@@ -71,7 +73,15 @@ class ExpressionTests: XCTestCase {
         testStringParserSuccess(expr, inputs: matching) { input, result in
             
             defer { index += 1 }
-            XCTAssertEqual(expected[index], result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssertEqual(
+                expected[index],
+                result,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -99,23 +109,36 @@ class ExpressionTests: XCTestCase {
         
     }
     
-    func binary(_ name: String, function: (Int, Int) -> Int, assoc: Associativity) -> Operator<String, (), Int> {
+    func binary(
+        _ name: String,
+        function: (Int, Int) -> Int,
+        assoc: Associativity
+    ) -> Operator<String, (), Int> {
         
-        let opParser = StringParser.string(name) *> GenericParser(result: function)
+        let opParser = StringParser.string(name) *>
+            GenericParser(result: function)
         return .infix(opParser, assoc)
         
     }
     
-    func prefix(_ name: String, function: (Int) -> Int) -> Operator<String, (), Int> {
+    func prefix(
+        _ name: String,
+        function: (Int) -> Int
+    ) -> Operator<String, (), Int> {
         
-        let opParser = StringParser.string(name) *> GenericParser(result: function)
+        let opParser = StringParser.string(name) *>
+            GenericParser(result: function)
         return .prefix(opParser)
         
     }
     
-    func postfix(_ name: String, function: (Int) -> Int) -> Operator<String, (), Int> {
+    func postfix(
+        _ name: String,
+        function: (Int) -> Int
+    ) -> Operator<String, (), Int> {
         
-        let opParser = StringParser.string(name) *> GenericParser(result: function)
+        let opParser = StringParser.string(name) *>
+            GenericParser(result: function)
         return .postfix(opParser.attempt)
         
     }

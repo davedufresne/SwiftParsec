@@ -17,7 +17,10 @@ extension Sequence {
     /// - returns:
     ///   - included: The elements that satisfied the predicate.
     ///   - remainder: The remainder of `self`.
-    func part(_ includeElement: @noescape(Self.Iterator.Element) throws -> Bool) rethrows -> (included: [Self.Iterator.Element], remainder: [Self.Iterator.Element]) {
+    func part(
+        _ includeElement: @noescape(Self.Iterator.Element) throws -> Bool
+    ) rethrows
+    -> (included: [Self.Iterator.Element], remainder: [Self.Iterator.Element]) {
         
         var included: [Self.Iterator.Element] = []
         var remainder: [Self.Iterator.Element] = []

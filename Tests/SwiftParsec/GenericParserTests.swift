@@ -23,7 +23,15 @@ class GenericParserTests: XCTestCase {
         
         testParserSuccess(mappedParser) { input, result in
             
-            XCTAssertEqual(trans(99), result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssertEqual(
+                trans(99),
+                result,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -33,7 +41,15 @@ class GenericParserTests: XCTestCase {
         
         testParserSuccess(functorParser) { input, result in
             
-            XCTAssertEqual(int99 + int1, result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssertEqual(
+                int99 + int1,
+                result,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -52,21 +68,45 @@ class GenericParserTests: XCTestCase {
         let applyParser = curriedPlus <^> int99Parser <*> int1Parser
         testParserSuccess(applyParser) { input, result in
             
-            XCTAssertEqual(int99 + int1, result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssertEqual(
+                int99 + int1,
+                result,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
         let rightParser = int99Parser *> int1Parser
         testParserSuccess(rightParser) { input, result in
             
-            XCTAssertEqual(int1, result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssertEqual(
+                int1,
+                result,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
         let leftParser = int99Parser <* int1Parser
         testParserSuccess(leftParser) { input, result in
             
-            XCTAssertEqual(int99, result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssertEqual(
+                int99,
+                result,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -83,7 +123,14 @@ class GenericParserTests: XCTestCase {
         testStringParserSuccess(alt1, inputs: ["adsf"]) { input, result in
             
             let isMatch = input.hasPrefix(String(result))
-            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssert(
+                isMatch,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -96,7 +143,14 @@ class GenericParserTests: XCTestCase {
         testStringParserSuccess(alt2, inputs: matching) { input, result in
             
             let isMatch = input.hasPrefix(result)
-            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssert(
+                isMatch,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -117,9 +171,18 @@ class GenericParserTests: XCTestCase {
         let matching = ["a1", "b0", "c9"]
         let errorMessage = "GenericParser.flatMap error."
         
-        testStringParserSuccess(letterDigit, inputs: matching) { input, result in
+        testStringParserSuccess(letterDigit, inputs: matching)
+        { input, result in
             
-            XCTAssertEqual(input, result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssertEqual(
+                input,
+                result,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -137,7 +200,14 @@ class GenericParserTests: XCTestCase {
         testStringParserSuccess(attempt, inputs: matching) { input, result in
             
             let isMatch = input.hasPrefix(result)
-            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssert(
+                isMatch,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -156,7 +226,15 @@ class GenericParserTests: XCTestCase {
         
         testStringParserSuccess(lookAhead, inputs: matching) { input, result in
             
-            XCTAssertEqual(longestMatch, result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssertEqual(
+                longestMatch,
+                result,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -164,9 +242,16 @@ class GenericParserTests: XCTestCase {
         let notMatching = ["sad", "das", "asdasdfg"]
         let shouldFailMessage = "GenericParser.lookAhead should have failed."
         
-        testStringParserFailure(lookAhead, inputs: notMatching) { input, result in
+        testStringParserFailure(lookAhead, inputs: notMatching)
+        { input, result in
             
-            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            XCTFail(
+                self.formatErrorMessage(
+                    shouldFailMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -180,8 +265,16 @@ class GenericParserTests: XCTestCase {
         
         testStringParserSuccess(manyString, inputs: matching) { input, result in
             
-            let isMatch = result.isEmpty || input == result.joined(separator: "")
-            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            let isMatch = result.isEmpty ||
+                input == result.joined(separator: "")
+            XCTAssert(
+                isMatch,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -189,9 +282,16 @@ class GenericParserTests: XCTestCase {
         let notMatching = ["asd", "asdfasd"]
         let shouldFailMessage = "GenericParser.many should have failed."
         
-        testStringParserFailure(manyString, inputs: notMatching) { input, result in
+        testStringParserFailure(manyString, inputs: notMatching)
+        { input, result in
             
-            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            XCTFail(
+                self.formatErrorMessage(
+                    shouldFailMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -208,9 +308,16 @@ class GenericParserTests: XCTestCase {
         let notMatching = ["asd", "asdfasd"]
         let shouldFailMessage = "GenericParser.skipMany should have failed."
         
-        testStringParserFailure(skipManyString, inputs: notMatching) { input, result in
+        testStringParserFailure(skipManyString, inputs: notMatching)
+        { input, result in
             
-            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            XCTFail(
+                self.formatErrorMessage(
+                    shouldFailMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -224,7 +331,13 @@ class GenericParserTests: XCTestCase {
         
         testStringParserFailure(empty, inputs: [""]) { input, result in
             
-            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            XCTFail(
+                self.formatErrorMessage(
+                    shouldFailMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -235,7 +348,8 @@ class GenericParserTests: XCTestCase {
         let labelStr = "letter x"
         
         let letterx = StringParser.character("x") <?> labelStr
-        let letterXx = StringParser.character("x") <|> StringParser.character("X") <?> labelStr
+        let letterXx = StringParser.character("x") <|>
+            StringParser.character("X") <?> labelStr
         let input = "a"
         
         for parser in [letterx, letterXx] {
@@ -258,7 +372,8 @@ class GenericParserTests: XCTestCase {
                         
                         containsExpected = true
                         
-                    case .systemUnexpected(let str) where str == String(reflecting: input):
+                    case .systemUnexpected(let str)
+                    where str == String(reflecting: input):
                         
                         containsSystemUnexpected = true
                         
@@ -298,7 +413,14 @@ class GenericParserTests: XCTestCase {
         testParserSuccess(add) { input, result in
             
             let isMatch = result == leftNumber - rightNumber
-            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssert(
+                isMatch,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -314,13 +436,25 @@ class GenericParserTests: XCTestCase {
         let num2 = GenericParser<String, (), Int>(result: number2)
         let num3 = GenericParser<String, (), Int>(result: number3)
         
-        let add = GenericParser.lift3({ $0 - $1 - $2 }, parser1: num1, parser2: num2, parser3: num3)
+        let add = GenericParser.lift3(
+            { $0 - $1 - $2 },
+            parser1: num1,
+            parser2: num2,
+            parser3: num3
+        )
         
         let errorMessage = "GenericParser.lift3 error."
         testParserSuccess(add) { input, result in
             
             let isMatch = result == number1 - number2 - number3
-            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssert(
+                isMatch,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -338,14 +472,26 @@ class GenericParserTests: XCTestCase {
         let num3 = GenericParser<String, (), Int>(result: number3)
         let num4 = GenericParser<String, (), Int>(result: number4)
         
-        let add = GenericParser.lift4({ $0 - $1 - $2 - $3 },
-            parser1: num1, parser2: num2, parser3: num3, parser4: num4)
+        let add = GenericParser.lift4(
+            { $0 - $1 - $2 - $3 },
+            parser1: num1,
+            parser2: num2,
+            parser3: num3,
+            parser4: num4
+        )
         
         let errorMessage = "GenericParser.lift4 error."
         testParserSuccess(add) { input, result in
             
             let isMatch = result == number1 - number2 - number3 - number4
-            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssert(
+                isMatch,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -365,14 +511,28 @@ class GenericParserTests: XCTestCase {
         let num4 = GenericParser<String, (), Int>(result: number4)
         let num5 = GenericParser<String, (), Int>(result: number5)
         
-        let add = GenericParser.lift5({ $0 - $1 - $2 - $3 - $4 },
-            parser1: num1, parser2: num2, parser3: num3, parser4: num4, parser5: num5)
+        let add = GenericParser.lift5(
+            { $0 - $1 - $2 - $3 - $4 },
+            parser1: num1,
+            parser2: num2,
+            parser3: num3,
+            parser4: num4,
+            parser5: num5
+        )
         
         let errorMessage = "GenericParser.lift4 error."
         testParserSuccess(add) { input, result in
             
-            let isMatch = result == number1 - number2 - number3 - number4 - number5
-            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            let isMatch =
+                result == number1 - number2 - number3 - number4 - number5
+            XCTAssert(
+                isMatch,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -380,7 +540,11 @@ class GenericParserTests: XCTestCase {
     
     func testUpdateUserState() {
         
-        let countLetters = GenericParser<String, Int, Character>.letter <* GenericParser<String, Int, Character>.updateUserState(curriedPlus(1))
+        let userState = GenericParser<String, Int, Character>.updateUserState(
+            curriedPlus(1)
+        )
+        let countLetters =
+            GenericParser<String, Int, Character>.letter <* userState
         let digits = GenericParser<String, Int, Character>.digit
         let alphaNum = countLetters <* digits.skipMany
         
@@ -392,9 +556,17 @@ class GenericParserTests: XCTestCase {
             
             for input in matching {
                 
-                let (_, state) = try alphaNum.many.run(userState: 0, sourceName: "", input: input)
+                let (_, state) = try alphaNum.many.run(
+                    userState: 0,
+                    sourceName: "",
+                    input: input
+                )
                 
-                if state != input.characters.filter({ $0.isAlpha }).count { XCTFail(errorMessage) }
+                if state != input.characters.filter({ $0.isAlpha }).count {
+                    
+                    XCTFail(errorMessage)
+                
+                }
                 
             }
             
@@ -413,7 +585,9 @@ class GenericParserTests: XCTestCase {
     func testParseArray() {
         
         let charArray: [Character] = ["h", "e", "l", "l", "o"]
-        let parser = GenericParser<[Character], (), [Character]>.string(charArray)
+        let parser = GenericParser<[Character], (), [Character]>.string(
+            charArray
+        )
         
         do {
             

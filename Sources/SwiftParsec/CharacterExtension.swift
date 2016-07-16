@@ -48,20 +48,27 @@ extension Character {
         switch self {
             
         case " ", "\t", "\n", "\r", "\r\n": return true
+            
         // Form Feed, vertical tab, next line (nel)
         case "\u{000C}", "\u{000B}", "\u{0085}": return true
+            
         // No-break space, ogham space mark, mongolian vowel
         case "\u{00A0}", "\u{1680}", "\u{180E}": return true
+            
         // En quad, em quad, en space, em space, three-per-em space, four-per-em
         // space, six-per-em space, figure space, ponctuation space, thin space,
         // hair space, zero width space, zero width non-joiner, zero width
         // joiner.
         case "\u{2000}"..."\u{200D}": return true
+            
         // Line separator, paragraph separator.
         case "\u{2028}", "\u{2029}": return true
+            
         // Narrow no-break space, medium mathematical space, word joiner,
         // ideographic space, zero width no-break space.
-        case "\u{202F}", "\u{205F}", "\u{2060}", "\u{3000}", "\u{FEFF}": return true
+        case "\u{202F}", "\u{205F}", "\u{2060}", "\u{3000}", "\u{FEFF}":
+            
+            return true
             
         default: return false
             

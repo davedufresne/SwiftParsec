@@ -21,11 +21,19 @@ class PermutationTests: XCTestCase {
             
         ]
 
-        XCTAssertEqual(permutation.count, 3, "Permutation.count returned wrong value.")
+        XCTAssertEqual(
+            permutation.count,
+            3,
+            "Permutation.count returned wrong value."
+        )
         
         permutation.replaceSubrange(0..<1, with: [])
         
-        XCTAssertEqual(permutation.count, 2, "Permutation.replaceRange did not remove first element.")
+        XCTAssertEqual(
+            permutation.count,
+            2,
+            "Permutation.replaceRange did not remove first element."
+        )
         
     }
     
@@ -47,17 +55,34 @@ class PermutationTests: XCTestCase {
         
         testStringParserSuccess(parser, inputs: matching) { input, result in
             
-            XCTAssertEqual("abc", result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssertEqual(
+                "abc",
+                result,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
         // Test for failure.
-        let notMatching = ["bc", "cb", "ac", "ca", "ab", "ba", "aaa", "aab", "aac", "bbb", "bba", "bbc", "ccc", "cca", "ccb"]
+        let notMatching = [
+            "bc", "cb", "ac", "ca", "ab", "ba", "aaa", "aab", "aac", "bbb",
+            "bba", "bbc", "ccc", "cca", "ccb"
+        ]
         let shouldFailMessage = "Permutation.parser should have failed."
         
         testStringParserFailure(parser, inputs: notMatching) { input, result in
             
-            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            XCTFail(
+                self.formatErrorMessage(
+                    shouldFailMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -82,17 +107,32 @@ class PermutationTests: XCTestCase {
         
         testStringParserSuccess(parser, inputs: matching) { input, result in
             
-            XCTAssertEqual("abc", result, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssertEqual(
+                "abc",
+                result,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
         // Test for failure.
         let notMatching = ["ab,c", "a,cb", ",b,a,c", "bca"]
-        let shouldFailMessage = "Permutation.parserWithSeparator should have failed."
+        let shouldFailMessage =
+            "Permutation.parserWithSeparator should have failed."
         
         testStringParserFailure(parser, inputs: notMatching) { input, result in
             
-            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            XCTFail(
+                self.formatErrorMessage(
+                    shouldFailMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -129,7 +169,15 @@ class PermutationTests: XCTestCase {
             
             testStringParserSuccess(parser, inputs: matching) { input, result in
                 
-                XCTAssertEqual(expected, result, self.formatErrorMessage(errorMessage, input: input, result: result))
+                XCTAssertEqual(
+                    expected,
+                    result,
+                    self.formatErrorMessage(
+                        errorMessage,
+                        input: input,
+                        result: result
+                    )
+                )
                 
             }
             
@@ -141,7 +189,13 @@ class PermutationTests: XCTestCase {
         
         testStringParserFailure(parser, inputs: notMatching) { input, result in
             
-            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            XCTFail(
+                self.formatErrorMessage(
+                    shouldFailMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -162,7 +216,9 @@ class PermutationTests: XCTestCase {
         let parser = permutation.makeParser(separator: comma).stringValue
         
         // Test for success.
-        let matching1 = ["a,b,c,d", "a,c,b,d", "b,a,c,d", "b,c,a,d", "c,a,b,d", "c,b,a,d"]
+        let matching1 = [
+            "a,b,c,d", "a,c,b,d", "b,a,c,d", "b,c,a,d", "c,a,b,d", "c,b,a,d"
+        ]
         let expected1 = "abcd"
         let test1 = (matching1, expected1)
         
@@ -176,7 +232,15 @@ class PermutationTests: XCTestCase {
             
             testStringParserSuccess(parser, inputs: matching) { input, result in
                 
-                XCTAssertEqual(expected, result, self.formatErrorMessage(errorMessage, input: input, result: result))
+                XCTAssertEqual(
+                    expected,
+                    result,
+                    self.formatErrorMessage(
+                        errorMessage,
+                        input: input,
+                        result: result
+                    )
+                )
                 
             }
             
@@ -188,7 +252,13 @@ class PermutationTests: XCTestCase {
         
         testStringParserFailure(parser, inputs: notMatching) { input, result in
             
-            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            XCTFail(
+                self.formatErrorMessage(
+                    shouldFailMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
@@ -196,7 +266,9 @@ class PermutationTests: XCTestCase {
     
     func testPermutationWithNil() {
         
-        let lexer = GenericTokenParser<()>(languageDefinition: LanguageDefinition.empty)
+        let lexer = GenericTokenParser<()>(
+            languageDefinition: LanguageDefinition.empty
+        )
         let symbol = lexer.symbol
         
         let equal = symbol("=")
@@ -228,25 +300,25 @@ class PermutationTests: XCTestCase {
         
         // Test for success.
         let matching = [
-            
             "<img  src=\"test.jpg\" alt=\"A test image\" />",
-            "<img longdesc=\"A long description\"  src=\"test.jpg\" alt=\"A test image\" />",
+            "<img longdesc=\"A long description\"  src=\"test.jpg\" " +
+                "alt=\"A test image\" />",
             "<img width=\"12\" src=\"test.jpg\"  alt=\"A test image\"/>",
             "<img src=\"test.jpg\" height=\"120\" alt=\"A test image\"   />",
-            "<img height=\"120\" src=\"test.jpg\" alt=\"A test image\" width=\"12\" / >",
-            "<img src=\"test.jpg\" width=\"12\" longdesc=\"A long description\" alt=\"A test image\" height=\"120\" />"
-            
+            "<img height=\"120\" src=\"test.jpg\" alt=\"A test image\" " +
+                "width=\"12\" / >",
+            "<img src=\"test.jpg\" width=\"12\" " +
+                "longdesc=\"A long description\" alt=\"A test image\" " +
+                "height=\"120\" />"
         ]
         
         let expected: [[String?]] = [
-            
             ["test.jpg", "A test image", nil, nil, nil],
             ["test.jpg", "A test image", "A long description", nil, nil],
             ["test.jpg", "A test image", nil, nil, "12"],
             ["test.jpg", "A test image", nil, "120", nil],
             ["test.jpg", "A test image", nil, "120", "12"],
             ["test.jpg", "A test image", "A long description", "120", "12"],
-        
         ]
         
         let errorMessage = "Permutation.parser did not succeed."
@@ -256,17 +328,33 @@ class PermutationTests: XCTestCase {
             
             defer { index += 1 }
             let isMatch = result == expected[index]
-            XCTAssert(isMatch, self.formatErrorMessage(errorMessage, input: input, result: result))
+            XCTAssert(
+                isMatch,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         
         // Test for failure.
-        let notMatching = ["<imgwidth=\"12\" longdesc=\"A long description\" alt=\"A test image\" height=\"120\" />"]
+        let notMatching = [
+            "<imgwidth=\"12\" longdesc=\"A long description\" " +
+                "alt=\"A test image\" height=\"120\" />"
+        ]
         let shouldFailMessage = "Permutation.parser should have failed."
         
         testStringParserFailure(imgTag, inputs: notMatching) { input, result in
             
-            XCTFail(self.formatErrorMessage(shouldFailMessage, input: input, result: result))
+            XCTFail(
+                self.formatErrorMessage(
+                    shouldFailMessage,
+                    input: input,
+                    result: result
+                )
+            )
             
         }
         

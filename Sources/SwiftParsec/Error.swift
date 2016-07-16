@@ -104,9 +104,15 @@ public struct ParseError: ErrorProtocol, CustomStringConvertible {
     ///   - position: The current position.
     ///   - message: The message string.
     /// - returns: An unexpected parse error.
-    static func unexpectedParseError(_ position: SourcePosition, message: String) -> ParseError {
+    static func unexpectedParseError(
+        _ position: SourcePosition,
+        message: String
+    ) -> ParseError {
         
-        return ParseError(position: position, messages: [.systemUnexpected(message)])
+        return ParseError(
+            position: position,
+            messages: [.systemUnexpected(message)]
+        )
         
     }
     
@@ -143,7 +149,8 @@ public struct ParseError: ErrorProtocol, CustomStringConvertible {
             
         }
         
-        let (sysUnexpected, msgs1) = messages.part { $0 == .systemUnexpected("") }
+        let (sysUnexpected, msgs1) =
+            messages.part { $0 == .systemUnexpected("") }
         let (unexpected, msgs2) = msgs1.part { $0 == .unexpected("") }
         let (expected, generic) = msgs2.part { $0 == .expected("") }
         
@@ -173,7 +180,8 @@ public struct ParseError: ErrorProtocol, CustomStringConvertible {
         }
         
         // Unexpected messages.
-        let unexpectedDesc = formatMessages(unexpected, havingType: unexpectedMsg)
+        let unexpectedDesc =
+            formatMessages(unexpected, havingType: unexpectedMsg)
         
         // Expected messages.
         let expectingMsg = LocalizedString("expecting")
@@ -182,8 +190,13 @@ public struct ParseError: ErrorProtocol, CustomStringConvertible {
         // Generic messages.
         let genericDesc = formatMessages(generic, havingType: "")
         
-        let descriptions = [sysUnexpectedDesc, unexpectedDesc, expectedDesc, genericDesc]
-        return descriptions.removingDuplicatesAndEmpties().joined(separator: "\n")
+        let descriptions = [
+            sysUnexpectedDesc, unexpectedDesc, expectedDesc, genericDesc
+        ]
+        
+        return descriptions.removingDuplicatesAndEmpties().joined(
+            separator: "\n"
+        )
         
     }
     
@@ -257,9 +270,14 @@ public struct ParseError: ErrorProtocol, CustomStringConvertible {
         
     }
     
-    private func formatMessages(_ messages: [Message], havingType messageType: String) -> String {
+    private func formatMessages(
+        _ messages: [Message],
+        havingType messageType: String
+    ) -> String {
         
-        let msgs = messages.map({ $0.messageString }).removingDuplicatesAndEmpties()
+        let msgs = messages.map({
+            $0.messageString
+        }).removingDuplicatesAndEmpties()
         
         guard !msgs.isEmpty else { return "" }
         

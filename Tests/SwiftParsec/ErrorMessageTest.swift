@@ -19,7 +19,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(vowel, input: "z") { actual in
             
-            XCTAssertEqual(expectedVowel, actual, self.formatErrorMessage(expected: expectedVowel, actual: actual))
+            XCTAssertEqual(
+                expectedVowel,
+                actual,
+                self.formatErrorMessage(
+                    expected: expectedVowel,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -30,7 +37,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(char, input: "z") { actual in
             
-            XCTAssertEqual(expectedChar, actual, self.formatErrorMessage(expected: expectedChar, actual: actual))
+            XCTAssertEqual(
+                expectedChar,
+                actual,
+                self.formatErrorMessage(
+                    expected: expectedChar,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -45,7 +59,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(allo, input: "allz") { actual in
             
-            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            XCTAssertEqual(
+                expected,
+                actual,
+                self.formatErrorMessage(
+                    expected: expected,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -60,7 +81,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(allo, input: "all") { actual in
             
-            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            XCTAssertEqual(
+                expected,
+                actual,
+                self.formatErrorMessage(
+                    expected: expected,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -80,7 +108,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(hellos, input: "z") { actual in
             
-            XCTAssertEqual(expectedHellos, actual, self.formatErrorMessage(expected: expectedHellos, actual: actual))
+            XCTAssertEqual(
+                expectedHellos,
+                actual,
+                self.formatErrorMessage(
+                    expected: expectedHellos,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -90,7 +125,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(hellos, input: "all") { actual in
             
-            XCTAssertEqual(expectedEOF, actual, self.formatErrorMessage(expected: expectedEOF, actual: actual))
+            XCTAssertEqual(
+                expectedEOF,
+                actual,
+                self.formatErrorMessage(
+                    expected: expectedEOF,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -105,7 +147,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(allo, input: "all") { actual in
             
-            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            XCTAssertEqual(
+                expected,
+                actual,
+                self.formatErrorMessage(
+                    expected: expected,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -124,7 +173,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(parser, input: "\tall") { actual in
             
-            XCTAssertEqual(expectedTab, actual, self.formatErrorMessage(expected: expectedTab, actual: actual))
+            XCTAssertEqual(
+                expectedTab,
+                actual,
+                self.formatErrorMessage(
+                    expected: expectedTab,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -134,7 +190,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(parser, input: "    all") { actual in
             
-            XCTAssertEqual(expectedSpaces, actual, self.formatErrorMessage(expected: expectedSpaces, actual: actual))
+            XCTAssertEqual(
+                expectedSpaces,
+                actual,
+                self.formatErrorMessage(
+                    expected: expectedSpaces,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -144,7 +207,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(parser, input: "\n\nall") { actual in
             
-            XCTAssertEqual(expectedLine, actual, self.formatErrorMessage(expected: expectedLine, actual: actual))
+            XCTAssertEqual(
+                expectedLine,
+                actual,
+                self.formatErrorMessage(
+                    expected: expectedLine,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -161,7 +231,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(parser, input: "\n\nallo") { actual in
             
-            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            XCTAssertEqual(
+                expected,
+                actual,
+                self.formatErrorMessage(
+                    expected: expected,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -176,7 +253,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(newline, input: "z") { actual in
             
-            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            XCTAssertEqual(
+                expected,
+                actual,
+                self.formatErrorMessage(
+                    expected: expected,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -191,7 +275,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(newline, input: "z") { actual in
             
-            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            XCTAssertEqual(
+                expected,
+                actual,
+                self.formatErrorMessage(
+                    expected: expected,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -201,7 +292,13 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(charA, input: "z") { actual in
             
-            XCTAssert(emptyExpected == actual, self.formatErrorMessage(expected: expected, actual: actual))
+            XCTAssert(
+                emptyExpected == actual,
+                self.formatErrorMessage(
+                    expected: expected,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -215,7 +312,14 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(fail, input: "") { actual in
             
-            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            XCTAssertEqual(
+                expected,
+                actual,
+                self.formatErrorMessage(
+                    expected: expected,
+                    actual: actual
+                )
+            )
             
         }
         
@@ -229,13 +333,24 @@ class ErrorMessageTests: XCTestCase {
         
         errorMessageTest(empty, input: "z") { actual in
             
-            XCTAssertEqual(expected, actual, self.formatErrorMessage(expected: expected, actual: actual))
+            XCTAssertEqual(
+                expected,
+                actual,
+                self.formatErrorMessage(
+                    expected: expected,
+                    actual: actual
+                )
+            )
             
         }
         
     }
     
-    func errorMessageTest<Result>(_ parser: GenericParser<String, (), Result>, input: String, assert: (String) -> Void) {
+    func errorMessageTest<Result>(
+        _ parser: GenericParser<String, (), Result>,
+        input: String,
+        assert: (String) -> Void
+    ) {
         
         do {
             
@@ -252,7 +367,8 @@ class ErrorMessageTests: XCTestCase {
     
     func formatErrorMessage(expected: String, actual: String) -> String {
         
-        return "Error messages error, Expected:\n\(expected)\nActual:\n\(actual)"
+        return "Error messages error, " +
+            "Expected:\n\(expected)\nActual:\n\(actual)"
         
     }
     

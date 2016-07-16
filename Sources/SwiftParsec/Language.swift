@@ -38,7 +38,8 @@ public struct LanguageDefinition<UserState> {
     /// character parsed by `identifierStart` as parameter, allowing to handle
     /// special cases (i.e. implicit parameters in swift start with a '$' that
     /// must be followed by decimal digits only).
-    public var identifierLetter: (Character) -> GenericParser<String, UserState, Character>
+    public var identifierLetter:
+    (Character) -> GenericParser<String, UserState, Character>
     
     /// This parser should accept any start characters of operators. For example
     /// `oneOf(":!#$%&*+./<=>?@\\^|-~")`
@@ -46,7 +47,8 @@ public struct LanguageDefinition<UserState> {
     
     /// This parser should accept any legal tail characters of operators. Note
     /// that this parser should even be defined if the language doesn't support
-    /// user-defined operators, or otherwise the `reservedOperators` parser won't work correctly.
+    /// user-defined operators, or otherwise the `reservedOperators` parser
+    /// won't work correctly.
     public var operatorLetter: GenericParser<String, UserState, Character>
     
     /// The set of reserved identifiers.
@@ -79,10 +81,17 @@ public extension LanguageDefinition {
             commentEnd:          "",
             commentLine:         "",
             allowNestedComments: true,
-            identifierStart:     GenericParser.letter <|> GenericParser.character("_"),
-            identifierLetter:    { _ in GenericParser.alphaNumeric <|> GenericParser.character("_") },
-            operatorStart:       GenericParser.oneOf(emptyOperatorLetterCharacters),
-            operatorLetter:      GenericParser.oneOf(emptyOperatorLetterCharacters),
+            identifierStart:     GenericParser.letter <|>
+                GenericParser.character("_"),
+            identifierLetter: { _ in
+                GenericParser.alphaNumeric <|> GenericParser.character("_")
+            },
+            operatorStart:       GenericParser.oneOf(
+                emptyOperatorLetterCharacters
+            ),
+            operatorLetter:      GenericParser.oneOf(
+                emptyOperatorLetterCharacters
+            ),
             reservedNames:       [],
             reservedOperators:   [],
             characterEscape:     nil,
@@ -115,7 +124,8 @@ public extension LanguageDefinition {
         let charEscParsers: [GenericParser<String, UserState, Character>] =
         jsonEscapeMap.map { escCode in
             
-            GenericParser.character(escCode.esc) *> GenericParser(result: escCode.code)
+            GenericParser.character(escCode.esc) *>
+                GenericParser(result: escCode.code)
             
         }
         
@@ -131,7 +141,8 @@ public extension LanguageDefinition {
             
         }
         
-        let backslash = GenericParser<String, UserState, Character>.character("\\")
+        let backslash =
+            GenericParser<String, UserState, Character>.character("\\")
         
         let codePoint = GenericParser.character("u") *> hexaNum
         let encodedChar: GenericParser<String, UserState, Character> =
@@ -147,7 +158,7 @@ public extension LanguageDefinition {
                 
                 let cps = [cp1, cp2]
                 guard let str = String(codeUnits: cps, codec: UTF16()) else {
-                    
+            
                     let decodingErrorMsg = LocalizedString("decoding error")
                     return GenericParser.fail(decodingErrorMsg)
                     
@@ -175,14 +186,15 @@ public extension LanguageDefinition {
         
         var swiftDef = empty
         
-        swiftDef.commentStart      = "/*"
-        swiftDef.commentEnd        = "*/"
-        swiftDef.commentLine       = "//"
+        swiftDef.commentStart = "/*"
+        swiftDef.commentEnd = "*/"
+        swiftDef.commentLine = "//"
         
-        swiftDef.identifierStart   = GenericParser.memberOf(swiftIdentifierStartSet) <|>
+        swiftDef.identifierStart =
+            GenericParser.memberOf(swiftIdentifierStartSet) <|>
             GenericParser.character(swiftImplicitParameterStart)
         
-        swiftDef.identifierLetter  = { char in
+        swiftDef.identifierLetter = { char in
             
             if char == swiftImplicitParameterStart {
                 
@@ -194,16 +206,30 @@ public extension LanguageDefinition {
             
         }
         
-        swiftDef.operatorStart     = GenericParser.memberOf(swiftOperatorStartSet)
-        swiftDef.operatorLetter    = GenericParser.memberOf(swiftOperatorLetterSet)
+        swiftDef.operatorStart =
+            GenericParser.memberOf(swiftOperatorStartSet)
+        swiftDef.operatorLetter =
+            GenericParser.memberOf(swiftOperatorLetterSet)
         
-        swiftDef.reservedNames     = ["Self", "__COLUMN__", "__FILE__", "__FUNCTION__", "__LINE__", "as", "break", "case", "catch", "class", "continue", "default", "defer", "deinit", "do", "dynamicType", "else", "enum", "extension", "fallthrough", "false", "for", "func", "guard", "if", "import", "in", "init", "inout", "internal", "is", "let", "nil", "operator", "private", "protocol", "public", "repeat", "rethrows", "return", "self", "static­", "struct", "subscript", "super", "switch", "throw", "throws", "true", "try", "typealias", "var", "where", "while"]
-        swiftDef.reservedOperators = ["=", "->", ".", ",", ":", "@", "#", "<", "&", "`", "?", ">", "!"]
+        swiftDef.reservedNames = [
+            "Self", "__COLUMN__", "__FILE__", "__FUNCTION__", "__LINE__", "as",
+            "break", "case", "catch", "class", "continue", "default", "defer",
+            "deinit", "do", "dynamicType", "else", "enum", "extension",
+            "fallthrough", "false", "for", "func", "guard", "if", "import",
+            "in", "init", "inout", "internal", "is", "let", "nil", "operator",
+            "private", "protocol", "public", "repeat", "rethrows", "return",
+            "self", "static­", "struct", "subscript", "super", "switch", "throw",
+            "throws", "true", "try", "typealias", "var", "where", "while"
+        ]
+        swiftDef.reservedOperators = [
+            "=", "->", ".", ",", ":", "@", "#", "<", "&", "`", "?", ">", "!"
+        ]
         
         let charEscParsers: [GenericParser<String, UserState, Character>] =
         swiftEscapeMap.map { escCode in
             
-            GenericParser.character(escCode.esc) *> GenericParser(result: escCode.code)
+            GenericParser.character(escCode.esc) *>
+                GenericParser(result: escCode.code)
             
         }
         
@@ -213,15 +239,17 @@ public extension LanguageDefinition {
         (GenericParser.hexadecimalDigit <?> "").many1 >>- { digits in
             
             let num = String(digits)
-            return GenericTokenParser.integerWithDigits(num, base: 16) >>- { intVal in
+            return GenericTokenParser.integerWithDigits(num, base: 16) >>-
+            { intVal in
                 
                 GenericTokenParser.characterFromInt(intVal)
-                
+        
             } <?> LocalizedString("escape sequence")
             
         } <?> LocalizedString("hexadecimal digit(s)")
         
-        let charNumber = GenericParser<String, UserState, Character>.string("u{") *>
+        let charNumber =
+            GenericParser<String, UserState, Character>.string("u{") *>
             hexaChar <* GenericParser.character("}")
         
         let escapeCodeMsg = LocalizedString("escape code")
@@ -243,7 +271,10 @@ private let emptyOperatorLetterCharacters = ":!$%&*+./<=>?\\^|-~"
 //
 // JSON definition
 //
-private let jsonEscapeMap: [(esc: Character, code: Character)] = [("\"", "\""), ("\\", "\\"), ("/", "/"), ("b", "\u{0008}"), ("f", "\u{000C}"), ("n", "\n"), ("r", "\r"), ("t", "\t")]
+private let jsonEscapeMap: [(esc: Character, code: Character)] = [
+    ("\"", "\""), ("\\", "\\"), ("/", "/"), ("b", "\u{0008}"),
+    ("f", "\u{000C}"), ("n", "\n"), ("r", "\r"), ("t", "\t")
+]
 
 private let jsonMaxEscapeDigit = 4
 
@@ -318,7 +349,8 @@ private let swiftIdentifierStartCharacters4 =
     (0xD0000...0xDFFFD).stringValue +
     (0xE0000...0xEFFFD).stringValue
 
-private let swiftIdentifierStartSet = CharacterSet(charactersIn: swiftIdentifierStartCharacters)
+private let swiftIdentifierStartSet =
+    CharacterSet(charactersIn: swiftIdentifierStartCharacters)
 
 private let swiftIdentifierLetterCharacters =
     swiftIdentifierStartCharacters +
@@ -328,7 +360,8 @@ private let swiftIdentifierLetterCharacters =
     (0x20D0...0x20FF).stringValue +
     (0xFE20...0xFE2F).stringValue
 
-private let swiftIdentifierLetterSet = CharacterSet(charactersIn: swiftIdentifierLetterCharacters)
+private let swiftIdentifierLetterSet =
+    CharacterSet(charactersIn: swiftIdentifierLetterCharacters)
 
 private let swiftOperatorStartCharacters =
     "/=-+!*%<>&|^?~" +
@@ -348,7 +381,8 @@ private let swiftOperatorStartCharacters =
     (0x3001...0x3003).stringValue +
     (0x3008...0x3030).stringValue
 
-private let swiftOperatorStartSet = CharacterSet(charactersIn: swiftOperatorStartCharacters)
+private let swiftOperatorStartSet =
+    CharacterSet(charactersIn: swiftOperatorStartCharacters)
 
 private let swiftOperatorLetterCharacters =
     swiftOperatorStartCharacters +
@@ -359,6 +393,10 @@ private let swiftOperatorLetterCharacters =
     (0xFE20...0xFE2F).stringValue +
     (0xE0100...0xE01EF).stringValue
 
-private let swiftOperatorLetterSet = CharacterSet(charactersIn: swiftOperatorLetterCharacters)
+private let swiftOperatorLetterSet =
+    CharacterSet(charactersIn: swiftOperatorLetterCharacters)
 
-private let swiftEscapeMap: [(esc: Character, code: Character)] = [("n", "\n"), ("r", "\r"), ("t", "\t"), ("\\", "\\"), ("\"", "\""), ("'", "'"), ("0", "\0")]
+private let swiftEscapeMap: [(esc: Character, code: Character)] = [
+    ("n", "\n"), ("r", "\r"), ("t", "\t"), ("\\", "\\"), ("\"", "\""),
+    ("'", "'"), ("0", "\0")
+]

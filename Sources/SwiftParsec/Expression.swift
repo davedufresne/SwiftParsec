@@ -22,7 +22,10 @@ public enum Associativity {
 public enum Operator<StreamType: Stream, UserState, Result> {
     
     /// Infix operator and associativity.
-    case infix(GenericParser<StreamType, UserState, (Result, Result) -> Result>, Associativity)
+    case infix(
+        GenericParser<StreamType, UserState, (Result, Result) -> Result>,
+        Associativity
+    )
     
     /// Prefix operator.
     case prefix(GenericParser<StreamType, UserState, (Result) -> Result>)
@@ -32,7 +35,8 @@ public enum Operator<StreamType: Stream, UserState, Result> {
     
 }
 
-public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplaceableCollection, ArrayLiteralConvertible {
+public struct OperatorTable<StreamType: Stream, UserState, Result>:
+RangeReplaceableCollection, ArrayLiteralConvertible {
     
     /// Represents a valid position in the operator table.
     public typealias Index = Int
@@ -161,7 +165,11 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
     ///   `GenericParser.recursive(
     ///       combine: GenericParser -> GenericParser
     ///   ) -> GenericParser
-    public func makeExpressionParser(_ combine: @noescape (expression: GenericParser<StreamType, UserState, Result>) -> GenericParser<StreamType, UserState, Result>) -> GenericParser<StreamType, UserState, Result> {
+    public func makeExpressionParser(
+        _ combine: @noescape (
+            expression: GenericParser<StreamType, UserState, Result>
+        ) -> GenericParser<StreamType, UserState, Result>
+    ) -> GenericParser<StreamType, UserState, Result> {
         
         var term: GenericParser<StreamType, UserState, Result>!
         let lazyTerm = GenericParser<StreamType, UserState, Result> { term }
@@ -173,15 +181,30 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
         
     }
     
-    private typealias InfixOperatorParser = GenericParser<StreamType, UserState, (Result, Result) -> Result>
-    private typealias PrefixOperatorParser = GenericParser<StreamType, UserState, (Result) -> Result>
-    private typealias PostfixOperatorParser = GenericParser<StreamType, UserState, (Result) -> Result>
+    private typealias InfixOperatorParser =
+        GenericParser<StreamType, UserState, (Result, Result) -> Result>
+    private typealias PrefixOperatorParser =
+        GenericParser<StreamType, UserState, (Result) -> Result>
+    private typealias PostfixOperatorParser =
+        GenericParser<StreamType, UserState, (Result) -> Result>
     
-    private typealias OperatorsTuple = (right: [InfixOperatorParser], left: [InfixOperatorParser], none: [InfixOperatorParser], prefix: [PrefixOperatorParser], postfix: [PostfixOperatorParser])
+    private typealias OperatorsTuple = (
+        right: [InfixOperatorParser],
+        left: [InfixOperatorParser],
+        none: [InfixOperatorParser],
+        prefix: [PrefixOperatorParser],
+        postfix: [PostfixOperatorParser]
+    )
     
-    private func buildParser(_ term: GenericParser<StreamType, UserState, Result>, operators: [Operator<StreamType, UserState, Result>]) -> GenericParser<StreamType, UserState, Result> {
+    private func buildParser(
+        _ term: GenericParser<StreamType, UserState, Result>,
+        operators: [Operator<StreamType, UserState, Result>]
+    ) -> GenericParser<StreamType, UserState, Result> {
         
-        let ops: OperatorsTuple = operators.reduce(([], [], [], [], []), combine: splitOperators)
+        let ops: OperatorsTuple = operators.reduce(
+            ([], [], [], [], []),
+            combine: splitOperators
+        )
         
         let rightAssocOp = GenericParser.choice(ops.right)
         let leftAssocOp = GenericParser.choice(ops.left)
@@ -215,7 +238,9 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
             
         }
         
-        func rightAssocParser(_ left: Result) -> GenericParser<StreamType, UserState, Result> {
+        func rightAssocParser(
+            _ left: Result
+        ) -> GenericParser<StreamType, UserState, Result> {
             
             let rightTerm = termParser >>- { rightAssocParser1($0) }
             
@@ -229,13 +254,17 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
             
         }
         
-        func rightAssocParser1(_ right: Result) -> GenericParser<StreamType, UserState, Result> {
+        func rightAssocParser1(
+            _ right: Result
+        ) -> GenericParser<StreamType, UserState, Result> {
             
             return rightAssocParser(right) <|> GenericParser(result: right)
             
         }
         
-        func leftAssocParser(_ left: Result) -> GenericParser<StreamType, UserState, Result> {
+        func leftAssocParser(
+            _ left: Result
+        ) -> GenericParser<StreamType, UserState, Result> {
             
             let apply = leftAssocOp >>- { f in
                 
@@ -251,13 +280,17 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
                 
         }
         
-        func leftAssocParser1(_ right: Result) -> GenericParser<StreamType, UserState, Result> {
+        func leftAssocParser1(
+            _ right: Result
+        ) -> GenericParser<StreamType, UserState, Result> {
             
             return leftAssocParser(right) <|> GenericParser(result: right)
             
         }
         
-        func nonAssocParser(_ left: Result) -> GenericParser<StreamType, UserState, Result> {
+        func nonAssocParser(
+            _ left: Result
+        ) -> GenericParser<StreamType, UserState, Result> {
             
             return nonAssocOp >>- { f in
                 
@@ -281,7 +314,10 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
         
     }
     
-    private func splitOperators(operators: OperatorsTuple, op: Operator<StreamType, UserState, Result>) -> OperatorsTuple {
+    private func splitOperators(
+        operators: OperatorsTuple,
+        op: Operator<StreamType, UserState, Result>
+    ) -> OperatorsTuple {
         
         var ops = operators
         
@@ -334,7 +370,10 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
         
     }
     
-    private func ambigious(_ op: InfixOperatorParser, assoc: String) -> GenericParser<StreamType, UserState, Result> {
+    private func ambigious(
+        _ op: InfixOperatorParser,
+        assoc: String
+    ) -> GenericParser<StreamType, UserState, Result> {
         
         let msg = LocalizedString("ambiguous use of a %@ associative operator")
         let localizedMsg = String.localizedStringWithFormat(msg, assoc as CVarArg)
@@ -349,7 +388,10 @@ public struct OperatorTable<StreamType: Stream, UserState, Result>: RangeReplace
     ///   - subRange: Range of elements to replace.
     ///   - newElements: New elements replacing the previous elements contained
     ///     in `subRange`.
-    public mutating func replaceSubrange<C: Collection where C.Iterator.Element == Iterator.Element>(_ subrange: Range<Index>, with newElements: C) {
+    public mutating func replaceSubrange<C: Collection
+    where C.Iterator.Element == Iterator.Element>(
+        _ subrange: Range<Index>, with newElements: C
+    ) {
         
         table.replaceSubrange(subrange, with: newElements)
         

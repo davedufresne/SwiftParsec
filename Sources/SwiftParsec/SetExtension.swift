@@ -13,7 +13,9 @@ extension Set {
     /// - parameter transform: The transform function.
     /// - returns: A `Set` containing the results of mapping transform over
     ///   `self`.
-    func map<T>(_ transform: @noescape(Iterator.Element) throws -> T) rethrows -> Set<T> {
+    func map<T>(
+        _ transform: @noescape(Iterator.Element) throws -> T
+    ) rethrows -> Set<T> {
         
         var mappedSet = Set<T>()
         

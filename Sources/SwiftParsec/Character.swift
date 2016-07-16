@@ -13,7 +13,8 @@ import struct Foundation.CharacterSet
 /// String parser with an empty `UserState`.
 public typealias StringParser = GenericParser<String, (), Character>
 
-public extension Parsec where StreamType.Iterator.Element == Character, Result == Character {
+public extension Parsec
+where StreamType.Iterator.Element == Character, Result == Character {
     
     /// Return a parser that succeeds for any character for which the supplied
     /// function `predicate` returns `true`. The parser returns the character
@@ -22,7 +23,9 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     /// - parameter predicate: The predicate to apply on the `Character`.
     /// - returns: A parser that succeeds for any character for which the
     ///   supplied function `predicate` returns `true`.
-    public static func satisfy(_ predicate: (Character) -> Bool) -> GenericParser<StreamType, UserState, Result> {
+    public static func satisfy(
+        _ predicate: (Character) -> Bool
+    ) -> GenericParser<StreamType, UserState, Result> {
         
         return tokenPrimitive(
             tokenDescription: { String(reflecting: $0) },
@@ -54,7 +57,9 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     ///   `GenericParser.satisfy(
     ///       predicate: Character -> Bool
     ///   ) -> GenericParser`
-    public static func oneOf(_ list: String) -> GenericParser<StreamType, UserState, Result> {
+    public static func oneOf(
+        _ list: String
+    ) -> GenericParser<StreamType, UserState, Result> {
         
         return satisfy(list.characters.contains)
         
@@ -73,7 +78,9 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     ///   `GenericParser.satisfy(
     ///       predicate: Character -> Bool
     ///   ) -> GenericParser`
-    public static func oneOf(_ interval: ClosedRange<Character>) -> GenericParser<StreamType, UserState, Result> {
+    public static func oneOf(
+        _ interval: ClosedRange<Character>
+    ) -> GenericParser<StreamType, UserState, Result> {
         
         return satisfy(interval.contains)
         
@@ -87,7 +94,9 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     /// - parameter list: A `String` of possible _not_ to match.
     /// - returns: A parser that succeeds if the current character is _not_ in
     ///   the supplied list of characters.
-    public static func noneOf(_ list: String) -> GenericParser<StreamType, UserState, Result> {
+    public static func noneOf(
+        _ list: String
+    ) -> GenericParser<StreamType, UserState, Result> {
         
         return satisfy { !list.characters.contains($0) }
         
@@ -105,7 +114,8 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     /// A Parser that parses a white space character (any Unicode space
     /// character, and the control characters \t, \n, \r, \f, \v). It returns
     /// the parsed character.
-    public static var unicodeSpace: GenericParser<StreamType, UserState, Result> {
+    public static var unicodeSpace:
+        GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isUnicodeSpace } <?> LocalizedString("unicode space")
         
@@ -133,7 +143,8 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
         
         // "\r\n" is combined in one Unicode Scalar.
         return character("\r\n") *> GenericParser(result: "\n") <|>
-            character("\r") *> character("\n") <?> LocalizedString("crlf new-line")
+            character("\r") *> character("\n") <?>
+            LocalizedString("crlf new-line")
         
     }
     
@@ -172,9 +183,11 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     
     /// A Parser that parses a character in the categories of Letters, Marks,
     /// and Numbers. It returns the parsed character.
-    public static var alphaNumeric: GenericParser<StreamType, UserState, Result> {
+    public static var alphaNumeric:
+        GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isAlphaNumeric } <?> LocalizedString("letter or digit")
+        return satisfy { $0.isAlphaNumeric } <?>
+            LocalizedString("letter or digit")
         
     }
     
@@ -204,7 +217,8 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     
     /// A Parser that parses an ASCII decimal digit, i.e. between "0" and "9".
     /// It returns the parsed character.
-    public static var decimalDigit: GenericParser<StreamType, UserState, Result> {
+    public static var decimalDigit:
+        GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isDecimalDigit } <?> LocalizedString("digit")
         
@@ -212,9 +226,11 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     
     /// A Parser that parses an ASCII hexadecimal digit, i.e. "0"..."9",
     /// "a"..."f", "A"..."F". It returns the parsed character.
-    public static var hexadecimalDigit: GenericParser<StreamType, UserState, Result> {
+    public static var hexadecimalDigit:
+        GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { $0.isHexadecimalDigit } <?>  LocalizedString("hexadecimal digit")
+        return satisfy { $0.isHexadecimalDigit } <?>
+            LocalizedString("hexadecimal digit")
         
     }
     
@@ -233,7 +249,9 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     ///
     /// - parameter char: The character to parse.
     /// - returns: A parser that parses a single character `Character`.
-    public static func character(_ char: Character) -> GenericParser<StreamType, UserState, Result> {
+    public static func character(
+        _ char: Character
+    ) -> GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0 == char } <?> String(reflecting: char)
         
@@ -241,7 +259,8 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     
     /// A Parser that succeeds for any character. It returns the parsed
     /// character.
-    public static var anyCharacter: GenericParser<StreamType, UserState, Result> {
+    public static var anyCharacter:
+        GenericParser<StreamType, UserState, Result> {
         
         return satisfy { _ in true }
         
@@ -259,7 +278,9 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     ///
     /// - parameter set: The `NSCharacterSet` used to test for membership.
     /// - returns: The parsed character.
-    static func memberOf(_ set: CharacterSet) -> GenericParser<StreamType, UserState, Result> {
+    static func memberOf(
+        _ set: CharacterSet
+    ) -> GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isMember(of: set) }
         
@@ -267,7 +288,8 @@ public extension Parsec where StreamType.Iterator.Element == Character, Result =
     
 }
 
-public extension Parsec where Result: Sequence, Result.Iterator.Element == Character {
+public extension Parsec
+where Result: Sequence, Result.Iterator.Element == Character {
     
     /// A Parser that maps an array of `Character` to a `String`.
     public var stringValue: GenericParser<StreamType, UserState, String> {
@@ -278,7 +300,9 @@ public extension Parsec where Result: Sequence, Result.Iterator.Element == Chara
     
 }
 
-public extension Parsec where StreamType.Element == StreamType.Iterator.Element, StreamType.Iterator.Element == Character {
+public extension Parsec
+where StreamType.Element == StreamType.Iterator.Element,
+StreamType.Iterator.Element == Character {
     
     /// Return a parser that parses a `String`. It returns the parsed string
     /// (i.e. `str`).
@@ -288,7 +312,9 @@ public extension Parsec where StreamType.Element == StreamType.Iterator.Element,
     ///
     /// - parameter str: The string to parse.
     /// - returns: A parser that parses a `String`.
-    public static func string(_ str: StreamType) -> GenericParser<StreamType, UserState, StreamType> {
+    public static func string(
+        _ str: StreamType
+    ) -> GenericParser<StreamType, UserState, StreamType> {
         
         return tokens(
             tokensDescription: { String(reflecting: $0) },

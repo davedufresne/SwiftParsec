@@ -27,7 +27,9 @@ public protocol Parsec {
     ///
     /// - parameter transform: A mapping function.
     /// - returns: A new parser with the mapped content.
-    func map<T>(_ transform: (Result) -> T) -> GenericParser<StreamType, UserState, T>
+    func map<T>(
+        _ transform: (Result) -> T
+    ) -> GenericParser<StreamType, UserState, T>
     
     /// Return a parser by applying the function contained in the supplied
     /// parser to self.
@@ -36,7 +38,9 @@ public protocol Parsec {
     ///
     /// - parameter parser: The parser containing the function to apply to self.
     /// - returns: A parser with the applied function.
-    func apply<T>(_ parser: GenericParser<StreamType, UserState, (Result) -> T>) -> GenericParser<StreamType, UserState, T>
+    func apply<T>(
+        _ parser: GenericParser<StreamType, UserState, (Result) -> T>
+    ) -> GenericParser<StreamType, UserState, T>
     
     /// This combinator implements choice. The parser `p.alternative(q)` first
     /// applies `p`. If it succeeds, the value of `p` is returned. If `p` fails
@@ -59,7 +63,9 @@ public protocol Parsec {
     ///
     /// - parameter transform: A mapping function returning a parser.
     /// - returns: A new parser with the mapped content.
-    func flatMap<T>(_ transform: (Result) -> GenericParser<StreamType, UserState, T>) -> GenericParser<StreamType, UserState, T>
+    func flatMap<T>(
+        _ transform: (Result) -> GenericParser<StreamType, UserState, T>
+    ) -> GenericParser<StreamType, UserState, T>
     
     /// This combinator is used whenever arbitrary look ahead is needed. Since
     /// it pretends that it hasn't consumed any input when `self` fails, the
@@ -111,7 +117,9 @@ public protocol Parsec {
     ///   this accumulator function. It returns the result of processing the
     ///   passed value and the accumulated values.
     /// - returns: The processed values of the accumulator function.
-    func manyAccumulator(_ accumulator: (Result, [Result]) -> [Result]) -> GenericParser<StreamType, UserState, [Result]>
+    func manyAccumulator(
+        _ accumulator: (Result, [Result]) -> [Result]
+    ) -> GenericParser<StreamType, UserState, [Result]>
     
     /// A parser that always fails without consuming any input.
     static var empty: Self { get }
@@ -165,7 +173,9 @@ public protocol Parsec {
     /// - parameter update: The function applied to the `UserState`. It returns
     ///   the updated `UserState`.
     /// - returns: An empty parser that will update the `UserState`.
-    static func updateUserState(_ update: (UserState) -> UserState) -> GenericParser<StreamType, UserState, ()>
+    static func updateUserState(
+        _ update: (UserState) -> UserState
+    ) -> GenericParser<StreamType, UserState, ()>
     
     /// Run the parser and return the result of the parsing and the user state.
     ///
@@ -175,7 +185,11 @@ public protocol Parsec {
     ///   - input: The input StreamType to parse.
     /// - throws: A `ParseError` when an error occurs.
     /// - returns: The result of the parsing and the user state.
-    func run(userState: UserState, sourceName: String, input: StreamType) throws -> (result: Result, userState: UserState)
+    func run(
+        userState: UserState,
+        sourceName: String,
+        input: StreamType
+    ) throws -> (result: Result, userState: UserState)
     
 }
 
@@ -199,7 +213,10 @@ infix operator <?> { precedence 0 }
 /// - parameters:
 ///   - leftParser: The first parser to try.
 ///   - rightParser: The second parser to try.
-public func <|><Parser: Parsec>(leftParser: Parser, rightParser: Parser) -> Parser {
+public func <|><Parser: Parsec>(
+    leftParser: Parser,
+    rightParser: Parser
+) -> Parser {
     
     return leftParser.alternative(rightParser)
     
@@ -228,7 +245,11 @@ public extension Parsec where UserState == () {
     /// - returns: The result of the parsing.
     public func run(sourceName: String, input: StreamType) throws -> Result {
         
-        return try run(userState: (), sourceName: sourceName, input: input).result
+        return try run(
+            userState: (),
+            sourceName: sourceName,
+            input: input
+        ).result
         
     }
     
