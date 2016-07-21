@@ -284,15 +284,6 @@ private let jsonMaxEscapeDigit = 4
 private let swiftImplicitParameterStart: Character = "$"
 
 private let swiftIdentifierStartCharacters =
-    swiftIdentifierStartCharacters1 +
-    swiftIdentifierStartCharacters2 +
-    swiftIdentifierStartCharacters3 +
-    swiftIdentifierStartCharacters4
-
-// Split declaration of swiftIdentifierStartCharacter because "Expression was
-// too complex to be solved in reasonable time; consider breaking up the
-// expression into distinct sub-expressions" error.
-private let swiftIdentifierStartCharacters1 =
     (0x0041...0x005A).stringValue + // 'A' to 'Z'
     (0x0061...0x007A).stringValue + // 'a' to 'z'
     "_" +
@@ -307,9 +298,7 @@ private let swiftIdentifierStartCharacters1 =
     (0x0370...0x167F).stringValue +
     (0x1681...0x180D).stringValue +
     (0x180F...0x1DBF).stringValue +
-    (0x1E00...0x1FFF).stringValue
-
-private let swiftIdentifierStartCharacters2 =
+    (0x1E00...0x1FFF).stringValue +
     (0x200B...0x200D).stringValue +
     (0x202A...0x202E).stringValue +
     (0x203F...0x2040).stringValue +
@@ -320,9 +309,7 @@ private let swiftIdentifierStartCharacters2 =
     (0x2460...0x24FF).stringValue +
     (0x2776...0x2793).stringValue +
     (0x2C00...0x2DFF).stringValue +
-    (0x2E80...0x2FFF).stringValue
-
-private let swiftIdentifierStartCharacters3 =
+    (0x2E80...0x2FFF).stringValue +
     (0x3004...0x3007).stringValue +
     (0x3021...0x302F).stringValue +
     (0x3031...0x303F).stringValue +
@@ -331,9 +318,7 @@ private let swiftIdentifierStartCharacters3 =
     (0xFD40...0xFDCF).stringValue +
     (0xFDF0...0xFE1F).stringValue +
     (0xFE30...0xFE44).stringValue +
-    (0xFE47...0xFFFD).stringValue
-
-private let swiftIdentifierStartCharacters4 =
+    (0xFE47...0xFFFD).stringValue +
     (0x10000...0x1FFFD).stringValue +
     (0x20000...0x2FFFD).stringValue +
     (0x30000...0x3FFFD).stringValue +
