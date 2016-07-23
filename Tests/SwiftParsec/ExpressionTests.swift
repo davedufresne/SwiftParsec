@@ -68,7 +68,7 @@ class ExpressionTests: XCTestCase {
         
         var index = 0
         
-        let errorMessage = "OperatorTable.expressionParser did not succeed."
+        let errorMessage = "OperatorTable.expressionParser should succeed."
         
         testStringParserSuccess(expr, inputs: matching) { input, result in
             

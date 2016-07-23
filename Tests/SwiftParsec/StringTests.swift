@@ -17,13 +17,13 @@ class StringTests: XCTestCase {
         XCTAssertEqual(
             "4",
             str.last!,
-            "`str.last` should have returned \"4\"."
+            "`str.last` should return \"4\"."
         )
         
         let emptyStr = ""
         XCTAssertNil(
             emptyStr.last,
-            "`emptyStr.last` should have returned `nil`."
+            "`emptyStr.last` should return `nil`."
         )
         
     }

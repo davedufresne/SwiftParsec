@@ -17,7 +17,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["axyz", "exyz", "ixyz", "oxyz", "uxyz"]
-        let errorMessage = "GenericParser.oneOf did not succeed."
+        let errorMessage = "GenericParser.oneOf should succeed."
         
         testStringParserSuccess(vowel, inputs: matching) { input, result in
             
@@ -35,7 +35,7 @@ class CharacterTests: XCTestCase {
         
         // Test for failure.
         let notMatching = ["xyzu", "yzo", "zi", "taeiou", "vexyz"]
-        let shouldFailMessage = "GenericParser.oneOf should have failed."
+        let shouldFailMessage = "GenericParser.oneOf should fail."
         
         testStringParserFailure(vowel, inputs: notMatching) { input, result in
             
@@ -57,7 +57,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["axyz", "éxyz", "ixyz", "oxyz", "uxyz"]
-        let errorMessage = "GenericParser.oneOf did not succeed."
+        let errorMessage = "GenericParser.oneOf should succeed."
         
         testStringParserSuccess(interval, inputs: matching) { input, result in
             
@@ -75,7 +75,7 @@ class CharacterTests: XCTestCase {
         
         // Test for failure.
         let notMatching = ["1xyzu", "?yzo", "Ezi", ")taeiou", "@vexyz"]
-        let shouldFailMessage = "GenericParser.oneOf should have failed."
+        let shouldFailMessage = "GenericParser.oneOf should fail."
         
         testStringParserFailure(interval, inputs: notMatching)
         { input, result in
@@ -97,7 +97,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["xayz", "reyz", "fiyz", "doyz", "cuyz"]
-        let errorMessage = "GenericParser.noneOf did not succeed."
+        let errorMessage = "GenericParser.noneOf should succeed."
         
         testStringParserSuccess(consonant, inputs: matching) { input, result in
             
@@ -115,7 +115,7 @@ class CharacterTests: XCTestCase {
         
         // Test for failure.
         let notMatching = ["axyz", "exyz", "ixyz", "oxyz", "uxyz"]
-        let shouldFailMessage = "GenericParser.noneOf should have failed."
+        let shouldFailMessage = "GenericParser.noneOf should fail."
         
         testStringParserFailure(consonant, inputs: notMatching)
         { input, result in
@@ -140,7 +140,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["  \n  \t \r \r\n" + suffix]
-        let errorMessage = "GenericParser.spaces did not succeed."
+        let errorMessage = "GenericParser.spaces should succeed."
         
         testStringParserSuccess(skipSpaces, inputs: matching) { input, result in
             
@@ -158,7 +158,7 @@ class CharacterTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["axyz", "exyz", "ixyz", "oxyz", "uxyz"]
-        let shouldFailMessage = "GenericParser.spaces should have failed."
+        let shouldFailMessage = "GenericParser.spaces should fail."
         
         testStringParserFailure(skipSpaces, inputs: notMatching)
         { input, result in
@@ -188,7 +188,7 @@ class CharacterTests: XCTestCase {
             "\u{200A}", "\u{200B}fhd", "\u{2028}", "\u{2029}", "\u{202F}ghfd",
             "\u{205F}gh",  "\u{3000}hjg", "\u{FEFF}kgh"
         ]
-        let errorMessage = "GenericParser.unicodeSpace did not succeed."
+        let errorMessage = "GenericParser.unicodeSpace should succeed."
         
         testStringParserSuccess(space, inputs: matching) { input, result in
             
@@ -206,7 +206,7 @@ class CharacterTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["axyz   "]
-        let shouldFailMessage = "GenericParser.unicodeSpace should have failed."
+        let shouldFailMessage = "GenericParser.unicodeSpace should fail."
         
         testStringParserFailure(space, inputs: notMatching) { input, result in
             
@@ -231,7 +231,7 @@ class CharacterTests: XCTestCase {
             " xadf", "\tljk", "\n;k", "\r;kl", "\r\nadf", "\u{000C}jkl",
             "\u{000B}gjh"
         ]
-        let errorMessage = "GenericParser.space did not succeed."
+        let errorMessage = "GenericParser.space should succeed."
         
         testStringParserSuccess(space, inputs: matching) { input, result in
             
@@ -249,7 +249,7 @@ class CharacterTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["axyz   "]
-        let shouldFailMessage = "GenericParser.space should have failed."
+        let shouldFailMessage = "GenericParser.space should fail."
         
         testStringParserFailure(space, inputs: notMatching) { input, result in
             
@@ -271,7 +271,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["\n"]
-        let errorMessage = "GenericParser.newLine did not succeed."
+        let errorMessage = "GenericParser.newLine should succeed."
         
         testStringParserSuccess(newLine, inputs: matching) { input, result in
             
@@ -289,7 +289,7 @@ class CharacterTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["axyz\n"]
-        let shouldFailMessage = "GenericParser.newLine should have failed."
+        let shouldFailMessage = "GenericParser.newLine should fail."
         
         testStringParserFailure(newLine, inputs: notMatching) { input, result in
             
@@ -312,7 +312,7 @@ class CharacterTests: XCTestCase {
         // Test for success.
         // "\r\n" is combined in one Unicode Scalar.
         let matching = ["\r\n", "\u{000D}\u{000A}"]
-        let errorMessage = "GenericParser.crlf did not succeed."
+        let errorMessage = "GenericParser.crlf should succeed."
         
         testStringParserSuccess(newLine, inputs: matching) { input, result in
             
@@ -330,7 +330,7 @@ class CharacterTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["\n", "\r", "\n\r", "adsf\r\n"]
-        let shouldFailMessage = "GenericParser.crlf should have failed."
+        let shouldFailMessage = "GenericParser.crlf should fail."
         
         testStringParserFailure(newLine, inputs: notMatching) { input, result in
             
@@ -353,7 +353,7 @@ class CharacterTests: XCTestCase {
         // Test for success.
         // "\r\n" is combined in one Unicode Scalar.
         let matching = ["\r\n", "\u{000D}\u{000A}", "\n"]
-        let errorMessage = "GenericParser.endOfLine did not succeed."
+        let errorMessage = "GenericParser.endOfLine should succeed."
         
         testStringParserSuccess(endOfLine, inputs: matching) { input, result in
             
@@ -371,7 +371,7 @@ class CharacterTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["\r", "ddsdf\n\r", "adsf\r\n", "adsf'\n"]
-        let shouldFailMessage = "GenericParser.endOfLine should have failed."
+        let shouldFailMessage = "GenericParser.endOfLine should fail."
         
         testStringParserFailure(endOfLine, inputs: notMatching)
         { input, result in
@@ -394,7 +394,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["\t"]
-        let errorMessage = "GenericParser.tab did not succeed."
+        let errorMessage = "GenericParser.tab should succeed."
         
         testStringParserSuccess(tab, inputs: matching) { input, result in
             
@@ -412,7 +412,7 @@ class CharacterTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["axyz\t"]
-        let shouldFailMessage = "GenericParser.tab should have failed."
+        let shouldFailMessage = "GenericParser.tab should fail."
         
         testStringParserFailure(tab, inputs: notMatching) { input, result in
             
@@ -434,7 +434,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["Ezcxv", "A", "À", "Ç", "É", "È", "Ë", "Ê", "Ùaff"]
-        let errorMessage = "GenericParser.uppercase did not succeed."
+        let errorMessage = "GenericParser.uppercase should succeed."
         
         testStringParserSuccess(uppercase, inputs: matching) { input, result in
             
@@ -454,7 +454,7 @@ class CharacterTests: XCTestCase {
         let notMatching = [
             "easdf", "a", "à", "ç", "é", "è", "ê", "ùasdf", ";", ":", ","
         ]
-        let shouldFailMessage = "GenericParser.uppercase should have failed."
+        let shouldFailMessage = "GenericParser.uppercase should fail."
         
         testStringParserFailure(uppercase, inputs: notMatching)
         { input, result in
@@ -477,7 +477,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["easdf", "a", "à", "ç", "é", "è", "ê", "ùasdf"]
-        let errorMessage = "GenericParser.lowercase did not succeed."
+        let errorMessage = "GenericParser.lowercase should succeed."
         
         testStringParserSuccess(lowercase, inputs: matching) { input, result in
             
@@ -497,7 +497,7 @@ class CharacterTests: XCTestCase {
         let notMatching = [
             "Ezcxv", "A", "À", "Ç", "É", "È", "Ë", "Ê", "Ùaff", ";", ":", ","
         ]
-        let shouldFailMessage = "GenericParser.lowercase should have failed."
+        let shouldFailMessage = "GenericParser.lowercase should fail."
         
         testStringParserFailure(lowercase, inputs: notMatching)
         { input, result in
@@ -524,7 +524,7 @@ class CharacterTests: XCTestCase {
             "Ezcxv", "A", "À", "Ç", "É", "È", "Ë", "Ê", "Ùaff", "1", "2", "3",
             "4", "5", "6", "7", "8", "9", "0"
         ]
-        let errorMessage = "GenericParser.alphaNumeric did not succeed."
+        let errorMessage = "GenericParser.alphaNumeric should succeed."
         
         testStringParserSuccess(alphaNum, inputs: matching) { input, result in
             
@@ -546,7 +546,7 @@ class CharacterTests: XCTestCase {
             "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "}",
             "{", "<", ">", "?", "\u{E9}\u{20DD}"
         ]
-        let shouldFailMessage = "GenericParser.alphaNumeric should have failed."
+        let shouldFailMessage = "GenericParser.alphaNumeric should fail."
         
         testStringParserFailure(alphaNum, inputs: notMatching)
         { input, result in
@@ -572,7 +572,7 @@ class CharacterTests: XCTestCase {
             "easdf", "a", "à", "ç", "é", "è", "ê", "ùasdf", "Ezcxv", "A", "À",
             "Ç", "É", "È", "Ë", "Ê", "Ùaff"
         ]
-        let errorMessage = "GenericParser.letter did not succeed."
+        let errorMessage = "GenericParser.letter should succeed."
         
         testStringParserSuccess(letter, inputs: matching) { input, result in
             
@@ -594,7 +594,7 @@ class CharacterTests: XCTestCase {
             "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "=", "}",
             "{", "<", ">", "?", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"
         ]
-        let shouldFailMessage = "GenericParser.letter should have failed."
+        let shouldFailMessage = "GenericParser.letter should fail."
         
         testStringParserFailure(letter, inputs: notMatching) { input, result in
             
@@ -616,7 +616,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["+", "÷", "±", "$", "√"]
-        let errorMessage = "GenericParser.symbol did not succeed."
+        let errorMessage = "GenericParser.symbol should succeed."
         
         testStringParserSuccess(symbol, inputs: matching) { input, result in
             
@@ -638,7 +638,7 @@ class CharacterTests: XCTestCase {
             "Ç", "É", "È", "Ë", "Ê", "Ùaff", "1", "2", "3", "4", "5", "6", "7",
             "8", "9", "0"
         ]
-        let shouldFailMessage = "GenericParser.letter should have failed."
+        let shouldFailMessage = "GenericParser.letter should fail."
         
         testStringParserFailure(symbol, inputs: notMatching) { input, result in
             
@@ -660,7 +660,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-        let errorMessage = "GenericParser.digit did not succeed."
+        let errorMessage = "GenericParser.digit should succeed."
         
         testStringParserSuccess(digit, inputs: matching) { input, result in
             
@@ -683,7 +683,7 @@ class CharacterTests: XCTestCase {
             "{", "<", ">", "?", "easdf", "a", "à", "ç", "é", "è", "ê", "ùasdf",
             "Ezcxv", "A", "À", "Ç", "É", "È", "Ë", "Ê", "Ùaff"
         ]
-        let shouldFailMessage = "GenericParser.digit should have failed."
+        let shouldFailMessage = "GenericParser.digit should fail."
         
         testStringParserFailure(digit, inputs: notMatching) { input, result in
             
@@ -705,7 +705,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-        let errorMessage = "GenericParser.decimalDigit did not succeed."
+        let errorMessage = "GenericParser.decimalDigit should succeed."
         
         testStringParserSuccess(hexDigit, inputs: matching) { input, result in
             
@@ -729,7 +729,7 @@ class CharacterTests: XCTestCase {
             "È", "Ë", "Ê", "Ùaff", "a", "b", "c", "d", "e", "f", "A", "B", "C",
             "D", "E", "F"
         ]
-        let shouldFailMessage = "GenericParser.decimalDigit should have failed."
+        let shouldFailMessage = "GenericParser.decimalDigit should fail."
         
         testStringParserFailure(hexDigit, inputs: notMatching)
         { input, result in
@@ -755,7 +755,7 @@ class CharacterTests: XCTestCase {
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "a", "b", "c",
             "d", "e", "f", "A", "B", "C", "D", "E", "F"
         ]
-        let errorMessage = "GenericParser.hexadecimalDigit did not succeed."
+        let errorMessage = "GenericParser.hexadecimalDigit should succeed."
         
         testStringParserSuccess(hexDigit, inputs: matching) { input, result in
             
@@ -780,7 +780,7 @@ class CharacterTests: XCTestCase {
         ]
         
         let shouldFailMessage =
-        "GenericParser.hexadecimalDigit should have failed."
+        "GenericParser.hexadecimalDigit should fail."
         
         testStringParserFailure(hexDigit, inputs: notMatching)
         { input, result in
@@ -803,7 +803,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = ["1", "2", "3", "4", "5", "6", "7", "0"]
-        let errorMessage = "GenericParser.octalDigit did not succeed."
+        let errorMessage = "GenericParser.octalDigit should succeed."
         
         testStringParserSuccess(octDigit, inputs: matching) { input, result in
             
@@ -826,7 +826,7 @@ class CharacterTests: XCTestCase {
             "{", "<", ">", "?", "à", "ç", "é", "è", "ê", "ùasdf", "À", "Ç", "É",
             "È", "Ë", "Ê", "Ùaff", "8", "9"
         ]
-        let shouldFailMessage = "GenericParser.octalDigit should have failed."
+        let shouldFailMessage = "GenericParser.octalDigit should fail."
         
         testStringParserFailure(octDigit, inputs: notMatching)
         { input, result in
@@ -850,7 +850,7 @@ class CharacterTests: XCTestCase {
         
         // Test for success.
         let matching = [stringToMatch + "qewr", stringToMatch]
-        let errorMessage = "GenericParser.string did not succeed."
+        let errorMessage = "GenericParser.string should succeed."
         
         testStringParserSuccess(string1, inputs: matching) { input, result in
             
@@ -873,7 +873,7 @@ class CharacterTests: XCTestCase {
                 to: stringToMatch.index(before: stringToMatch.endIndex)
             )
         ]
-        let shouldFailMessage = "GenericParser.string should have failed."
+        let shouldFailMessage = "GenericParser.string should fail."
         
         testStringParserFailure(string1, inputs: notMatching) { input, result in
             

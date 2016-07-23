@@ -23,7 +23,7 @@ class CombinatorTests: XCTestCase {
         // Test for success.
         let matching = ["1a ", "a1 ", " 1a"]
         
-        let errorMessage = "GenericParser.choice error."
+        let errorMessage = "GenericParser.choice should succeed."
         
         testStringParserSuccess(choice, inputs: matching) { input, result in
             
@@ -41,7 +41,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["", ";1 a", "+a 1"]
-        let shouldFailMessage = "GenericParser.choice should have failed."
+        let shouldFailMessage = "GenericParser.choice should fail."
         
         testStringParserFailure(choice, inputs: notMatching) { input, result in
             
@@ -65,7 +65,7 @@ class CombinatorTests: XCTestCase {
         // Test for success.
         let matchingDigit = ["1a ", "a1 ", " 1a"]
         
-        let errorMessage = "GenericParser.otherwise error."
+        let errorMessage = "GenericParser.otherwise should succeed."
         
         testStringParserSuccess(digit, inputs: matchingDigit) { input, result in
             
@@ -104,7 +104,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["ab1", "a12"]
-        let shouldFailMessage = "GenericParser.otherwise should have failed."
+        let shouldFailMessage = "GenericParser.otherwise should fail."
         
         testStringParserFailure(string, inputs: notMatching) { input, result in
             
@@ -127,7 +127,7 @@ class CombinatorTests: XCTestCase {
         // Test for success.
         let matchingDigit = ["1a ", "a1 ", " 1a"]
         
-        let errorMessage = "GenericParser.optional error."
+        let errorMessage = "GenericParser.optional should succeed."
         
         testStringParserSuccess(optionalDigit, inputs: matchingDigit)
         { input, result in
@@ -165,7 +165,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["ab1", "a12"]
-        let shouldFailMessage = "GenericParser.optional should have failed."
+        let shouldFailMessage = "GenericParser.optional should fail."
         
         testStringParserFailure(optionalString, inputs: notMatching)
         { input, result in
@@ -196,7 +196,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["ab1", "a12"]
-        let shouldFailMessage = "GenericParser.discard should have failed."
+        let shouldFailMessage = "GenericParser.discard should fail."
         
         testStringParserFailure(discardString, inputs: notMatching)
         { input, result in
@@ -222,7 +222,7 @@ class CombinatorTests: XCTestCase {
         // Test for success.
         let matchingDigit = ["(1) ", "(2)adsf", "(3)xfsa"]
         
-        let errorMessage = "GenericParser.between error."
+        let errorMessage = "GenericParser.between should succeed."
         
         testStringParserSuccess(digit, inputs: matchingDigit)
         { inputStr, result in
@@ -273,7 +273,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["{[(ab)]}", "{[(abc)]", "[(abc)]}"]
-        let shouldFailMessage = "GenericParser.between should have failed."
+        let shouldFailMessage = "GenericParser.between should fail."
         
         testStringParserFailure(string, inputs: notMatching) { input, result in
             
@@ -300,7 +300,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["asd", "asdfasd", "xasdf"]
-        let shouldFailMessage = "GenericParser.skipMany1 should have failed."
+        let shouldFailMessage = "GenericParser.skipMany1 should fail."
         
         testStringParserFailure(skipMany1, inputs: notMatching)
         { input, result in
@@ -323,7 +323,7 @@ class CombinatorTests: XCTestCase {
         
         // Test for success.
         let matching = ["asdfasdf", "asdfasdfasdf", "asdfasdfasdfasdf"]
-        let errorMessage = "GenericParser.many1 error."
+        let errorMessage = "GenericParser.many1 should succeed."
         
         testStringParserSuccess(manyString, inputs: matching) { input, result in
             
@@ -341,7 +341,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["asd", "asdfasd", "xasdf"]
-        let shouldFailMessage = "GenericParser.many1 should have failed."
+        let shouldFailMessage = "GenericParser.many1 should fail."
         
         testStringParserFailure(manyString, inputs: notMatching)
         { input, result in
@@ -371,7 +371,7 @@ class CombinatorTests: XCTestCase {
             "adsf", "asd,fasdÀf,qeàwr,dÉgéh", "234,adsf,erty", ",adsf,zsdf"
         ]
         
-        let errorMessage = "GenericParser.separatedBy error."
+        let errorMessage = "GenericParser.separatedBy should succeed."
         
         testStringParserSuccess(commaSeparated, inputs: matching)
         { input, result in
@@ -391,7 +391,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["asd,,", "adsf,wert,1"]
-        let shouldFailMessage = "GenericParser.separatedBy should have failed."
+        let shouldFailMessage = "GenericParser.separatedBy should fail."
         
         testStringParserFailure(commaSeparated, inputs: notMatching)
         { input, result in
@@ -419,7 +419,7 @@ class CombinatorTests: XCTestCase {
         // Test for success.
         let matching = ["adsf", "asd,fasdÀf,qeàwr,dÉgéh", "adsf,zsdf"]
         
-        let errorMessage = "GenericParser.separatedBy1 error."
+        let errorMessage = "GenericParser.separatedBy1 should succeed."
         
         testStringParserSuccess(commaSeparated, inputs: matching)
         { input, result in
@@ -441,7 +441,7 @@ class CombinatorTests: XCTestCase {
         let notMatching = [
             "asd,,", "adsf,wert,1", "234,adsf,erty", ",adsf,zsdf"
         ]
-        let shouldFailMessage = "GenericParser.separatedBy1 should have failed."
+        let shouldFailMessage = "GenericParser.separatedBy1 should fail."
         
         testStringParserFailure(commaSeparated, inputs: notMatching)
         { input, result in
@@ -466,7 +466,7 @@ class CombinatorTests: XCTestCase {
         let letters = StringParser.letter.many1.stringValue
         let commaSeparated = letters.dividedBy(comma) <* StringParser.eof
         
-        let errorMessage = "GenericParser.dividedBy error."
+        let errorMessage = "GenericParser.dividedBy should succeed."
         
         // End separator required.
         let endRequired = ["adsf,", "asd,fasdÀf,qeàwr,dÉgéh,"]
@@ -522,7 +522,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["adsf,wert,werb", "234,adsf,erty,", ",adsf,zsdf,"]
-        let shouldFailMessage = "GenericParser.dividedBy should have failed."
+        let shouldFailMessage = "GenericParser.dividedBy should fail."
         
         testStringParserFailure(commaSeparated, inputs: notMatching)
         { input, result in
@@ -547,7 +547,7 @@ class CombinatorTests: XCTestCase {
         let letters = StringParser.letter.many1.stringValue
         let commaSeparated = letters.dividedBy1(comma)
         
-        let errorMessage = "GenericParser.dividedBy1 error."
+        let errorMessage = "GenericParser.dividedBy1 should succeed."
         
         // End separator required.
         let endRequired = ["adsf,", "asd,fasdÀf,qeàwr,dÉgéh,"]
@@ -602,7 +602,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["adsf,wert,werb", ",adsf,zsdf,", "234,adsf,erty,"]
-        let shouldFailMessage = "GenericParser.dividedBy1 should have failed."
+        let shouldFailMessage = "GenericParser.dividedBy1 should fail."
         
         testStringParserFailure(commaSeparated, inputs: notMatching)
         { input, result in
@@ -621,7 +621,7 @@ class CombinatorTests: XCTestCase {
     
     func testCount() {
         
-        let errorMessage = "GenericParser.count error."
+        let errorMessage = "GenericParser.count should succeed."
         
         let countNumber = 3
         let letters = StringParser.letter.many.stringValue.count(countNumber)
@@ -668,7 +668,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatchingAsdf = ["asd1", "asdfasdfasd1", "1asdf", "asdf"]
-        let shouldFailMessage = "GenericParser.count should have failed."
+        let shouldFailMessage = "GenericParser.count should fail."
         
         testStringParserFailure(asdf, inputs: notMatchingAsdf)
         { input, result in
@@ -709,7 +709,7 @@ class CombinatorTests: XCTestCase {
         ]
         var index = 0
         
-        let errorMessage = "GenericParser.chainRight error."
+        let errorMessage = "GenericParser.chainRight should succeed."
         
         testStringParserSuccess(exp, inputs: matching) { input, result in
             
@@ -728,7 +728,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["2.0**", "2.0**2.0*"]
-        let shouldFailMessage = "GenericParser.chainRight should have failed."
+        let shouldFailMessage = "GenericParser.chainRight should fail."
         
         testStringParserFailure(exp, inputs: notMatching) { input, result in
             
@@ -766,7 +766,7 @@ class CombinatorTests: XCTestCase {
         ]
         var index = 0
         
-        let errorMessage = "GenericParser.chainRight1 error."
+        let errorMessage = "GenericParser.chainRight1 should succeed."
         
         testStringParserSuccess(exp, inputs: matching) { input, result in
             
@@ -785,7 +785,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["2.0**", "2.0**2.0*", "a"]
-        let shouldFailMessage = "GenericParser.chainRight1 should have failed."
+        let shouldFailMessage = "GenericParser.chainRight1 should fail."
         
         testStringParserFailure(exp, inputs: notMatching) { input, result in
             
@@ -817,7 +817,7 @@ class CombinatorTests: XCTestCase {
         
         var index = 0
         
-        let errorMessage = "GenericParser.chainLeft error."
+        let errorMessage = "GenericParser.chainLeft should succeed."
         
         testStringParserSuccess(add, inputs: matchingAdd) { input, result in
             
@@ -862,7 +862,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["2*", "2*2*"]
-        let shouldFailMessage = "GenericParser.chainLeft should have failed."
+        let shouldFailMessage = "GenericParser.chainLeft should fail."
         
         testStringParserFailure(mul, inputs: notMatching) { input, result in
             
@@ -894,7 +894,7 @@ class CombinatorTests: XCTestCase {
         
         var index = 0
         
-        let errorMessage = "GenericParser.chainLeft1 error."
+        let errorMessage = "GenericParser.chainLeft1 should succeed."
         
         testStringParserSuccess(add, inputs: matchingAdd) { input, result in
             
@@ -939,7 +939,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["2*", "2*2*", "a"]
-        let shouldFailMessage = "GenericParser.chainLeft1 should have failed."
+        let shouldFailMessage = "GenericParser.chainLeft1 should fail."
         
         testStringParserFailure(mulOp, inputs: notMatching) { input, result in
             
@@ -963,7 +963,7 @@ class CombinatorTests: XCTestCase {
         // Test for success.
         let matching = ["let", "let;", "let "]
         
-        let errorMessage = "GenericParser.noOccurence error."
+        let errorMessage = "GenericParser.noOccurence should succeed."
         
         testStringParserSuccess(keyworkLet, inputs: matching) { input, result in
             
@@ -981,7 +981,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["lets", "let2", "le", "a"]
-        let shouldFailMessage = "GenericParser.noOccurence should have failed."
+        let shouldFailMessage = "GenericParser.noOccurence should fail."
         
         testStringParserFailure(keyworkLet, inputs: notMatching)
         { input, result in
@@ -1014,7 +1014,7 @@ class CombinatorTests: XCTestCase {
             "<!-- A comment -->", "<!-- Un autre en français -->", "<!---->"
         ]
         
-        let errorMessage = "GenericParser.manyTill error."
+        let errorMessage = "GenericParser.manyTill should succeed."
         
         testStringParserSuccess(comment, inputs: matching) { inputStr, result in
             
@@ -1039,7 +1039,7 @@ class CombinatorTests: XCTestCase {
         let notMatching = [
             "<!-- A comment ->", "<!-- Un autre en français", "<---->", "a"
         ]
-        let shouldFailMessage = "GenericParser.manyTill should have failed."
+        let shouldFailMessage = "GenericParser.manyTill should fail."
         
         testStringParserFailure(comment, inputs: notMatching) { input, result in
             
@@ -1135,7 +1135,7 @@ class CombinatorTests: XCTestCase {
         
         // Test when not matching.
         let notMatching = ["\n", "\r", "\n\r", "a"]
-        let shouldFailMessage = "GenericParser.eof should have failed."
+        let shouldFailMessage = "GenericParser.eof should fail."
         
         testStringParserFailure(eof, inputs: notMatching) { input, result in
             
