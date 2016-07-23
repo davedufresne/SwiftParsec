@@ -24,5 +24,96 @@ class PositionTests: XCTestCase {
         XCTAssertFalse(pos3 > pos1, "pos3 should be smaller than pos1.")
         
     }
-
+    
+    func testColumnPosition() {
+        
+        let str = "1234"
+        let expectedColumn = str.characters.count + 1
+        
+        let strParser = StringParser.string(str)
+        let positionParser = strParser *>
+            GenericParser<String, (), SourcePosition>.sourcePosition
+        
+        let errorMessage = "GenericParser.sourcePosition should return " +
+            "column value equal to \"\(expectedColumn)\"."
+        
+        testStringParserSuccess(positionParser, inputs: [str])
+        { input, result in
+            
+            XCTAssertEqual(
+                expectedColumn,
+                result.column,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
+            
+        }
+        
+    }
+    
+    func testLineColumnPosition() {
+        
+        let str = "1\n2\n3"
+        let expectedLine = 3
+        let expectedColumn = 2
+        
+        let strParser = StringParser.string(str)
+        let positionParser = strParser *>
+            GenericParser<String, (), SourcePosition>.sourcePosition
+        
+        let errorMessage = "GenericParser.sourcePosition should return " +
+            "line value equal to \"\(expectedLine)\" and column value equal " +
+            "to \"\(expectedLine)\"."
+        
+        testStringParserSuccess(positionParser, inputs: [str])
+        { input, result in
+            
+            let positionEqual = expectedLine == result.line &&
+                expectedColumn == result.column
+            
+            XCTAssert(
+                positionEqual,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
+            
+        }
+        
+    }
+    
+    func testTabPosition() {
+        
+        let str = "1\t3"
+        let expectedColumn = 10
+        
+        let strParser = StringParser.string(str)
+        let positionParser = strParser *>
+            GenericParser<String, (), SourcePosition>.sourcePosition
+        
+        let errorMessage = "GenericParser.sourcePosition should return " +
+            "column value equal to \"\(expectedColumn)\"."
+        
+        testStringParserSuccess(positionParser, inputs: [str])
+        { input, result in
+            
+            XCTAssertEqual(
+                expectedColumn,
+                result.column,
+                self.formatErrorMessage(
+                    errorMessage,
+                    input: input,
+                    result: result
+                )
+            )
+            
+        }
+        
+    }
+    
 }

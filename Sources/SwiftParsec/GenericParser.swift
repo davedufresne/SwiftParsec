@@ -516,6 +516,23 @@ Parsec {
         
     }
     
+    /// Return the current source position.
+    ///
+    /// - returns: The current source position.
+    /// - SeeAlso 'SourcePosition'.
+    public static var
+    sourcePosition: GenericParser<StreamType, UserState, SourcePosition> {
+        
+        return GenericParser<StreamType, UserState, SourcePosition>(parse:
+        { state in
+            
+            return .none(.ok(state.position, state,
+                             ParseError.unknownParseError(state.position)))
+            
+        })
+        
+    }
+    
     /// Return a parser that applies the result of the supplied parsers to the
     /// lifted function. The parsers are applied from left to right.
     ///

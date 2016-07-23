@@ -162,7 +162,14 @@ public protocol Parsec {
     /// - parameter message: The failure message.
     /// - returns: A parser that always fail.
     static func fail(_ message: String) -> Self
-        
+    
+    /// Return the current source position.
+    ///
+    /// - returns: The current source position.
+    /// - SeeAlso 'SourcePosition'.
+    static var
+    sourcePosition: GenericParser<StreamType, UserState, SourcePosition> { get }
+    
     /// The `updateUserState` method applies the function `update` to the user
     /// state. Suppose that we want to count identifiers in a source, we could
     /// use the user state as:
