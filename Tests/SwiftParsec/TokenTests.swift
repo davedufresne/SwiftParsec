@@ -787,7 +787,7 @@ class TokenTests: XCTestCase {
                 
             case .left(let intRes):
                 
-                if case .left(let val) = expect where intRes == val {
+                if case .left(let val) = expect, intRes == val {
                     
                     return
                     
@@ -795,7 +795,7 @@ class TokenTests: XCTestCase {
                 
             case .right(let doubleRes):
                 
-                if case .right(let val) = expect where doubleRes == val {
+                if case .right(let val) = expect, doubleRes == val {
                     
                     return
                     
