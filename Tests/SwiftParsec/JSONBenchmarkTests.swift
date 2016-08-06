@@ -151,16 +151,18 @@ class BenchmarkTests: XCTestCase {
         
         var statistics: JsonStatistics?
         
+        let statisticsParser = jsonParser *>
+            GenericParser<String, JsonStatistics, JsonStatistics>.userState
         self.measure {
             do {
                 
-                let (_, state) = try jsonParser.run(
+                let stats = try statisticsParser.run(
                     userState: initialState,
                     sourceName: "",
                     input: jsonData
                 )
                 
-                statistics = state
+                statistics = stats
                 
             } catch let error {
                 

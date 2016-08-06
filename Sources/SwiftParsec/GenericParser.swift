@@ -708,6 +708,21 @@ Parsec {
 
     }
     
+    /// Return the user state.
+    ///
+    /// - returns: The user state
+    static public var
+    userState: GenericParser<StreamType, UserState, UserState> {
+        
+        return GenericParser<StreamType, UserState, UserState>(parse: { state in
+            
+            return .none(.ok(state.userState, state,
+                             ParseError.unknownParseError(state.position)))
+            
+        })
+        
+    }
+
     /// The `updateUserState` method applies the function `update` to the user
     /// state. Suppose that we want to count identifiers in a source, we could
     /// use the user state as:
@@ -749,7 +764,7 @@ Parsec {
         userState: UserState,
         sourceName: String,
         input: StreamType
-    ) throws -> (result: Result, userState: UserState) {
+    ) throws -> Result {
         
         let position = SourcePosition(name: sourceName, line: 1, column: 1)
         let state = ParserState(
@@ -761,9 +776,9 @@ Parsec {
         let reply = parse(state: state).parserReply
         switch reply {
             
-        case .ok(let result, let state, _):
+        case .ok(let result, _, _):
             
-            return (result, state.userState)
+            return result
             
         case .error(let error):
             

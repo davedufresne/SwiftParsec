@@ -540,11 +540,11 @@ class GenericParserTests: XCTestCase {
     
     func testUpdateUserState() {
         
-        let userState = GenericParser<String, Int, Character>.updateUserState(
-            curriedPlus(1)
-        )
+        let updateUserState =
+        GenericParser<String, Int, Character>.updateUserState(curriedPlus(1))
+        
         let countLetters =
-            GenericParser<String, Int, Character>.letter <* userState
+            GenericParser<String, Int, Character>.letter <* updateUserState
         let digits = GenericParser<String, Int, Character>.digit
         let alphaNum = countLetters <* digits.skipMany
         
@@ -552,11 +552,13 @@ class GenericParserTests: XCTestCase {
         
         let errorMessage = "GenericParser.updateUserState should succeed."
         
+        let userState = alphaNum.many *>
+            GenericParser<String, Int, Int>.userState
         do {
             
             for input in matching {
                 
-                let (_, state) = try alphaNum.many.run(
+                let state = try userState.run(
                     userState: 0,
                     sourceName: "",
                     input: input

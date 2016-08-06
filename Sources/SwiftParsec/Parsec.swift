@@ -170,6 +170,12 @@ public protocol Parsec {
     static var
     sourcePosition: GenericParser<StreamType, UserState, SourcePosition> { get }
     
+    /// Return the user state.
+    ///
+    /// - returns: The user state
+    static var
+    userState: GenericParser<StreamType, UserState, UserState> { get }
+    
     /// The `updateUserState` method applies the function `update` to the user
     /// state. Suppose that we want to count identifiers in a source, we could
     /// use the user state as:
@@ -196,7 +202,7 @@ public protocol Parsec {
         userState: UserState,
         sourceName: String,
         input: StreamType
-    ) throws -> (result: Result, userState: UserState)
+    ) throws -> Result
     
 }
 
@@ -256,7 +262,7 @@ public extension Parsec where UserState == () {
             userState: (),
             sourceName: sourceName,
             input: input
-        ).result
+        )
         
     }
     
