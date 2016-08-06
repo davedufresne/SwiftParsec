@@ -25,7 +25,7 @@
 ///     let parser = permutation.parser.stringValue
 ///
 public struct Permutation<StreamType: Stream, UserState, Result>:
-RangeReplaceableCollection, ArrayLiteralConvertible {
+RangeReplaceableCollection, ExpressibleByArrayLiteral {
     
     /// Represents a valid position in the permutation.
     public typealias Index = Int

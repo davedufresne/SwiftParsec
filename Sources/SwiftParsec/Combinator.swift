@@ -22,7 +22,7 @@ public extension GenericParser {
         _ parsers: S
     ) -> GenericParser {
         
-        return parsers.reduce(GenericParser.empty, combine: <|>)
+        return parsers.reduce(GenericParser.empty, <|>)
         
     }
     

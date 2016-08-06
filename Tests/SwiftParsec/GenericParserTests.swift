@@ -612,7 +612,7 @@ class GenericParserTests: XCTestCase {
 /// implementation for the `+` operator.
 protocol PlusOperator {
     
-    func +(lhs: Self, rhs: Self) -> Self
+    static func +(lhs: Self, rhs: Self) -> Self
     
 }
 

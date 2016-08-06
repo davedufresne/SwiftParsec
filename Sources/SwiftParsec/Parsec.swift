@@ -288,7 +288,7 @@ public extension Parsec where UserState == () {
 
 /// A `Stream` instance is responsible for maintaining the position of the
 /// parser's stream.
-public protocol Stream: Collection, ArrayLiteralConvertible {}
+public protocol Stream: Collection, ExpressibleByArrayLiteral {}
 
 extension String: Stream {
     

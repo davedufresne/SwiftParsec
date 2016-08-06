@@ -86,7 +86,7 @@ public func <(leftMsg: Message, rightMsg: Message) -> Bool {
 /// `ParseError` represents parse errors. It provides the source position
 /// (`SourcePosition`) of the error and an array of error messages (`Message`).
 /// A `ParseError` can be returned by the function `parse`.
-public struct ParseError: ErrorProtocol, CustomStringConvertible {
+public struct ParseError: Error, CustomStringConvertible {
     
     /// Return an unknown parse error.
     ///
