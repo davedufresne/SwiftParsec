@@ -13,8 +13,8 @@ extension String {
     /// - parameters:
     ///   - codeUnits: Sequence of code units.
     ///   - codec: A unicode encoding scheme.
-    init?<C: UnicodeCodec, S: Sequence
-    where S.Iterator.Element == C.CodeUnit>(codeUnits: S, codec: C) {
+    init?<C: UnicodeCodec, S: Sequence>(codeUnits: S, codec: C)
+    where S.Iterator.Element == C.CodeUnit {
         
         var unicodeCode = codec
         var str = ""

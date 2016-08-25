@@ -203,11 +203,10 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     ///   - subRange: Range of elements to replace.
     ///   - newElements: New elements replacing the previous elements contained
     ///     in `subRange`.
-    public mutating func replaceSubrange<C: Collection
-    where C.Iterator.Element == Iterator.Element>(
+    public mutating func replaceSubrange<C: Collection>(
         _ subrange: Range<Index>,
         with newElements: C
-    ) {
+    ) where C.Iterator.Element == Iterator.Element {
         
         parsers.replaceSubrange(subrange, with: newElements)
         

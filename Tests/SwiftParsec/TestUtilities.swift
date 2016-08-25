@@ -14,11 +14,10 @@ extension XCTestCase {
     /// Run `parser` in a `do-catch` block on the supplied input strings. The
     /// assertions are performed in the `assert` function. If an error is thrown
     /// it is reported with `XCTFail()`.
-    func testStringParserSuccess<Result, Input: Collection
-    where Input.Iterator.Element == String>(
+    func testStringParserSuccess<Result, Input: Collection>(
         _ parser: GenericParser<String, (), Result>,
         inputs: Input, assert: (String, Result) -> Void
-    ) {
+    ) where Input.Iterator.Element == String {
         
         do {
             
@@ -56,12 +55,11 @@ extension XCTestCase {
     /// Run `parser` in a `do-catch` block on the supplied input strings. The
     /// assertions are performed in the `assert` function. If an error is thrown
     /// it is reported with `XCTFail()`.
-    func testStringParserFailure<Result, Input: Collection
-    where Input.Iterator.Element == String>(
+    func testStringParserFailure<Result, Input: Collection>(
         _ parser: GenericParser<String, (), Result>,
         inputs: Input,
         assert: (String, Result) -> Void
-    ) {
+    ) where Input.Iterator.Element == String {
         
         for input in inputs {
             

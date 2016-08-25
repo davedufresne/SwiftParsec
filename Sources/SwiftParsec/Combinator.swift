@@ -17,10 +17,8 @@ public extension GenericParser {
     /// - parameter parsers: An array of parsers to try.
     /// - returns: A parser that tries to apply the parsers in the array
     ///   `parsers` in order, until one of them succeeds.
-    public static func choice<S: Sequence
-    where S.Iterator.Element == GenericParser>(
-        _ parsers: S
-    ) -> GenericParser {
+    public static func choice<S: Sequence>(_ parsers: S) -> GenericParser
+    where S.Iterator.Element == GenericParser {
         
         return parsers.reduce(GenericParser.empty, <|>)
         
