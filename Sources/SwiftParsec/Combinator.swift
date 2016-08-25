@@ -261,7 +261,7 @@ public extension GenericParser {
         
         return GenericParser<StreamType, UserState, [Result]> { state in
             
-            return count(n, results: []).parse(state: state)
+            return count(n, results: []).parse(state)
             
         }
         

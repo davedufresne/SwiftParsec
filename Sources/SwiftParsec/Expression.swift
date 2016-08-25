@@ -175,7 +175,7 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         let lazyTerm = GenericParser<StreamType, UserState, Result> { term }
         
         let expr = reduce(lazyTerm) { buildParser($0, operators: $1) }
-        term = combine(expression: expr)
+        term = combine(expr)
         
         return expr
         

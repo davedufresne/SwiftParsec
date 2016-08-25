@@ -18,13 +18,13 @@ public struct Configuration {
     ///     Configuration.localizeString =
     ///         { NSLocalizedString($0, comment: "") }
     ///
-    public static var localizeString: (key: String) -> String = { $0 }
+    public static var localizeString: (_ key: String) -> String = { $0 }
     
 }
 
 /// Function calling the string localization hook.
 func LocalizedString(_ key: String) -> String {
     
-    return Configuration.localizeString(key: key)
+    return Configuration.localizeString(key)
 
 }

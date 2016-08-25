@@ -36,7 +36,7 @@ Parsec {
         
         parse = { state in
             
-            return function().parse(state: state)
+            return function().parse(state)
             
         }
         
@@ -55,7 +55,7 @@ Parsec {
     ///
     /// - Parameter state: The state of the parser.
     /// - returns: The result of the parsing.
-    let parse: (state: ParserState<StreamType.Iterator, UserState>)
+    let parse: (_ state: ParserState<StreamType.Iterator, UserState>)
     -> Consumed<StreamType, UserState, Result>
     
     /// Return a parser containing the result of mapping transform over `self`.
@@ -70,7 +70,7 @@ Parsec {
         
         return GenericParser<StreamType, UserState, T>(parse: { state in
             
-            let consumed = self.parse(state: state)
+            let consumed = self.parse(state)
             return consumed.map(transform)
             
         })
@@ -109,7 +109,7 @@ Parsec {
         
         return GenericParser(parse: { state in
             
-            let consumed = self.parse(state: state)
+            let consumed = self.parse(state)
             guard case .none(let reply) = consumed,
                 case .error(let error) = reply else {
                 
@@ -117,7 +117,7 @@ Parsec {
                 
             }
             
-            let altConsumed = altParser.parse(state: state)
+            let altConsumed = altParser.parse(state)
             switch altConsumed {
                 
             case .some: return altConsumed
@@ -153,7 +153,7 @@ Parsec {
             
             let parser = transform(result)
             
-            let consumed = parser.parse(state: state)
+            let consumed = parser.parse(state)
             switch consumed {
                 
             // If parser consumes, return the result right away.
@@ -202,7 +202,7 @@ Parsec {
         
         return GenericParser<StreamType, UserState, T>(parse: { state in
             
-            switch self.parse(state: state) {
+            switch self.parse(state) {
                 
             case .some(let reply):
                 
@@ -252,7 +252,7 @@ Parsec {
         
         return GenericParser(parse: { state in
             
-            let consumed = self.parse(state: state)
+            let consumed = self.parse(state)
             if case .some(let reply) = consumed, case .error = reply {
                 
                 return .none(reply)
@@ -275,7 +275,7 @@ Parsec {
         
         return GenericParser(parse: { state in
             
-            let consumed = self.parse(state: state)
+            let consumed = self.parse(state)
             
             if case .some(let reply) = consumed,
             case .ok(let result, _, _) = reply {
@@ -355,7 +355,7 @@ Parsec {
             
             repeat {
                 
-                let consumed = self.parse(state: newState)
+                let consumed = self.parse(newState)
                 switch consumed {
                     
                 case .some(let reply):
@@ -436,7 +436,7 @@ Parsec {
         
         return GenericParser(parse: { state in
             
-            let consumed = self.parse(state: state)
+            let consumed = self.parse(state)
             switch consumed {
                 
             case .some: return consumed
@@ -773,7 +773,7 @@ Parsec {
             userState: userState
         )
         
-        let reply = parse(state: state).parserReply
+        let reply = parse(state).parserReply
         switch reply {
             
         case .ok(let result, _, _):
