@@ -206,22 +206,55 @@ public protocol Parsec {
     
 }
 
-infix operator <^> { associativity left precedence 130 }
+/// Precedence of infix operator for `Parsec.labels()`. It has a higher
+/// precedence than the `AssignmentPrecedence` group but a lower precedence than
+/// the `LogicalDisjunctionPrecedence` group.
+precedencegroup LabelPrecedence {
+    associativity: right
+    higherThan: AssignmentPrecedence
+    lowerThan: LogicalDisjunctionPrecedence
+}
 
-infix operator <*> { associativity left precedence 130 }
+/// Infix operator for `Parsec.labels()`. It has the lowest precedence of the
+/// parsers operators.
+infix operator <?> : LabelPrecedence
 
-infix operator *> { associativity left precedence 130 }
+/// Infix operator for `Parsec.labels()`. It has the lowest precedence of the
+/// parsers operators.
+///
+/// - parameters:
+///   - parser: The parser whose error message is to be replaced.
+///   - message: The new error message.
+public func <?><Parser: Parsec>(parser: Parser, message: String) -> Parser {
+    
+    return parser.labels(message)
+    
+}
 
-infix operator <* { associativity left precedence 130 }
+/// Precedence of infix operator for `Parsec.flatMap()` (bind). It has a higher
+/// precedence than the `LabelPrecedence` group.
+precedencegroup FlatMapPrecedence {
+    associativity: left
+    higherThan: LabelPrecedence
+}
 
-infix operator <|> { associativity left precedence 110 }
+/// Infix operator for `Parsec.flatMap()` (bind). It has a higher precedence
+/// than the `<?>` operator.
+infix operator >>- : FlatMapPrecedence
 
-infix operator >>- { associativity left precedence 100 }
+/// Precedence of infix operator for `Parsec.alternative()`. It has a higher
+/// precedence than the `FlatMapPrecedence` group.
+precedencegroup ChoicePrecedence {
+    associativity: left
+    higherThan: FlatMapPrecedence
+}
 
-infix operator <?> { precedence 0 }
+/// Infix operator for `Parsec.alternative()`. It has a higher precedence than
+/// the `>>-` operator.
+infix operator <|> : ChoicePrecedence
 
-/// Infix operator for `Parsec.alternative`. It has the same precedence as the
-/// equality operator (`&&`).
+/// Infix operator for `Parsec.alternative`. It has a higher precedence than
+/// the `>>-` operator.
 ///
 /// - parameters:
 ///   - leftParser: The first parser to try.
@@ -235,16 +268,28 @@ public func <|><Parser: Parsec>(
     
 }
 
-/// Infix operator for `label`. It has the lowest precedence.
-///
-/// - parameters:
-///   - parser: The parser whose error message is to be replaced.
-///   - message: The new error message.
-public func <?><Parser: Parsec>(parser: Parser, message: String) -> Parser {
-    
-    return parser.labels(message)
-    
+/// Precedence of infix operators for sequence parsing. It has a higher
+/// precedence than the `ChoicePrecedence` group.
+precedencegroup SequencePrecedence {
+    associativity: left
+    higherThan: ChoicePrecedence
 }
+
+/// Sequence parsing, discarding the value of the first parser. It has a higher
+/// precedence than the `<|>` operator.
+infix operator *> : SequencePrecedence
+
+/// Sequence parsing, discarding the value of the second parser. It has a higher
+/// precedence than the `<|>` operator.
+infix operator <* : SequencePrecedence
+
+/// Infix operator for `Parsec.apply()`. It has a higher precedence than the
+/// `<|>` operator.
+infix operator <*> : SequencePrecedence
+
+/// Infix operator for `Parsec.map()`. It has a higher precedence than the `<|>`
+/// operator.
+infix operator <^> : SequencePrecedence
 
 public extension Parsec where UserState == () {
     
