@@ -302,7 +302,7 @@ public struct ParseError: Error, CustomStringConvertible {
 extension Sequence where Iterator.Element == String {
     
     /// Return an array with duplicate and empty strings removed.
-    private func removingDuplicatesAndEmpties() -> [Self.Iterator.Element] {
+    func removingDuplicatesAndEmpties() -> [Self.Iterator.Element] {
         
         return self.removingDuplicates().filter { !$0.isEmpty }
         
