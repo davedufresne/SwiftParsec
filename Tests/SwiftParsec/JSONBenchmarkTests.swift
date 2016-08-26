@@ -142,7 +142,7 @@ class BenchmarkTests: XCTestCase {
             nullCount: 0
         )
         
-        let bundle = Bundle(for: self.dynamicType)
+        let bundle = Bundle(for: type(of: self))
         let path = bundle.path(forResource: "SampleJSON", ofType: "json")!
         let jsonData = try! String(
             contentsOfFile: path,
