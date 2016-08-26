@@ -30,11 +30,11 @@ extension XCTestCase {
             
         } catch let parseError as ParseError {
             
-            XCTFail(String(parseError))
+            XCTFail(String(describing: parseError))
             
         } catch let error {
             
-            XCTFail(String(error))
+            XCTFail(String(describing: error))
             
         }
         
@@ -74,7 +74,7 @@ extension XCTestCase {
                 
             } catch let error {
                 
-                XCTFail(String(error))
+                XCTFail(String(describing: error))
                 
             }
             
@@ -88,7 +88,8 @@ extension XCTestCase {
         result: Result
     ) -> String {
         
-        return message + "\nInput: " + input + "\nResult: " + String(result)
+        return message + "\nInput: " + input + "\nResult: " +
+            String(describing: result)
         
     }
     

@@ -391,7 +391,7 @@ class GenericParserTests: XCTestCase {
                 
             } catch let error {
                 
-                XCTFail(String(error))
+                XCTFail(String(describing: error))
                 
             }
             
@@ -574,11 +574,11 @@ class GenericParserTests: XCTestCase {
             
         } catch let parseError as ParseError {
             
-            XCTFail(String(parseError))
+            XCTFail(String(describing: parseError))
             
         } catch let error {
             
-            XCTFail(String(error))
+            XCTFail(String(describing: error))
             
         }
         
@@ -598,11 +598,11 @@ class GenericParserTests: XCTestCase {
             
         } catch let parseError as ParseError {
             
-            XCTFail(String(parseError))
+            XCTFail(String(describing: parseError))
             
         } catch let error {
             
-            XCTFail(String(error))
+            XCTFail(String(describing: error))
             
         }
         

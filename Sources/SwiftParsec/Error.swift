@@ -134,7 +134,7 @@ public struct ParseError: Error, CustomStringConvertible {
     /// A textual representation of `self`.
     public var description: String {
         
-        return String(position) + ":\n" + messagesDescription
+        return String(describing: position) + ":\n" + messagesDescription
         
     }
     

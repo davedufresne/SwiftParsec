@@ -358,7 +358,7 @@ class ErrorMessageTests: XCTestCase {
             
         } catch let error {
             
-            let errorStr = String(error)
+            let errorStr = String(describing: error)
             assert(errorStr)
             
         }

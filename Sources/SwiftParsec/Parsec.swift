@@ -327,11 +327,11 @@ public extension Parsec where UserState == () {
         } catch let parseError as ParseError {
             
             let parseErrorMsg = LocalizedString("parse error at ")
-            print(parseErrorMsg + String(parseError))
+            print(parseErrorMsg + String(describing: parseError))
             
         } catch let error {
             
-            print(String(error))
+            print(String(describing: error))
             
         }
         

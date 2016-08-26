@@ -166,7 +166,7 @@ class BenchmarkTests: XCTestCase {
                 
             } catch let error {
                 
-                XCTFail(String(error))
+                XCTFail(String(describing: error))
                 
             }
             
