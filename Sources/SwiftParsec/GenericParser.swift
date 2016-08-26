@@ -32,7 +32,7 @@ Parsec {
     /// execute functions lazily.
     ///
     /// - parameter function: The function to execute when the parser is run.
-    public init(function: () -> GenericParser) {
+    public init(function: @escaping () -> GenericParser) {
         
         parse = { state in
             
@@ -44,8 +44,10 @@ Parsec {
     
     /// Create an instance with the given parse function.
     init(
-        parse: (ParserState<StreamType.Iterator, UserState>
-    ) -> Consumed<StreamType, UserState, Result>) {
+        parse: @escaping (
+            ParserState<StreamType.Iterator, UserState>
+        ) -> Consumed<StreamType, UserState, Result>
+    ) {
         
         self.parse = parse
         
@@ -65,7 +67,7 @@ Parsec {
     /// - parameter transform: A mapping function.
     /// - returns: A new parser with the mapped content.
     public func map<T>(
-        _ transform: (Result) -> T
+        _ transform: @escaping (Result) -> T
     ) -> GenericParser<StreamType, UserState, T> {
         
         return GenericParser<StreamType, UserState, T>(parse: { state in
@@ -139,7 +141,9 @@ Parsec {
     /// - parameter transform: A mapping function returning a parser.
     /// - returns: A new parser with the mapped content.
     public func flatMap<T>(
-        _ transform: (Result) -> GenericParser<StreamType, UserState, T>
+        _ transform: @escaping (
+            Result
+        ) -> GenericParser<StreamType, UserState, T>
     ) -> GenericParser<StreamType, UserState, T> {
         
         func runRightParser(
@@ -342,7 +346,7 @@ Parsec {
     ///   passed value and the accumulated values.
     /// - returns: The processed values of the accumulator function.
     public func manyAccumulator<Accumulator: EmptyInitializable>(
-        _ accumulator: (Result, Accumulator) -> Accumulator
+        _ accumulator: @escaping (Result, Accumulator) -> Accumulator
     ) -> GenericParser<StreamType, UserState, Accumulator> {
         
         return GenericParser<StreamType, UserState, Accumulator>(parse:
@@ -547,7 +551,7 @@ Parsec {
     /// - returns: A parser that applies the result of the supplied parsers to
     ///   the lifted function.
     public static func lift2<Param1, Param2>(
-        _ function: (Param1, Param2) -> Result,
+        _ function: @escaping (Param1, Param2) -> Result,
         parser1: GenericParser<StreamType, UserState, Param1>,
         parser2: GenericParser<StreamType, UserState, Param2>
     ) -> GenericParser {
@@ -579,7 +583,7 @@ Parsec {
     /// - returns: A parser that applies the result of the supplied parsers to
     ///   the lifted function.
     public static func lift3<Param1, Param2, Param3>(
-        _ function: (Param1, Param2, Param3) -> Result,
+        _ function: @escaping (Param1, Param2, Param3) -> Result,
         parser1: GenericParser<StreamType, UserState, Param1>,
         parser2: GenericParser<StreamType, UserState, Param2>,
         parser3: GenericParser<StreamType, UserState, Param3>
@@ -618,7 +622,7 @@ Parsec {
     /// - returns: A parser that applies the result of the supplied parsers to
     ///   the lifted function.
     public static func lift4<Param1, Param2, Param3, Param4>(
-        _ function: (Param1, Param2, Param3, Param4) -> Result,
+        _ function: @escaping (Param1, Param2, Param3, Param4) -> Result,
         parser1: GenericParser<StreamType, UserState, Param1>,
         parser2: GenericParser<StreamType, UserState, Param2>,
         parser3: GenericParser<StreamType, UserState, Param3>,
@@ -669,7 +673,7 @@ Parsec {
     /// - returns: A parser that applies the result of the supplied parsers to
     ///   the lifted function.
     public static func lift5<Param1, Param2, Param3, Param4, Param5>(
-        _ function: (Param1, Param2, Param3, Param4, Param5) -> Result,
+        _ function: @escaping (Param1, Param2, Param3, Param4, Param5) -> Result,
         parser1: GenericParser<StreamType, UserState, Param1>,
         parser2: GenericParser<StreamType, UserState, Param2>,
         parser3: GenericParser<StreamType, UserState, Param3>,
@@ -734,7 +738,7 @@ Parsec {
     ///   the updated `UserState`.
     /// - returns: An empty parser that will update the `UserState`.
     public static func updateUserState(
-        _ update: (UserState) -> UserState
+        _ update: @escaping (UserState) -> UserState
     ) -> GenericParser<StreamType, UserState, ()> {
         
         return GenericParser<StreamType, UserState, ()>(parse: { parserState in
@@ -837,11 +841,11 @@ public extension Parsec {
     /// - returns: Return a parser that accepts a token `Element` with result
     ///   `Result` when the token matches.
     public static func tokenPrimitive(
-        tokenDescription: (StreamType.Iterator.Element) -> String,
-        nextPosition: (
+        tokenDescription: @escaping (StreamType.Iterator.Element) -> String,
+        nextPosition: @escaping (
             SourcePosition, StreamType.Iterator.Element
         ) -> SourcePosition,
-        match: (StreamType.Iterator.Element) -> Result?
+        match: @escaping (StreamType.Iterator.Element) -> Result?
     ) -> GenericParser<StreamType, UserState, Result> {
         
         return GenericParser(parse: { state in
@@ -900,8 +904,8 @@ StreamType.Iterator.Element: Equatable {
     ///   - tokens: The collection of tokens to parse.
     /// - returns: A parser that parses a collection of tokens.
     public static func tokens(
-        tokensDescription: (StreamType) -> String,
-        nextPosition: (
+        tokensDescription: @escaping (StreamType) -> String,
+        nextPosition: @escaping (
             SourcePosition, StreamType
         ) -> SourcePosition,
         tokens: StreamType
@@ -1110,7 +1114,7 @@ struct ParserState<StreamTypeIterator, UserState> {
 ///   - transform: A mapping function.
 ///   - parser: The parser whose result is mapped.
 public func <^><StreamType, UserState, Result, T>(
-    transform: (Result) -> T,
+    transform: @escaping (Result) -> T,
     parser: GenericParser<StreamType, UserState, Result>
 ) -> GenericParser<StreamType, UserState, T> {
     
@@ -1183,7 +1187,7 @@ public func <*<StreamType, UserState, Param1, Param2>(
 ///   - transform: The function receiving the result of `parser`.
 public func >>-<StreamType, UserState, Result, T>(
     parser: GenericParser<StreamType, UserState, Result>,
-    transform: (Result) -> GenericParser<StreamType, UserState, T>
+    transform: @escaping (Result) -> GenericParser<StreamType, UserState, T>
 ) -> GenericParser<StreamType, UserState, T> {
     
     return parser.flatMap(transform)

@@ -466,7 +466,7 @@ public extension GenericParser {
     ///   parameter that can be nested in other expressions.
     /// - returns: A recursive parser combined with itself.
     public static func recursive(
-        _ combine: @noescape(GenericParser) -> GenericParser
+        _ combine: (GenericParser) -> GenericParser
     ) -> GenericParser {
         
         var expression: GenericParser!

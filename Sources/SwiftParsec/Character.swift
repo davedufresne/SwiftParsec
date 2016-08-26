@@ -24,7 +24,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     /// - returns: A parser that succeeds for any character for which the
     ///   supplied function `predicate` returns `true`.
     public static func satisfy(
-        _ predicate: (Character) -> Bool
+        _ predicate: @escaping (Character) -> Bool
     ) -> GenericParser<StreamType, UserState, Result> {
         
         return tokenPrimitive(

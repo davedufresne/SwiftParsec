@@ -111,7 +111,7 @@ class ExpressionTests: XCTestCase {
     
     func binary(
         _ name: String,
-        function: (Int, Int) -> Int,
+        function: @escaping (Int, Int) -> Int,
         assoc: Associativity
     ) -> Operator<String, (), Int> {
         
@@ -123,7 +123,7 @@ class ExpressionTests: XCTestCase {
     
     func prefix(
         _ name: String,
-        function: (Int) -> Int
+        function: @escaping (Int) -> Int
     ) -> Operator<String, (), Int> {
         
         let opParser = StringParser.string(name) *>
@@ -134,7 +134,7 @@ class ExpressionTests: XCTestCase {
     
     func postfix(
         _ name: String,
-        function: (Int) -> Int
+        function: @escaping (Int) -> Int
     ) -> Operator<String, (), Int> {
         
         let opParser = StringParser.string(name) *>

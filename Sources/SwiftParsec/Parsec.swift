@@ -28,7 +28,7 @@ public protocol Parsec {
     /// - parameter transform: A mapping function.
     /// - returns: A new parser with the mapped content.
     func map<T>(
-        _ transform: (Result) -> T
+        _ transform: @escaping (Result) -> T
     ) -> GenericParser<StreamType, UserState, T>
     
     /// Return a parser by applying the function contained in the supplied
@@ -64,7 +64,9 @@ public protocol Parsec {
     /// - parameter transform: A mapping function returning a parser.
     /// - returns: A new parser with the mapped content.
     func flatMap<T>(
-        _ transform: (Result) -> GenericParser<StreamType, UserState, T>
+        _ transform: @escaping (
+            Result
+        ) -> GenericParser<StreamType, UserState, T>
     ) -> GenericParser<StreamType, UserState, T>
     
     /// This combinator is used whenever arbitrary look ahead is needed. Since
@@ -118,7 +120,7 @@ public protocol Parsec {
     ///   passed value and the accumulated values.
     /// - returns: The processed values of the accumulator function.
     func manyAccumulator(
-        _ accumulator: (Result, [Result]) -> [Result]
+        _ accumulator: @escaping (Result, [Result]) -> [Result]
     ) -> GenericParser<StreamType, UserState, [Result]>
     
     /// A parser that always fails without consuming any input.
@@ -187,7 +189,7 @@ public protocol Parsec {
     ///   the updated `UserState`.
     /// - returns: An empty parser that will update the `UserState`.
     static func updateUserState(
-        _ update: (UserState) -> UserState
+        _ update: @escaping (UserState) -> UserState
     ) -> GenericParser<StreamType, UserState, ()>
     
     /// Run the parser and return the result of the parsing and the user state.

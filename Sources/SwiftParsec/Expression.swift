@@ -166,8 +166,8 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     ///       combine: GenericParser -> GenericParser
     ///   ) -> GenericParser
     public func makeExpressionParser(
-        _ combine: @noescape (
-            expression: GenericParser<StreamType, UserState, Result>
+        _ combine: (
+            _ expression: GenericParser<StreamType, UserState, Result>
         ) -> GenericParser<StreamType, UserState, Result>
     ) -> GenericParser<StreamType, UserState, Result> {
         

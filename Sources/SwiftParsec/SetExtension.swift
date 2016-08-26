@@ -14,7 +14,7 @@ extension Set {
     /// - returns: A `Set` containing the results of mapping transform over
     ///   `self`.
     func map<T>(
-        _ transform: @noescape(Iterator.Element) throws -> T
+        _ transform: (Iterator.Element) throws -> T
     ) rethrows -> Set<T> {
         
         var mappedSet = Set<T>()

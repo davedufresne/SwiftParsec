@@ -19,7 +19,7 @@ extension Collection {
     /// - returns: The combined result of each element of `self`.
     func reduceRight<T>(
         _ initial: T,
-        combine: @noescape(T, Self.Iterator.Element) throws -> T
+        combine: (T, Self.Iterator.Element) throws -> T
     ) rethrows -> T {
         
         var acc = initial

@@ -18,7 +18,7 @@ extension Sequence {
     ///   - included: The elements that satisfied the predicate.
     ///   - remainder: The remainder of `self`.
     func part(
-        _ includeElement: @noescape(Self.Iterator.Element) throws -> Bool
+        _ includeElement: (Self.Iterator.Element) throws -> Bool
     ) rethrows
     -> (included: [Self.Iterator.Element], remainder: [Self.Iterator.Element]) {
         
