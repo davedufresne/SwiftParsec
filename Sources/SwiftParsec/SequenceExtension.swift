@@ -75,7 +75,7 @@ extension Sequence where Iterator.Element == Int {
         
         for elem in self {
             
-            chars.append(Character(UnicodeScalar(elem)))
+            chars.append(Character(UnicodeScalar(elem)!))
             
         }
         

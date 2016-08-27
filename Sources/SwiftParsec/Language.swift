@@ -150,7 +150,7 @@ public extension LanguageDefinition {
             
             if cp1.isSingleCodeUnit {
                 
-                return GenericParser(result: Character(UnicodeScalar(cp1)))
+                return GenericParser(result: Character(UnicodeScalar(cp1)!))
                 
             }
             
