@@ -9,7 +9,7 @@
 import XCTest
 import SwiftParsec
 
-class BenchmarkTests: XCTestCase {
+class JSONBenchmarkTests: XCTestCase {
 
     private typealias JsonStatistics = (
         booleanCount: Int,
