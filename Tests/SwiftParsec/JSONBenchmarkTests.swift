@@ -11,7 +11,7 @@ import SwiftParsec
 
 class JSONBenchmarkTests: XCTestCase {
 
-    private typealias JsonStatistics = (
+    private typealias JSONStatistics = (
         booleanCount: Int,
         numberCount: Int,
         stringCount: Int,
@@ -21,14 +21,14 @@ class JSONBenchmarkTests: XCTestCase {
     )
     
     private typealias StatisticsParser =
-        GenericParser<String, JsonStatistics, ()>
+        GenericParser<String, JSONStatistics, ()>
     
     // Test the performance of a parser gathering basic statistics on a JSON
     // file. The goal is to keep the building part as light as possible to
     // test the parsing speed without to much influence from the building part.
-    func testJsonStatisticsParserPerformance() {
+    func testJSONStatisticsParserPerformance() {
         
-        let json = LanguageDefinition<JsonStatistics>.json
+        let json = LanguageDefinition<JSONStatistics>.json
         let lexer = GenericTokenParser(languageDefinition: json)
         let symbol = lexer.symbol
         
@@ -74,11 +74,11 @@ class JSONBenchmarkTests: XCTestCase {
             
         }
         
-        var jarray: GenericParser<String, JsonStatistics, ()>!
-        var jobject: GenericParser<String, JsonStatistics, ()>!
+        var jarray: GenericParser<String, JSONStatistics, ()>!
+        var jobject: GenericParser<String, JSONStatistics, ()>!
         
         let _ = GenericParser.recursive { (
-            jvalue: GenericParser<String, JsonStatistics, ()>
+            jvalue: GenericParser<String, JSONStatistics, ()>
         ) in
             
             let jarrayValues = lexer.commaSeparated(jvalue)
@@ -98,7 +98,7 @@ class JSONBenchmarkTests: XCTestCase {
                     
             }
             
-            let dictionary: GenericParser<String, JsonStatistics, [String: ()]> =
+            let dictionary: GenericParser<String, JSONStatistics, [String: ()]> =
             (symbol(",") *> nameValue).manyAccumulator { assoc, dict in
                     
                 return dict
@@ -149,10 +149,10 @@ class JSONBenchmarkTests: XCTestCase {
             encoding: String.Encoding.utf8
         );
         
-        var statistics: JsonStatistics?
+        var statistics: JSONStatistics?
         
         let statisticsParser = jsonParser *>
-            GenericParser<String, JsonStatistics, JsonStatistics>.userState
+            GenericParser<String, JSONStatistics, JSONStatistics>.userState
         self.measure {
             do {
                 
