@@ -185,7 +185,7 @@
 				579ED1221D3AF4680078D6F4 /* SampleJSON.json */,
 			);
 			name = SwiftParsecTests;
-			path = Tests/SwiftParsec;
+			path = Tests/SwiftParsecTests;
 			sourceTree = "<group>";
 		};
 		57E5A60E1BA372D40062F479 /* Extensions */ = {
@@ -516,7 +516,7 @@
 					"$(SDKROOT)",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = Tests/SwiftParsec/Info.plist;
+				INFOPLIST_FILE = Tests/SwiftParsecTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = daviddufresne.SwiftParsecTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -535,7 +535,7 @@
 					"$(SDKROOT)",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = Tests/SwiftParsec/Info.plist;
+				INFOPLIST_FILE = Tests/SwiftParsecTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = daviddufresne.SwiftParsecTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

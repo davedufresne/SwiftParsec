@@ -9,5 +9,8 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftParsec"
+    name: "SwiftParsec",
+    targets: [
+        Target(name: "SwiftParsec"),
+    ]
 )
