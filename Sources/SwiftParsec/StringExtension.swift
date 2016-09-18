@@ -53,21 +53,6 @@ extension String {
         
     }
     
-    /// If `!self.isEmpty`, remove the first `Character` and return it,
-    /// otherwise return nil.
-    ///
-    /// - returns: The first `Character` if `!self.isEmpty`.
-    mutating public func popFirst() -> Character? {
-        
-        guard !isEmpty else { return nil }
-        
-        let first = self[startIndex]
-        remove(at: startIndex)
-        
-        return first
-        
-    }
-    
     /// Return a `String` with the duplicate characters removed. In particular,
     /// it keeps only the first occurrence of each element.
     ///
