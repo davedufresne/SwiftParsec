@@ -756,19 +756,21 @@ Parsec {
         
     }
     
-    /// Run the parser and return the result of the parsing and the user state.
+    /// Run the parser and return the result of the parsing if it succeeded.
+    /// If an error occured, it is returned. Contrary to the `run()` method, it
+    /// doesn't throw an exception.
     ///
     /// - parameters:
     ///   - userState: The state supplied by the user.
     ///   - sourceName: The name of the source (i.e. file name).
-    ///   - input: The input stream to parse.
-    /// - throws: A `ParseError` when an error occurs.
-    /// - returns: The result of the parsing and the user state.
-    public func run(
+    ///   - input: The input StreamType to parse.
+    /// - returns: The result of the parsing on success, otherwise the parse
+    ///   error.
+    public func runSafe(
         userState: UserState,
         sourceName: String,
         input: StreamType
-    ) throws -> Result {
+    ) -> Either<ParseError, Result> {
         
         let position = SourcePosition(name: sourceName, line: 1, column: 1)
         let state = ParserState(
@@ -782,14 +784,14 @@ Parsec {
             
         case .ok(let result, _, _):
             
-            return result
+            return .right(result)
             
         case .error(let error):
             
-            throw error
+            return .left(error)
             
         }
-        
+
     }
     
 }

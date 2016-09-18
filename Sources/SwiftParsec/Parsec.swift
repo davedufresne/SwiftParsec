@@ -192,19 +192,21 @@ public protocol Parsec {
         _ update: @escaping (UserState) -> UserState
     ) -> GenericParser<StreamType, UserState, ()>
     
-    /// Run the parser and return the result of the parsing and the user state.
+    /// Run the parser and return the result of the parsing if it succeeded.
+    /// If an error occured, it is returned. Contrary to the `run()` method, it
+    /// doesn't throw an exception.
     ///
     /// - parameters:
     ///   - userState: The state supplied by the user.
     ///   - sourceName: The name of the source (i.e. file name).
     ///   - input: The input StreamType to parse.
-    /// - throws: A `ParseError` when an error occurs.
-    /// - returns: The result of the parsing and the user state.
-    func run(
+    /// - returns: The result of the parsing on success, otherwise the parse
+    ///   error.
+    func runSafe(
         userState: UserState,
         sourceName: String,
         input: StreamType
-    ) throws -> Result
+    ) -> Either<ParseError, Result>
     
 }
 
@@ -292,6 +294,44 @@ infix operator <*> : SequencePrecedence
 /// Infix operator for `Parsec.map()`. It has a higher precedence than the `<|>`
 /// operator.
 infix operator <^> : SequencePrecedence
+
+public extension Parsec {
+    
+    /// Run the parser and return the result of the parsing.
+    ///
+    /// - parameters:
+    ///   - userState: The state supplied by the user.
+    ///   - sourceName: The name of the source (i.e. file name).
+    ///   - input: The input stream to parse.
+    /// - throws: A `ParseError` when an error occurs.
+    /// - returns: The result of the parsing.
+    public func run(
+        userState: UserState,
+        sourceName: String,
+        input: StreamType
+        ) throws -> Result {
+        
+        let result = runSafe(
+            userState: userState,
+            sourceName: sourceName,
+            input: input
+        )
+        
+        switch result {
+            
+        case .left(let error):
+            
+            throw error
+            
+        case .right(let result):
+            
+            return result
+            
+        }
+        
+    }
+    
+}
 
 public extension Parsec where UserState == () {
     
