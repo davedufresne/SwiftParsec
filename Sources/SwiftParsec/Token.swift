@@ -1031,18 +1031,6 @@ public struct GenericTokenParser<UserState>: TokenParser {
     
 }
 
-/// The Either enumeration represents values with two possibilities: a value of
-/// type `Either<L, R>` is either `Left(L)` or `Right(R)`.
-public enum Either<L, R> {
-    
-    /// Left posibility.
-    case left(L)
-    
-    /// Right posibility.
-    case right(R)
-    
-}
-
 private let hexadecimalPrefixes = "xX"
 private let octalPrefixes = "oO"
 
