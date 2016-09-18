@@ -11,8 +11,8 @@
 		5703BE191BE6AC09003FF5FA /* Permutation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5703BE181BE6AC09003FF5FA /* Permutation.swift */; };
 		5703BE1D1BEB9A4F003FF5FA /* PermutationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5703BE1C1BEB9A4F003FF5FA /* PermutationTests.swift */; };
 		570B24891CD7F4400060E452 /* Parsec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B24881CD7F4400060E452 /* Parsec.swift */; };
-		570DB5B51BC3422B0058D186 /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570DB5B41BC3422A0058D186 /* Token.swift */; };
-		5714D8BE1BCE90DC00FE4BF0 /* TokenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5714D8BD1BCE90DC00FE4BF0 /* TokenTests.swift */; };
+		570DB5B51BC3422B0058D186 /* TokenParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570DB5B41BC3422A0058D186 /* TokenParser.swift */; };
+		5714D8BE1BCE90DC00FE4BF0 /* TokenParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5714D8BD1BCE90DC00FE4BF0 /* TokenParserTests.swift */; };
 		5714D8C01BCEAE3B00FE4BF0 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5714D8BF1BCEAE3A00FE4BF0 /* Language.swift */; };
 		57167F0D1B99E66800F35A29 /* SwiftParsec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57167F021B99E66800F35A29 /* SwiftParsec.framework */; };
 		57167F121B99E66800F35A29 /* GenericParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57167F111B99E66800F35A29 /* GenericParserTests.swift */; };
@@ -59,8 +59,8 @@
 		5703BE181BE6AC09003FF5FA /* Permutation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Permutation.swift; sourceTree = "<group>"; };
 		5703BE1C1BEB9A4F003FF5FA /* PermutationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermutationTests.swift; sourceTree = "<group>"; };
 		570B24881CD7F4400060E452 /* Parsec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parsec.swift; sourceTree = "<group>"; };
-		570DB5B41BC3422A0058D186 /* Token.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
-		5714D8BD1BCE90DC00FE4BF0 /* TokenTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenTests.swift; sourceTree = "<group>"; };
+		570DB5B41BC3422A0058D186 /* TokenParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenParser.swift; sourceTree = "<group>"; };
+		5714D8BD1BCE90DC00FE4BF0 /* TokenParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenParserTests.swift; sourceTree = "<group>"; };
 		5714D8BF1BCEAE3A00FE4BF0 /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		57167F021B99E66800F35A29 /* SwiftParsec.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftParsec.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57167F071B99E66800F35A29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -163,7 +163,7 @@
 				57167F1E1B99EEA500F35A29 /* ParseError.swift */,
 				5703BE181BE6AC09003FF5FA /* Permutation.swift */,
 				57167F201B99EF1300F35A29 /* Position.swift */,
-				570DB5B41BC3422A0058D186 /* Token.swift */,
+				570DB5B41BC3422A0058D186 /* TokenParser.swift */,
 			);
 			name = SwiftParsec;
 			path = Sources/SwiftParsec;
@@ -182,7 +182,7 @@
 				578435551BF66B3A0067B3E9 /* PositionTests.swift */,
 				57ABA23B1CF5F39B00C2B657 /* StringTests.swift */,
 				5768B5771BB0773A005FF951 /* TestUtilities.swift */,
-				5714D8BD1BCE90DC00FE4BF0 /* TokenTests.swift */,
+				5714D8BD1BCE90DC00FE4BF0 /* TokenParserTests.swift */,
 				57C459771CE2150D0014764F /* UnicodeScalarTests.swift */,
 				57167F131B99E66800F35A29 /* Info.plist */,
 				579ED1221D3AF4680078D6F4 /* SampleJSON.json */,
@@ -317,7 +317,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				570DB5B51BC3422B0058D186 /* Token.swift in Sources */,
+				570DB5B51BC3422B0058D186 /* TokenParser.swift in Sources */,
 				570B24891CD7F4400060E452 /* Parsec.swift in Sources */,
 				57E6F77F1BA7414B0015E875 /* SequenceExtension.swift in Sources */,
 				57C995DB1CF86906000DA292 /* Configuration.swift in Sources */,
@@ -345,7 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5768B5781BB0773A005FF951 /* TestUtilities.swift in Sources */,
-				5714D8BE1BCE90DC00FE4BF0 /* TokenTests.swift in Sources */,
+				5714D8BE1BCE90DC00FE4BF0 /* TokenParserTests.swift in Sources */,
 				577261F81BE14A3700E70BEF /* ErrorMessageTest.swift in Sources */,
 				57AA4E031BB77A0F0026DF01 /* CombinatorTests.swift in Sources */,
 				57ABA23C1CF5F39B00C2B657 /* StringTests.swift in Sources */,
