@@ -1,5 +1,5 @@
 //
-//  SequenceTypeExtension.swift
+//  SequenceAggregation.swift
 //  SwiftParsec
 //
 //  Created by David Dufresne on 2015-09-14.
@@ -60,20 +60,6 @@ extension Sequence where Iterator.Element: Equatable {
             return acc.appending(elem)
             
         }
-        
-    }
-    
-}
-
-extension Sequence where Iterator.Element == Int {
-    
-    /// Converts each `Int` in its `Character` equivalent and build a String
-    /// with the result.
-    var stringValue: String {
-        
-        let chars = map { Character(UnicodeScalar($0)!) }
-        
-        return String(chars)
         
     }
     
