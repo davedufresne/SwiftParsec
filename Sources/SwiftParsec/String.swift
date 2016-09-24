@@ -1,5 +1,5 @@
 //
-//  StringExtension.swift
+//  String.swift
 //  SwiftParsec
 //
 //  Created by David Dufresne on 2015-10-10.

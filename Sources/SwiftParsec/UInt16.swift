@@ -1,5 +1,5 @@
 //
-//  UInt16Extension.swift
+//  UInt16.swift
 //  SwiftParsec
 //
 //  Created by David Dufresne on 2015-11-22.
