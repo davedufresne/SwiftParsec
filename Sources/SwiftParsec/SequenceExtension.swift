@@ -71,13 +71,7 @@ extension Sequence where Iterator.Element == Int {
     /// with the result.
     var stringValue: String {
         
-        var chars = ContiguousArray<Character>()
-        
-        for elem in self {
-            
-            chars.append(Character(UnicodeScalar(elem)!))
-            
-        }
+        let chars = map { Character(UnicodeScalar($0)!) }
         
         return String(chars)
         
