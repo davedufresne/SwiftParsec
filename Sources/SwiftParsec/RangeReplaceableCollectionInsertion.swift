@@ -1,5 +1,5 @@
 //
-//  ArrayExtension.swift
+//  RangeReplaceableCollectionInsertion.swift
 //  SwiftParsec
 //
 //  Created by David Dufresne on 2015-09-11.
