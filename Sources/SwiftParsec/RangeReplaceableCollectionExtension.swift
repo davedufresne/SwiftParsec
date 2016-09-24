@@ -8,18 +8,6 @@
 
 public extension RangeReplaceableCollection {
     
-    /// If `!self.isEmpty`, remove the first element and return it, otherwise
-    /// return `nil`.
-    ///
-    /// - returns: The fhe first element of `self` or `nil`.
-    public mutating func popFirst() -> Iterator.Element? {
-        
-        guard !isEmpty else { return nil }
-        
-        return removeFirst()
-        
-    }
-    
     /// Prepend `newElement` to the collection.
     ///
     /// - parameter newElement: New element to prepend to the collection.
