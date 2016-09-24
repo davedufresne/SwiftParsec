@@ -1,5 +1,5 @@
 //
-//  CollectionTypeExtension.swift
+//  CollectionAggregation.swift
 //  SwiftParsec
 //
 //  Created by David Dufresne on 2015-10-09.
