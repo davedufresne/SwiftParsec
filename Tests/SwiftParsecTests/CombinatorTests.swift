@@ -1,10 +1,10 @@
+//==============================================================================
+// CombinatorTests.swift
+// SwiftParsec
 //
-//  CombinatorTests.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-09-26.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// Created by David Dufresne on 2015-09-26.
+// Copyright © 2015 David Dufresne. All rights reserved.
+//==============================================================================
 
 import XCTest
 @testable import SwiftParsec

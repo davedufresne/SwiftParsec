@@ -1,10 +1,10 @@
+//==============================================================================
+// PositionTests.swift
+// SwiftParsec
 //
-//  PositionTests.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-11-13.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// Created by David Dufresne on 2015-11-13.
+// Copyright © 2015 David Dufresne. All rights reserved.
+//==============================================================================
 
 import XCTest
 @testable import SwiftParsec

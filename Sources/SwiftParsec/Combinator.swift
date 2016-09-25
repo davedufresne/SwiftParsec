@@ -1,13 +1,15 @@
+//==============================================================================
+// Combinator.swift
+// SwiftParsec
 //
-//  Combinator.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-09-26.
-//  Copyright © 2015 David Dufresne. All rights reserved.
+// Created by David Dufresne on 2015-09-26.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
 // Commonly used generic combinators
-//
+//==============================================================================
 
+//==============================================================================
+// Extension containing methods related to parser combinators.
 public extension GenericParser {
     
     /// Return a parser that tries to apply the parsers in the array `parsers`
@@ -480,6 +482,8 @@ public extension GenericParser {
     
 }
 
+//==============================================================================
+// Extension containing methods related to special parsers.
 public extension Parsec where StreamType.Iterator.Element == Result {
     
     /// A parser that accepts any kind of token. It is for example used to

@@ -1,11 +1,15 @@
+//==============================================================================
+// UnicodeScalar.swift
+// SwiftParsec
 //
-//  UnicodeScalar.swift
-//  SwiftParsec
+// Created by David Dufresne on 2015-10-20.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2015-10-20.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// UnicodeScalar extension
+//==============================================================================
 
+//==============================================================================
+// Extension containing various utility methods.
 extension UnicodeScalar {
     
     /// The maximum value for a code point.

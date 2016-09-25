@@ -1,11 +1,15 @@
+//==============================================================================
+// RangeReplaceableCollectionInsertion.swift
+// SwiftParsec
 //
-//  RangeReplaceableCollectionInsertion.swift
-//  SwiftParsec
+// Created by David Dufresne on 2015-09-11.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2015-09-11.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// RangeReplaceableCollection extension
+//==============================================================================
 
+//==============================================================================
+// Extension containing insertion methods.
 public extension RangeReplaceableCollection {
     
     /// Prepend `newElement` to the collection.

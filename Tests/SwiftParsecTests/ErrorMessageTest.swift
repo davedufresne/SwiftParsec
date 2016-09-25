@@ -1,10 +1,10 @@
+//==============================================================================
+// ErrorMessageTest.swift
+// SwiftParsec
 //
-//  ErrorMessageTest.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-10-28.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// Created by David Dufresne on 2015-10-28.
+// Copyright © 2015 David Dufresne. All rights reserved.
+//==============================================================================
 
 import XCTest
 @testable import SwiftParsec

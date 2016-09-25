@@ -1,10 +1,10 @@
+//==============================================================================
+// PermutationTests.swift
+// SwiftParsec
 //
-//  PermutationTests.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-11-05.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// Created by David Dufresne on 2015-11-05.
+// Copyright © 2015 David Dufresne. All rights reserved.
+//==============================================================================
 
 import XCTest
 @testable import SwiftParsec
@@ -362,6 +362,7 @@ class PermutationTests: XCTestCase {
     
 }
 
+//==============================================================================
 private func ==(lhs: [String?], rhs: [String?]) -> Bool {
     
     return lhs.count == rhs.count && !zip(lhs, rhs).contains { $0 != $1 }

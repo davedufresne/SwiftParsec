@@ -1,13 +1,17 @@
+//==============================================================================
+// CharacterConversion.swift
+// SwiftParsec
 //
-//  CharacterConversion.swift
-//  SwiftParsec
+// Created by David Dufresne on 2016-09-24.
+// Copyright © 2016 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2016-09-24.
-//  Copyright © 2016 David Dufresne. All rights reserved.
-//
+// Character extension
+//==============================================================================
 
 import Foundation
 
+//==============================================================================
+// Extension containing methods related to the conversion of a character.
 extension Character {
     
     /// The first `UnicodeScalar` of `self`.

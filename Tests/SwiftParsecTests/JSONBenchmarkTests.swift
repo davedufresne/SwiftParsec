@@ -1,10 +1,10 @@
+//==============================================================================
+// BenchmarkTests.swift
+// SwiftParsec
 //
-//  BenchmarkTests.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2016-07-16.
-//  Copyright © 2016 David Dufresne. All rights reserved.
-//
+// Created by David Dufresne on 2016-07-16.
+// Copyright © 2016 David Dufresne. All rights reserved.
+//==============================================================================
 
 import XCTest
 import SwiftParsec

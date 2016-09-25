@@ -1,15 +1,17 @@
+//==============================================================================
+// Language.swift
+// SwiftParsec
 //
-//  Language.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-10-14.
-//  Copyright © 2015 David Dufresne. All rights reserved.
+// Created by David Dufresne on 2015-10-14.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
 //  A helper module that defines some language definitions that can be used to
 //  instantiate a token parser (see "Token").
+//==============================================================================
 
 import struct Foundation.CharacterSet
 
+//==============================================================================
 /// The `LanguageDefinition` structure contains all parameterizable features of
 /// the token parser. There is some default definitions provided by SwiftParsec.
 public struct LanguageDefinition<UserState> {
@@ -68,6 +70,9 @@ public struct LanguageDefinition<UserState> {
     
 }
 
+//==============================================================================
+// LanguageDefinition extension containing factory methods to create language
+// definitions for different languages.
 public extension LanguageDefinition {
     
     /// This is the most minimal token definition. It is recommended to use this
@@ -262,6 +267,9 @@ public extension LanguageDefinition {
     }
     
 }
+
+//==============================================================================
+// Private variables related to different language definitions.
 
 //
 // Empty definition

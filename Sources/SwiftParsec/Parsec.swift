@@ -1,13 +1,16 @@
+//==============================================================================
+// Parsec.swift
+// SwiftParsec
 //
-//  Parsec.swift
-//  SwiftParsec
+// Created by David Dufresne on 2016-05-02.
+// Copyright © 2016 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2016-05-02.
-//  Copyright © 2016 David Dufresne. All rights reserved.
-//
+// Parsec protocol and related operator definitions.
+//==============================================================================
 
 // TODO: - Make `Parsec` the model of a true monad when Swift will allow it.
 
+//==============================================================================
 /// `Parsec` is a parser with stream type `Stream`, user state type `UserState`
 /// and return type `Result`.
 public protocol Parsec {
@@ -210,6 +213,9 @@ public protocol Parsec {
     
 }
 
+//==============================================================================
+// Operator definitions.
+
 /// Precedence of infix operator for `Parsec.labels()`. It has a higher
 /// precedence than the `AssignmentPrecedence` group but a lower precedence than
 /// the `LogicalDisjunctionPrecedence` group.
@@ -295,6 +301,8 @@ infix operator <*> : SequencePrecedence
 /// operator.
 infix operator <^> : SequencePrecedence
 
+//==============================================================================
+// Extension containing useful methods to run a parser.
 public extension Parsec {
     
     /// Run the parser and return the result of the parsing.
@@ -333,6 +341,8 @@ public extension Parsec {
     
 }
 
+//==============================================================================
+// Extension containing useful methods to run a parser with an empty user state.
 public extension Parsec where UserState == () {
     
     /// Run the parser and return the result of the parsing.
@@ -379,6 +389,8 @@ public extension Parsec where UserState == () {
     
 }
 
+//==============================================================================
+// Extension containing useful methods to run a parser.
 /// A `Stream` instance is responsible for maintaining the position of the
 /// parser's stream.
 public protocol Stream: Collection, ExpressibleByArrayLiteral {}
@@ -394,6 +406,8 @@ extension String: Stream {
     
 }
 
+//==============================================================================
+// Extension implementing the `Stream` protocol.
 extension String.CharacterView: Stream {
     
     public typealias Element = String.CharacterView.Iterator.Element
@@ -407,6 +421,7 @@ extension String.CharacterView: Stream {
     
 }
 
+//==============================================================================
 /// Types conforming to the `EmptyInitializable` protocol provide an empty
 /// intializer.
 public protocol EmptyInitializable {
@@ -414,6 +429,10 @@ public protocol EmptyInitializable {
     init()
     
 }
+
+
+//==============================================================================
+// Extensions implementing the `Stream` protocol for various collections.
 
 extension Array: Stream, EmptyInitializable {}
 

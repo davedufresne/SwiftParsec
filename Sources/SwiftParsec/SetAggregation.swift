@@ -1,11 +1,15 @@
+//==============================================================================
+// SetAggregation.swift
+// SwiftParsec
 //
-//  SetAggregation.swift
-//  SwiftParsec
+// Created by David Dufresne on 2015-10-10.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2015-10-10.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// Set extension
+//==============================================================================
 
+//==============================================================================
+// Extension containing aggregation methods.
 extension Set {
     
     /// Return a `Set` containing the results of mapping transform over `self`.

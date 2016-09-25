@@ -1,12 +1,14 @@
+//==============================================================================
+// Permutation.swift
+// SwiftParsec
 //
-//  Permutation.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-11-01.
-//  Copyright © 2015 David Dufresne. All rights reserved.
+// Created by David Dufresne on 2015-11-01.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
 // This module implements permutation parsers.
+//==============================================================================
 
+//==============================================================================
 /// The type `Permutation` denotes a permutation that can be converted to a
 /// `GenericParser` that returns an array of values of type `Result` on success.
 /// The values in the array have the same order as the parsers in the

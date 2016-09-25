@@ -1,18 +1,20 @@
+//==============================================================================
+// Character.swift
+// SwiftParsec
 //
-//  Character.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-09-16.
-//  Copyright © 2015 David Dufresne. All rights reserved.
+// Created by David Dufresne on 2015-09-16.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
 // Commonly used character parsers.
-//
+//==============================================================================
 
 import struct Foundation.CharacterSet
 
 /// String parser with an empty `UserState`.
 public typealias StringParser = GenericParser<String, (), Character>
 
+//==============================================================================
+// Extension containing methods related to character parsing.
 public extension Parsec
 where StreamType.Iterator.Element == Character, Result == Character {
     
@@ -274,9 +276,9 @@ where StreamType.Iterator.Element == Character, Result == Character {
     }
     
     /// Return a parser that succeeds for any character that are member of the
-    /// supplied `NSCharacterSet`. It returns the parsed character.
+    /// supplied `CharacterSet`. It returns the parsed character.
     ///
-    /// - parameter set: The `NSCharacterSet` used to test for membership.
+    /// - parameter set: The `CharacterSet` used to test for membership.
     /// - returns: The parsed character.
     static func memberOf(
         _ set: CharacterSet
@@ -288,6 +290,8 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
 }
 
+//==============================================================================
+// Extension containing methods related to result conversion.
 public extension Parsec
 where Result: Sequence, Result.Iterator.Element == Character {
     
@@ -300,6 +304,8 @@ where Result: Sequence, Result.Iterator.Element == Character {
     
 }
 
+//==============================================================================
+// Extension containing methods related to string parsing.
 public extension Parsec
 where StreamType.Element == StreamType.Iterator.Element,
 StreamType.Iterator.Element == Character {

@@ -1,11 +1,14 @@
+//==============================================================================
+// Configuration.swift
+// SwiftParsec
 //
-//  Configuration.swift
-//  SwiftParsec
+// Created by David Dufresne on 2016-05-27.
+// Copyright © 2016 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2016-05-27.
-//  Copyright © 2016 David Dufresne. All rights reserved.
-//
+// Configuration of the parsers framework
+//==============================================================================
 
+//==============================================================================
 /// The `Configuration` type is used to customize the framework.
 public struct Configuration {
     
@@ -22,7 +25,11 @@ public struct Configuration {
     
 }
 
+//==============================================================================
 /// Function calling the string localization hook.
+///
+/// - parameters:
+///   - key: The key for a string in the default table.
 func LocalizedString(_ key: String) -> String {
     
     return Configuration.localizeString(key)

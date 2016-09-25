@@ -1,10 +1,10 @@
+//==============================================================================
+// ExpressionParserTests.swift
+// SwiftParsec
 //
-//  ExpressionTests.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-10-30.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// Created by David Dufresne on 2015-10-30.
+// Copyright © 2015 David Dufresne. All rights reserved.
+//==============================================================================
 
 import XCTest
 @testable import SwiftParsec

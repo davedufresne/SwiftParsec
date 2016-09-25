@@ -1,11 +1,15 @@
+//==============================================================================
+// CollectionAggregation.swift
+// SwiftParsec
 //
-//  CollectionAggregation.swift
-//  SwiftParsec
+// Created by David Dufresne on 2015-10-09.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2015-10-09.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// Collection extension
+//==============================================================================
 
+//==============================================================================
+// Extension containing aggregation methods.
 extension Collection {
     
     /// Return the result of repeatedly calling `combine` with an accumulated

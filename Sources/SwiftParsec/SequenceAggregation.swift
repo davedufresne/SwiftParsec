@@ -1,11 +1,15 @@
+//==============================================================================
+// SequenceAggregation.swift
+// SwiftParsec
 //
-//  SequenceAggregation.swift
-//  SwiftParsec
+// Created by David Dufresne on 2015-09-14.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2015-09-14.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// Sequence extension
+//==============================================================================
 
+//==============================================================================
+// Extension containing aggregation methods.
 extension Sequence {
     
     /// Return a tuple containing the elements of `self`, in order, that satisfy
@@ -45,6 +49,9 @@ extension Sequence {
     
 }
 
+//==============================================================================
+// Extension containing aggregation methods when the `Sequence` contains
+// elements that are `Equatable`.
 extension Sequence where Iterator.Element: Equatable {
     
     /// Return an array with the duplicate elements removed. In particular, it

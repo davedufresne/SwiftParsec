@@ -1,21 +1,31 @@
+//==============================================================================
+// Expression.swift
+// SwiftParsec
 //
-//  Expression.swift
-//  SwiftParsec
+// Created by David Dufresne on 2015-10-23.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2015-10-23.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
-//  A helper module to parse "expressions". Builds a parser given a table of
-//  operators and associativities.
+// A helper module to parse "expressions". Builds a parser given a table of
+// operators and associativities.
+//==============================================================================
 
+//==============================================================================
 /// This enumeration specifies the associativity of operators: right, left or
 /// none.
 public enum Associativity {
     
-    case right, left, none
+    /// Right associative
+    case right
+    
+    /// Left associative
+    case left
+    
+    /// No associativity
+    case none
     
 }
 
+//==============================================================================
 /// This data type specifies operators that work on values of type `Result`. An
 /// operator is either binary infix or unary prefix or postfix. A binary
 /// operator has also an associated associativity.
@@ -35,6 +45,9 @@ public enum Operator<StreamType: Stream, UserState, Result> {
     
 }
 
+//==============================================================================
+/// Represents a table of  operators. The `makeExpressionParser()` method is
+/// used to create parsers based on the table.
 public struct OperatorTable<StreamType: Stream, UserState, Result>:
 RangeReplaceableCollection, ExpressibleByArrayLiteral {
     
@@ -133,15 +146,15 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     ///             prefix("+", function: { $0 })
     ///         ],
     ///         [
-    ///             binary("^", function: power, assoc: .Right)
+    ///             binary("^", function: power, assoc: .right)
     ///         ],
     ///         [
-    ///             binary("*", function: *, assoc: .Left),
-    ///             binary("/", function: /, assoc: .Left)
+    ///             binary("*", function: *, assoc: .left),
+    ///             binary("/", function: /, assoc: .left)
     ///         ],
     ///         [
-    ///             binary("+", function: +, assoc: .Left),
-    ///             binary("-", function: -, assoc: .Left)
+    ///             binary("+", function: +, assoc: .left),
+    ///             binary("-", function: -, assoc: .left)
     ///         ]
     ///
     ///     ]
@@ -150,15 +163,17 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     ///     let closingParen = StringParser.character(")")
     ///     let decimal = GenericTokenParser<()>.decimal
     ///
-    ///     let expression = opTable.expressionParser { expression in
+    ///     let expression = opTable.makeExpressionParser { expression in
     ///
     ///         expression.between(openingParen, closingParen) <|>
     ///             decimal <?> "simple expression"
     ///
     ///     } <?> "expression"
     ///
-    /// - parameter combine: A function receiving a 'simple expression' as
-    ///   parameter that can be nested in other expressions.
+    /// - parameters:
+    ///   - combine: A function receiving a 'simple expression' as
+    ///     parameter that can be nested in other expressions.
+    ///   - expression: A parser that can be combined with other expressions.
     /// - returns: An expression parser for terms returned by `combined`
     ///   with operators from `self`.
     /// - SeeAlso:

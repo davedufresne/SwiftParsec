@@ -1,11 +1,15 @@
+//==============================================================================
+// String.swift
+// SwiftParsec
 //
-//  String.swift
-//  SwiftParsec
+// Created by David Dufresne on 2015-10-10.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2015-10-10.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// String extension
+//==============================================================================
 
+//==============================================================================
+// Extension containing various utility methods and initializers.
 extension String {
     
     /// Initialize a `String` from a sequence of code units.

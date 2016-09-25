@@ -1,13 +1,14 @@
+//==============================================================================
+// Primitive.swift
+// SwiftParsec
 //
-//  Primitive.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-09-04.
-//  Copyright © 2015 David Dufresne. All rights reserved.
+// Created by David Dufresne on 2015-09-04.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
 // The primitive parser combinators.
-//
+//==============================================================================
 
+//==============================================================================
 /// `GenericParser` is a generic implementation of the `Parsec`.
 ///
 /// - requires: StreamType has to be a value type.
@@ -306,7 +307,7 @@ Parsec {
     ///
     ///         identifierLetter.many >>- { (var chars) in
     ///
-    ///             chars.insert(char, atIndex: 0)
+    ///             chars.insert(char, at: 0)
     ///             return GenericParser(result: String(chars))
     ///
     ///         }
@@ -796,6 +797,8 @@ Parsec {
     
 }
 
+//==============================================================================
+// Parsec extension
 public extension Parsec {
     
     // TODO: Move this function into the `Parsec` protocol extension when Swift
@@ -889,6 +892,8 @@ public extension Parsec {
     
 }
 
+//==============================================================================
+// Parsec extension where the elements are `Equatable`
 public extension Parsec
 where StreamType.Element == StreamType.Iterator.Element,
 StreamType.Iterator.Element: Equatable {
@@ -988,6 +993,7 @@ StreamType.Iterator.Element: Equatable {
     
 }
 
+//==============================================================================
 /// The `Consumed` enumeration indicates if a parser consumed some or none from
 /// an input.
 enum Consumed<StreamType: Stream, UserState, Result> {
@@ -1036,6 +1042,7 @@ enum Consumed<StreamType: Stream, UserState, Result> {
     
 }
 
+//==============================================================================
 /// The `ParserReply` enumeration indicates the result of a parse.
 enum ParserReply<StreamType: Stream, UserState, Result> {
     
@@ -1095,6 +1102,7 @@ enum ParserReply<StreamType: Stream, UserState, Result> {
     
 }
 
+//==============================================================================
 /// ParserState contains the state of the parser and the user state.
 struct ParserState<StreamTypeIterator, UserState> {
     
@@ -1108,6 +1116,9 @@ struct ParserState<StreamTypeIterator, UserState> {
     var userState: UserState
     
 }
+
+//==============================================================================
+// Implementation of different parser operators.
 
 /// Infix operator for `map`. It has the same precedence as the equality
 /// operator (`==`).

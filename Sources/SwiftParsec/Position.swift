@@ -1,13 +1,14 @@
+//==============================================================================
+// Position.swift
+// SwiftParsec
 //
-//  Position.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-09-04.
-//  Copyright © 2015 David Dufresne. All rights reserved.
+// Created by David Dufresne on 2015-09-04.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
 // Textual source positions.
-//
+//==============================================================================
 
+//==============================================================================
 /// SourcePosition represents source positions. It contains the name of the
 /// source (i.e. file name), a line number and a column number. The upper left
 /// is 1, 1. It implements the `Comparable` and `CustomStringConvertible`
@@ -69,6 +70,9 @@ public struct SourcePosition: Comparable, CustomStringConvertible {
     }
     
 }
+
+//==============================================================================
+// Operator implementations for the `SourcePosition` type.
 
 /// Equality based on the line and column number.
 public func ==(leftPos: SourcePosition, rightPos: SourcePosition) -> Bool {

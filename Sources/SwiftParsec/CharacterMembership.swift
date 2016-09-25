@@ -1,10 +1,12 @@
+//==============================================================================
+// CharacterMembership.swift
+// SwiftParsec
 //
-//  CharacterMembership.swift
-//  SwiftParsec
+// Created by David Dufresne on 2015-09-19.
+// Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  Created by David Dufresne on 2015-09-19.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// Character extension
+//==============================================================================
 
 import Foundation
 
@@ -15,6 +17,9 @@ private let alphaNumericSet = CharacterSet.alphanumerics
 private let symbolSet = CharacterSet.symbols
 private let digitSet = CharacterSet.decimalDigits
 
+//==============================================================================
+// Extension containing methods to test if a character is a member of a
+// character set.
 extension Character {
     
     /// True for any space character, and the control characters \t, \n, \r, \f,

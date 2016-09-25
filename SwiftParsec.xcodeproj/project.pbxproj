@@ -161,13 +161,13 @@
 				5744A3A21D8EC52700CA7191 /* Either.swift */,
 				57C956681BDAE01D00057A4F /* ExpressionParser.swift */,
 				57167F1C1B99E6E200F35A29 /* GenericParser.swift */,
-				57167F071B99E66800F35A29 /* Info.plist */,
 				5714D8BF1BCEAE3A00FE4BF0 /* Language.swift */,
 				570B24881CD7F4400060E452 /* Parsec.swift */,
 				57167F1E1B99EEA500F35A29 /* ParseError.swift */,
 				5703BE181BE6AC09003FF5FA /* Permutation.swift */,
 				57167F201B99EF1300F35A29 /* Position.swift */,
 				570DB5B41BC3422A0058D186 /* TokenParser.swift */,
+				57167F071B99E66800F35A29 /* Info.plist */,
 			);
 			name = SwiftParsec;
 			path = Sources/SwiftParsec;
@@ -202,8 +202,8 @@
 				571730DB1BADEAB90073BBB7 /* CharacterMembership.swift */,
 				57A86B0A1BC862CC00A7F45F /* CollectionAggregation.swift */,
 				57E5A60A1BA36FD10062F479 /* RangeReplaceableCollectionInsertion.swift */,
-				57188DFC1D9719CE009634E0 /* SequenceConversion.swift */,
 				57E6F77E1BA7414B0015E875 /* SequenceAggregation.swift */,
+				57188DFC1D9719CE009634E0 /* SequenceConversion.swift */,
 				57A86B0E1BC9990B00A7F45F /* SetAggregation.swift */,
 				57A86B0C1BC983B400A7F45F /* String.swift */,
 				579C00C71C0277CA009282A6 /* UInt16.swift */,

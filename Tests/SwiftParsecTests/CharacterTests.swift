@@ -1,10 +1,10 @@
+//==============================================================================
+// CharacterTests.swift
+// SwiftParsec
 //
-//  CharacterTests.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-09-17.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
+// Created by David Dufresne on 2015-09-17.
+// Copyright © 2015 David Dufresne. All rights reserved.
+//==============================================================================
 
 import XCTest
 @testable import SwiftParsec

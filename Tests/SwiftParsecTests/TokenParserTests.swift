@@ -1,11 +1,10 @@
+//==============================================================================
+// TokenParserTests.swift
+// SwiftParsec
 //
-//  TokenTests.swift
-//  SwiftParsec
-//
-//  Created by David Dufresne on 2015-10-14.
-//  Copyright © 2015 David Dufresne. All rights reserved.
-//
-
+// Created by David Dufresne on 2015-10-14.
+// Copyright © 2015 David Dufresne. All rights reserved.
+//==============================================================================
 
 import XCTest
 @testable import SwiftParsec
