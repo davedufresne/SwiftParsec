@@ -1,5 +1,5 @@
 //==============================================================================
-// CharacterTests.swift
+// CharacterParsersTests.swift
 // SwiftParsec
 //
 // Created by David Dufresne on 2015-09-17.
