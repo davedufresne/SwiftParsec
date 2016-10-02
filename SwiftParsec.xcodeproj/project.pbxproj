@@ -13,7 +13,7 @@
 		570B24891CD7F4400060E452 /* Parsec.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570B24881CD7F4400060E452 /* Parsec.swift */; };
 		570DB5B51BC3422B0058D186 /* TokenParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 570DB5B41BC3422A0058D186 /* TokenParser.swift */; };
 		5714D8BE1BCE90DC00FE4BF0 /* TokenParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5714D8BD1BCE90DC00FE4BF0 /* TokenParserTests.swift */; };
-		5714D8C01BCEAE3B00FE4BF0 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5714D8BF1BCEAE3A00FE4BF0 /* Language.swift */; };
+		5714D8C01BCEAE3B00FE4BF0 /* LanguageDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5714D8BF1BCEAE3A00FE4BF0 /* LanguageDefinition.swift */; };
 		57167F0D1B99E66800F35A29 /* SwiftParsec.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57167F021B99E66800F35A29 /* SwiftParsec.framework */; };
 		57167F121B99E66800F35A29 /* GenericParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57167F111B99E66800F35A29 /* GenericParserTests.swift */; };
 		57167F1D1B99E6E200F35A29 /* GenericParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57167F1C1B99E6E200F35A29 /* GenericParser.swift */; };
@@ -63,7 +63,7 @@
 		570B24881CD7F4400060E452 /* Parsec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parsec.swift; sourceTree = "<group>"; };
 		570DB5B41BC3422A0058D186 /* TokenParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenParser.swift; sourceTree = "<group>"; };
 		5714D8BD1BCE90DC00FE4BF0 /* TokenParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenParserTests.swift; sourceTree = "<group>"; };
-		5714D8BF1BCEAE3A00FE4BF0 /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
+		5714D8BF1BCEAE3A00FE4BF0 /* LanguageDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageDefinition.swift; sourceTree = "<group>"; };
 		57167F021B99E66800F35A29 /* SwiftParsec.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftParsec.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57167F071B99E66800F35A29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57167F0C1B99E66800F35A29 /* SwiftParsecTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftParsecTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,7 +161,7 @@
 				5744A3A21D8EC52700CA7191 /* Either.swift */,
 				57C956681BDAE01D00057A4F /* ExpressionParser.swift */,
 				57167F1C1B99E6E200F35A29 /* GenericParser.swift */,
-				5714D8BF1BCEAE3A00FE4BF0 /* Language.swift */,
+				5714D8BF1BCEAE3A00FE4BF0 /* LanguageDefinition.swift */,
 				570B24881CD7F4400060E452 /* Parsec.swift */,
 				57167F1E1B99EEA500F35A29 /* ParseError.swift */,
 				5703BE181BE6AC09003FF5FA /* Permutation.swift */,
@@ -329,7 +329,7 @@
 				57C995DB1CF86906000DA292 /* Configuration.swift in Sources */,
 				5744A3A31D8EC52700CA7191 /* Either.swift in Sources */,
 				57AA4E011BB777FF0026DF01 /* CombinatorParsers.swift in Sources */,
-				5714D8C01BCEAE3B00FE4BF0 /* Language.swift in Sources */,
+				5714D8C01BCEAE3B00FE4BF0 /* LanguageDefinition.swift in Sources */,
 				579C00C81C0277CA009282A6 /* UInt16.swift in Sources */,
 				57188DFB1D971048009634E0 /* CharacterConversion.swift in Sources */,
 				57167F1F1B99EEA500F35A29 /* ParseError.swift in Sources */,
