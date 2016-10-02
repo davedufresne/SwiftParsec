@@ -34,8 +34,8 @@
 		57A86B0B1BC862CC00A7F45F /* CollectionAggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A86B0A1BC862CC00A7F45F /* CollectionAggregation.swift */; };
 		57A86B0D1BC983B400A7F45F /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A86B0C1BC983B400A7F45F /* String.swift */; };
 		57A86B0F1BC9990B00A7F45F /* SetAggregation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A86B0E1BC9990B00A7F45F /* SetAggregation.swift */; };
-		57AA4E011BB777FF0026DF01 /* Combinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AA4E001BB777FF0026DF01 /* Combinator.swift */; };
-		57AA4E031BB77A0F0026DF01 /* CombinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AA4E021BB77A0F0026DF01 /* CombinatorTests.swift */; };
+		57AA4E011BB777FF0026DF01 /* CombinatorParsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AA4E001BB777FF0026DF01 /* CombinatorParsers.swift */; };
+		57AA4E031BB77A0F0026DF01 /* CombinatorParsersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57AA4E021BB77A0F0026DF01 /* CombinatorParsersTests.swift */; };
 		57ABA23C1CF5F39B00C2B657 /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57ABA23B1CF5F39B00C2B657 /* StringTests.swift */; };
 		57C459781CE2150D0014764F /* UnicodeScalarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C459771CE2150D0014764F /* UnicodeScalarTests.swift */; };
 		57C956691BDAE01D00057A4F /* ExpressionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C956681BDAE01D00057A4F /* ExpressionParser.swift */; };
@@ -93,8 +93,8 @@
 		57A86B0A1BC862CC00A7F45F /* CollectionAggregation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionAggregation.swift; sourceTree = "<group>"; };
 		57A86B0C1BC983B400A7F45F /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		57A86B0E1BC9990B00A7F45F /* SetAggregation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetAggregation.swift; sourceTree = "<group>"; };
-		57AA4E001BB777FF0026DF01 /* Combinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Combinator.swift; sourceTree = "<group>"; };
-		57AA4E021BB77A0F0026DF01 /* CombinatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombinatorTests.swift; sourceTree = "<group>"; };
+		57AA4E001BB777FF0026DF01 /* CombinatorParsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombinatorParsers.swift; sourceTree = "<group>"; };
+		57AA4E021BB77A0F0026DF01 /* CombinatorParsersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombinatorParsersTests.swift; sourceTree = "<group>"; };
 		57AB6BB51CF399E6008A1927 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		57ABA23B1CF5F39B00C2B657 /* StringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
 		57C459771CE2150D0014764F /* UnicodeScalarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalarTests.swift; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 			children = (
 				57E5A60E1BA372D40062F479 /* Extensions */,
 				57E6F7821BAA1C260015E875 /* CharacterParsers.swift */,
-				57AA4E001BB777FF0026DF01 /* Combinator.swift */,
+				57AA4E001BB777FF0026DF01 /* CombinatorParsers.swift */,
 				57C995DA1CF86906000DA292 /* Configuration.swift */,
 				5744A3A21D8EC52700CA7191 /* Either.swift */,
 				57C956681BDAE01D00057A4F /* ExpressionParser.swift */,
@@ -178,7 +178,7 @@
 			children = (
 				579ED1201D3AE9C10078D6F4 /* JSONBenchmarkTests.swift */,
 				574A84951BAB598F008020BC /* CharacterParsersTests.swift */,
-				57AA4E021BB77A0F0026DF01 /* CombinatorTests.swift */,
+				57AA4E021BB77A0F0026DF01 /* CombinatorParsersTests.swift */,
 				5703BE161BE4434F003FF5FA /* ExpressionParserTests.swift */,
 				577261F71BE14A3700E70BEF /* ErrorMessageTest.swift */,
 				57167F111B99E66800F35A29 /* GenericParserTests.swift */,
@@ -328,7 +328,7 @@
 				57E6F77F1BA7414B0015E875 /* SequenceAggregation.swift in Sources */,
 				57C995DB1CF86906000DA292 /* Configuration.swift in Sources */,
 				5744A3A31D8EC52700CA7191 /* Either.swift in Sources */,
-				57AA4E011BB777FF0026DF01 /* Combinator.swift in Sources */,
+				57AA4E011BB777FF0026DF01 /* CombinatorParsers.swift in Sources */,
 				5714D8C01BCEAE3B00FE4BF0 /* Language.swift in Sources */,
 				579C00C81C0277CA009282A6 /* UInt16.swift in Sources */,
 				57188DFB1D971048009634E0 /* CharacterConversion.swift in Sources */,
@@ -355,7 +355,7 @@
 				5768B5781BB0773A005FF951 /* TestUtilities.swift in Sources */,
 				5714D8BE1BCE90DC00FE4BF0 /* TokenParserTests.swift in Sources */,
 				577261F81BE14A3700E70BEF /* ErrorMessageTest.swift in Sources */,
-				57AA4E031BB77A0F0026DF01 /* CombinatorTests.swift in Sources */,
+				57AA4E031BB77A0F0026DF01 /* CombinatorParsersTests.swift in Sources */,
 				57ABA23C1CF5F39B00C2B657 /* StringTests.swift in Sources */,
 				5703BE1D1BEB9A4F003FF5FA /* PermutationTests.swift in Sources */,
 				57167F121B99E66800F35A29 /* GenericParserTests.swift in Sources */,
