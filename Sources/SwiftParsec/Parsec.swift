@@ -162,7 +162,7 @@ public protocol Parsec {
     ///   String)` and `<?>`
     static func unexpected(_ message: String) -> Self
     
-    /// Return a parser that always fail with the supplied message.
+    /// Return a parser that always fails with the supplied message.
     ///
     /// - parameter message: The failure message.
     /// - returns: A parser that always fail.
