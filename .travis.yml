@@ -2,16 +2,11 @@ language: objective-c
 osx_image: xcode8
 env:
   matrix:
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 5"
     - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 5s"
     - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6"
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6 Plus"
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6s"
     - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6s Plus"
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone SE"
     - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Air"
     - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Air 2"
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Pro (9.7 inch)"
     - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Pro (12.9 inch)"
     - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Retina"
     - SPM="YES"
