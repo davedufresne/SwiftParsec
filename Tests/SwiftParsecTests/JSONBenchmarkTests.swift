@@ -143,7 +143,12 @@ class JSONBenchmarkTests: XCTestCase {
         )
         
         let bundle = Bundle(for: type(of: self))
-        let path = bundle.path(forResource: "SampleJSON", ofType: "json")!
+        let filePath = bundle.path(forResource: "SampleJSON", ofType: "json")
+        
+        // When using the Swift package manager the file is not copied to the
+        // bundle.
+        guard let path = filePath else { return; }
+        
         let jsonData = try! String(
             contentsOfFile: path,
             encoding: String.Encoding.utf8
