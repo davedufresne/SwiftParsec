@@ -1,5 +1,5 @@
 //==============================================================================
-// TokenParserTests.swift
+// DefaultTokenParserTests.swift
 // SwiftParsec
 //
 // Created by David Dufresne on 2015-10-14.
@@ -9,7 +9,7 @@
 import XCTest
 @testable import SwiftParsec
 
-class TokenTests: XCTestCase {
+class DefaultTokenParserTests: XCTestCase {
     
     func testIdentifier() {
         //
