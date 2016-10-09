@@ -229,18 +229,6 @@ precedencegroup LabelPrecedence {
 /// parsers operators.
 infix operator <?> : LabelPrecedence
 
-/// Infix operator for `Parsec.labels()`. It has the lowest precedence of the
-/// parsers operators.
-///
-/// - parameters:
-///   - parser: The parser whose error message is to be replaced.
-///   - message: The new error message.
-public func <?><Parser: Parsec>(parser: Parser, message: String) -> Parser {
-    
-    return parser.labels(message)
-    
-}
-
 /// Precedence of infix operator for `Parsec.flatMap()` (bind). It has a higher
 /// precedence than the `LabelPrecedence` group.
 precedencegroup FlatMapPrecedence {
@@ -262,21 +250,6 @@ precedencegroup ChoicePrecedence {
 /// Infix operator for `Parsec.alternative()`. It has a higher precedence than
 /// the `>>-` operator.
 infix operator <|> : ChoicePrecedence
-
-/// Infix operator for `Parsec.alternative`. It has a higher precedence than
-/// the `>>-` operator.
-///
-/// - parameters:
-///   - leftParser: The first parser to try.
-///   - rightParser: The second parser to try.
-public func <|><Parser: Parsec>(
-    leftParser: Parser,
-    rightParser: Parser
-) -> Parser {
-    
-    return leftParser.alternative(rightParser)
-    
-}
 
 /// Precedence of infix operators for sequence parsing. It has a higher
 /// precedence than the `ChoicePrecedence` group.
@@ -300,6 +273,34 @@ infix operator <*> : SequencePrecedence
 /// Infix operator for `Parsec.map()`. It has a higher precedence than the `<|>`
 /// operator.
 infix operator <^> : SequencePrecedence
+
+extension Parsec {
+    
+    /// Infix operator for `Parsec.labels()`. It has the lowest precedence of the
+    /// parsers operators.
+    ///
+    /// - parameters:
+    ///   - parser: The parser whose error message is to be replaced.
+    ///   - message: The new error message.
+    public static func <?>(parser: Self, message: String) -> Self {
+        
+        return parser.labels(message)
+        
+    }
+    
+    /// Infix operator for `Parsec.alternative`. It has a higher precedence than
+    /// the `>>-` operator.
+    ///
+    /// - parameters:
+    ///   - leftParser: The first parser to try.
+    ///   - rightParser: The second parser to try.
+    public static func <|>(leftParser: Self, rightParser: Self) -> Self {
+        
+        return leftParser.alternative(rightParser)
+        
+    }
+   
+}
 
 //==============================================================================
 // Extension containing useful methods to run a parser.
