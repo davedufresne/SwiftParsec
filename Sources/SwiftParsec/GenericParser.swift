@@ -11,7 +11,7 @@
 //==============================================================================
 /// `GenericParser` is a generic implementation of the `Parsec`.
 ///
-/// - requires: StreamType has to be a value type.
+/// - requires: StreamType.Iterator has to be a value type.
 public final class GenericParser<StreamType: Stream, UserState, Result>:
 Parsec {
     
