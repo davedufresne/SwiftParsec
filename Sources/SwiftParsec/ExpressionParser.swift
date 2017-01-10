@@ -390,10 +390,9 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         assoc: String
     ) -> GenericParser<StreamType, UserState, Result> {
         
-        let msg = LocalizedString("ambiguous use of a %@ associative operator")
-        let localizedMsg = String.localizedStringWithFormat(msg, assoc as CVarArg)
+        let msg = "ambiguous use of a " + assoc + " associative operator"
         
-        return (op *> GenericParser.fail(localizedMsg)).attempt
+        return (op *> GenericParser.fail(msg)).attempt
         
     }
     

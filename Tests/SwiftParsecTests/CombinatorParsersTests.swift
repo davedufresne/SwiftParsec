@@ -7,6 +7,7 @@
 //==============================================================================
 
 import XCTest
+import func Foundation.pow
 @testable import SwiftParsec
 
 class CombinatorTests: XCTestCase {
