@@ -8,8 +8,6 @@
 // Character extension
 //==============================================================================
 
-import Foundation
-
 private let uppercaseSet = CharacterSet.uppercaseLetters
 private let lowercaseSet = CharacterSet.lowercaseLetters
 private let alphaSet = CharacterSet.letters

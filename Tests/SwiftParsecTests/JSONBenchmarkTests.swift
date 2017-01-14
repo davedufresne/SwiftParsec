@@ -8,7 +8,6 @@
 
 import XCTest
 import SwiftParsec
-import Foundation
 
 class JSONBenchmarkTests: XCTestCase {
     

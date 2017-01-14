@@ -25,6 +25,9 @@ XCTMain([
         ("testString", CharacterTests.testString)
     ]),
     testCase([
+        ("testLarge", CharacterSetTests.testLarge)
+    ]),
+    testCase([
         ("testChoice", CombinatorTests.testChoice),
         ("testOtherwise", CombinatorTests.testOtherwise),
         ("testOptional", CombinatorTests.testOptional),

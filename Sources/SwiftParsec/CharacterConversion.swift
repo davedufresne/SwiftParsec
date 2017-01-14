@@ -7,11 +7,8 @@
 //
 // Character extension
 //==============================================================================
-
-import Foundation
-
-//==============================================================================
 // Extension containing methods related to the conversion of a character.
+
 extension Character {
     
     /// The first `UnicodeScalar` of `self`.
