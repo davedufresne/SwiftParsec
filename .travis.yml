@@ -1,15 +1,23 @@
-language: objective-c
+os: osx
 osx_image: xcode8
-env:
-  matrix:
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 5s"
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6"
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6s Plus"
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Air"
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Air 2"
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Pro (12.9 inch)"
-    - DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Retina"
-    - SPM="YES"
+language: objective-c
+
+
+matrix:
+  include:
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 5s"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6s Plus"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Air"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Air 2"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Pro (12.9 inch)"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Retina"
+    - os: linux
+      dist: trusty
+      language: generic
+
+
+install: . ./scripts/install-swift.sh
+
 
 script: ./scripts/run-tests.sh
-
