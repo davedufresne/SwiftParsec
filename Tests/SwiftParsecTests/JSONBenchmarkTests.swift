@@ -28,7 +28,7 @@ class JSONBenchmarkTests: XCTestCase {
     // file. The goal is to keep the building part as light as possible to
     // test the parsing speed without too much influence from the building part.
     func testJSONStatisticsParserPerformance() {
-
+        
         let json = LanguageDefinition<JSONStatistics>.json
         let lexer = GenericTokenParser(languageDefinition: json)
         let symbol = lexer.symbol

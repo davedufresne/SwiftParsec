@@ -9,12 +9,14 @@ import struct Foundation.CharacterSet
 
 #if _runtime(_ObjC)
 
+//==============================================================================
 // Ideally, we could use this for all platforms, but open-source
 // `Foundation.CharacterSet` will fail at large sizes
 public typealias CharacterSet = Foundation.CharacterSet
 
 #else
 
+//==============================================================================
 /// The `CharacterSet` is a thin wrapper around `Foundation.CharacterSet`. It
 /// helps us avoid bugs in open-source version.
 public struct CharacterSet {
@@ -64,9 +66,9 @@ public struct CharacterSet {
         
     }
     
-    // Alternative to `Foundation.CharacterSet#init` that does not fail for
-    // large inputs. It is likely less performant.
-    init(charactersIn: String) {
+    /// Alternative to `Foundation.CharacterSet#init` that does not fail for
+    /// large inputs. It is likely less performant.
+    public init(charactersIn: String) {
         
         self.contains = Set(charactersIn.unicodeScalars).contains
         

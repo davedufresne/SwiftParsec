@@ -76,7 +76,7 @@ class CharacterTests: XCTestCase {
         // Test for failure.
         let notMatching = ["1xyzu", "?yzo", "Ezi", ")taeiou", "@vexyz"]
         let shouldFailMessage = "GenericParser.oneOf should fail."
-
+        
         testStringParserFailure(interval, inputs: notMatching)
         { input, result in
             

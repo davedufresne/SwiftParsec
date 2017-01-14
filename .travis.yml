@@ -17,6 +17,7 @@ matrix:
       language: generic
 
 
+# BUG FIX: https://github.com/travis-ci/travis-ci/issues/6307
 before_install: rvm get head
 
 
