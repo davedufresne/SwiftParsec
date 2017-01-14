@@ -11,7 +11,9 @@ import SwiftParsec
 import Foundation
 
 class JSONBenchmarkTests: XCTestCase {
-
+    
+    #if _runtime(_ObjC)
+    
     private typealias JSONStatistics = (
         booleanCount: Int,
         numberCount: Int,
@@ -28,7 +30,7 @@ class JSONBenchmarkTests: XCTestCase {
     // file. The goal is to keep the building part as light as possible to
     // test the parsing speed without to much influence from the building part.
     func testJSONStatisticsParserPerformance() {
-        
+
         let json = LanguageDefinition<JSONStatistics>.json
         let lexer = GenericTokenParser(languageDefinition: json)
         let symbol = lexer.symbol
@@ -190,5 +192,16 @@ class JSONBenchmarkTests: XCTestCase {
         }
         
     }
+    
+    #else
+    
+    // Not yet implemented on open-source Foundation -- https://git.io/vMVY4
+    func testJSONStatisticsParserPerformance() {
+        
+        print("Benchmarking is only available on Objective-C runtimes.")
 
+    }
+    
+    #endif
+    
 }
