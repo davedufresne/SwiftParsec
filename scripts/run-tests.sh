@@ -2,9 +2,9 @@
 
 set -ev
 
-if [ -z "${XCODE_DESTINATION}" ]; then
-  swift build
-  swift test
+if [ ! -z "${XCODE_DESTINATION}" ]; then
+  PARSEC="-project SwiftParsec.xcodeproj -scheme SwiftParsec"
+  xcodebuild test $PARSEC -destination "${XCODE_DESTINATION}" TOOLCHAINS=swift
 else
-  xcodebuild test -project SwiftParsec.xcodeproj -scheme SwiftParsec -destination "${XCODE_DESTINATION}" TOOLCHAINS=swift
+  swift test
 fi

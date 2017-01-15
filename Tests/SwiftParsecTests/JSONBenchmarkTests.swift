@@ -8,10 +8,9 @@
 
 import XCTest
 import SwiftParsec
+import class Foundation.Bundle
 
 class JSONBenchmarkTests: XCTestCase {
-    
-    #if _runtime(_ObjC)
     
     private typealias JSONStatistics = (
         booleanCount: Int,
@@ -27,7 +26,7 @@ class JSONBenchmarkTests: XCTestCase {
     
     // Test the performance of a parser gathering basic statistics on a JSON
     // file. The goal is to keep the building part as light as possible to
-    // test the parsing speed without to much influence from the building part.
+    // test the parsing speed without too much influence from the building part.
     func testJSONStatisticsParserPerformance() {
 
         let json = LanguageDefinition<JSONStatistics>.json
@@ -144,12 +143,17 @@ class JSONBenchmarkTests: XCTestCase {
             nullCount: 0
         )
         
-        let bundle = Bundle(for: type(of: self))
-        let filePath = bundle.path(forResource: "SampleJSON", ofType: "json")
+        #if SWIFT_PACKAGE
         
-        // When using the Swift package manager the file is not copied to the
-        // bundle.
-        guard let path = filePath else { return; }
+        let bundle = Bundle(path: "Tests/SwiftParsecTests")!
+        
+        #else
+        
+        let bundle = Bundle(for: type(of: self))
+        
+        #endif
+        
+        let path = bundle.path(forResource: "SampleJSON", ofType: "json")!
         
         let jsonData = try! String(
             contentsOfFile: path,
@@ -191,16 +195,5 @@ class JSONBenchmarkTests: XCTestCase {
         }
         
     }
-    
-    #else
-    
-    // Not yet implemented on open-source Foundation -- https://git.io/vMVY4
-    func testJSONStatisticsParserPerformance() {
-        
-        print("Benchmarking is only available on Objective-C runtimes.")
-
-    }
-    
-    #endif
     
 }
