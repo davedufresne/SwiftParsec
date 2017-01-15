@@ -17,6 +17,9 @@ matrix:
       language: generic
 
 
+before_install: rvm get head
+
+
 install: . ./scripts/install-swift.sh
 
 
