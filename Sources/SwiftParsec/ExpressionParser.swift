@@ -390,9 +390,19 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         assoc: String
     ) -> GenericParser<StreamType, UserState, Result> {
         
-        let msg = "ambiguous use of a " + assoc + " associative operator"
+        #if _runtime(_ObjC)
         
-        return (op *> GenericParser.fail(msg)).attempt
+        let msg = LocalizedString("ambiguous use of a %@ associative operator")
+        let localizedMsg = String.localizedStringWithFormat(msg, assoc as CVarArg)
+        
+        #else
+        
+        // https://bugs.swift.org/browse/SR-957
+        let localizedMsg = LocalizedString("ambiguous use of a \(assoc) associative operator")
+        
+        #endif
+        
+        return (op *> GenericParser.fail(localizedMsg)).attempt
         
     }
     

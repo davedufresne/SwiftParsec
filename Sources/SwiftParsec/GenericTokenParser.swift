@@ -6,9 +6,6 @@
 //  Copyright © 2016 David Dufresne. All rights reserved.
 //
 //==============================================================================
-
-import func Foundation.pow
-
 //==============================================================================
 /// Generic implementation of the `TokenParser`.
 public struct GenericTokenParser<UserState>: TokenParser {
