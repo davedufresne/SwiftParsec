@@ -160,7 +160,6 @@
 		57167F041B99E66800F35A29 /* SwiftParsec */ = {
 			isa = PBXGroup;
 			children = (
-				2FB9FE5D1E2C280300957354 /* GenericTokenParser.swift */,
 				57E5A60E1BA372D40062F479 /* Extensions */,
 				57E6F7821BAA1C260015E875 /* CharacterParsers.swift */,
 				2FB9FE591E2C27A100957354 /* CharacterSet.swift */,
@@ -169,6 +168,7 @@
 				5744A3A21D8EC52700CA7191 /* Either.swift */,
 				57C956681BDAE01D00057A4F /* ExpressionParser.swift */,
 				57167F1C1B99E6E200F35A29 /* GenericParser.swift */,
+				2FB9FE5D1E2C280300957354 /* GenericTokenParser.swift */,
 				5714D8BF1BCEAE3A00FE4BF0 /* LanguageDefinition.swift */,
 				570B24881CD7F4400060E452 /* Parsec.swift */,
 				57167F1E1B99EEA500F35A29 /* ParseError.swift */,
@@ -184,21 +184,21 @@
 		57167F101B99E66800F35A29 /* SwiftParsecTests */ = {
 			isa = PBXGroup;
 			children = (
-				579ED1201D3AE9C10078D6F4 /* JSONBenchmarkTests.swift */,
 				574A84951BAB598F008020BC /* CharacterParsersTests.swift */,
 				2FB9FE5B1E2C27AE00957354 /* CharacterSetTests.swift */,
-				2FB9FE5F1E2C281000957354 /* GenericTokenParserTests.swift */,
 				57AA4E021BB77A0F0026DF01 /* CombinatorParsersTests.swift */,
-				5703BE161BE4434F003FF5FA /* ExpressionParserTests.swift */,
 				577261F71BE14A3700E70BEF /* ErrorMessageTest.swift */,
+				5703BE161BE4434F003FF5FA /* ExpressionParserTests.swift */,
 				57167F111B99E66800F35A29 /* GenericParserTests.swift */,
+				2FB9FE5F1E2C281000957354 /* GenericTokenParserTests.swift */,
+				579ED1201D3AE9C10078D6F4 /* JSONBenchmarkTests.swift */,
 				5703BE1C1BEB9A4F003FF5FA /* PermutationTests.swift */,
 				578435551BF66B3A0067B3E9 /* PositionTests.swift */,
 				57ABA23B1CF5F39B00C2B657 /* StringTests.swift */,
 				5768B5771BB0773A005FF951 /* TestUtilities.swift */,
 				57C459771CE2150D0014764F /* UnicodeScalarTests.swift */,
-				57167F131B99E66800F35A29 /* Info.plist */,
 				579ED1221D3AF4680078D6F4 /* SampleJSON.json */,
+				57167F131B99E66800F35A29 /* Info.plist */,
 			);
 			name = SwiftParsecTests;
 			path = Tests/SwiftParsecTests;
@@ -535,6 +535,7 @@
 		57167F1A1B99E66800F35A29 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)",
@@ -554,6 +555,7 @@
 		57167F1B1B99E66800F35A29 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)",

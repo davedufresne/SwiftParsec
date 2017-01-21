@@ -1,3 +1,7 @@
+# Release 2.1
+
+Added support for linux.
+
 # Release 2.0.1
 
 - Moved operators implementation in `Parsec` extension
