@@ -1,10 +1,9 @@
 //==============================================================================
-//  GenericTokenParser.swift
-//  SwiftParsec
+// GenericTokenParser.swift
+// SwiftParsec
 //
-//  Created by David Dufresne on 2016-10-08.
-//  Copyright © 2016 David Dufresne. All rights reserved.
-//
+// Created by David Dufresne on 2016-10-08.
+// Copyright © 2016 David Dufresne. All rights reserved.
 //==============================================================================
 
 //==============================================================================

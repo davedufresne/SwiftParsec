@@ -5,8 +5,8 @@
 // Created by David Dufresne on 2015-10-14.
 // Copyright © 2015 David Dufresne. All rights reserved.
 //
-//  A helper module that defines some language definitions that can be used to
-//  instantiate a token parser (see "Token").
+// A helper module that defines some language definitions that can be used to
+// instantiate a token parser (see "Token").
 //==============================================================================
 
 //==============================================================================
