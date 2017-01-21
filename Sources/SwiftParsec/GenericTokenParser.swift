@@ -1,11 +1,12 @@
-//
-//  DefaultTokenParser.swift
+//==============================================================================
+//  GenericTokenParser.swift
 //  SwiftParsec
 //
 //  Created by David Dufresne on 2016-10-08.
 //  Copyright © 2016 David Dufresne. All rights reserved.
 //
 //==============================================================================
+
 //==============================================================================
 /// Generic implementation of the `TokenParser`.
 public struct GenericTokenParser<UserState>: TokenParser {

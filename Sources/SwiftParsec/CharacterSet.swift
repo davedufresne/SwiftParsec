@@ -9,9 +9,8 @@ import struct Foundation.CharacterSet
 
 #if _runtime(_ObjC)
 
-//==============================================================================
-// Ideally, we could use this for all platforms, but open-source
-// `Foundation.CharacterSet` will fail at large sizes
+/// Ideally, we could use this for all platforms, but open-source
+/// `Foundation.CharacterSet` will fail at large sizes
 public typealias CharacterSet = Foundation.CharacterSet
 
 #else
