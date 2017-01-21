@@ -8,8 +8,6 @@
 // Commonly used character parsers.
 //==============================================================================
 
-import struct Foundation.CharacterSet
-
 /// String parser with an empty `UserState`.
 public typealias StringParser = GenericParser<String, (), Character>
 

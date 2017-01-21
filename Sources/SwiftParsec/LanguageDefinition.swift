@@ -9,8 +9,6 @@
 //  instantiate a token parser (see "Token").
 //==============================================================================
 
-import struct Foundation.CharacterSet
-
 //==============================================================================
 /// The `LanguageDefinition` structure contains all parameterizable features of
 /// the token parser. There is some default definitions provided by SwiftParsec.

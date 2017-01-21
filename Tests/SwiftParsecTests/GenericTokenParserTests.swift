@@ -9,7 +9,7 @@
 import XCTest
 @testable import SwiftParsec
 
-class DefaultTokenParserTests: XCTestCase {
+class GenericTokenParserTests: XCTestCase {
     
     func testIdentifier() {
         //

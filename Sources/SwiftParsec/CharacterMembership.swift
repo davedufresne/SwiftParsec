@@ -8,8 +8,6 @@
 // Character extension
 //==============================================================================
 
-import Foundation
-
 private let uppercaseSet = CharacterSet.uppercaseLetters
 private let lowercaseSet = CharacterSet.lowercaseLetters
 private let alphaSet = CharacterSet.letters
@@ -56,7 +54,11 @@ extension Character {
         // space, six-per-em space, figure space, ponctuation space, thin space,
         // hair space, zero width space, zero width non-joiner, zero width
         // joiner.
-        case "\u{2000}"..."\u{200D}": return true
+        case "\u{2000}", "\u{2001}", "\u{2002}", "\u{2003}", "\u{2004}",
+             "\u{2005}", "\u{2006}", "\u{2007}", "\u{2008}", "\u{2009}",
+             "\u{200A}", "\u{200B}", "\u{200C}", "\u{200D}":
+            
+            return true
             
         // Line separator, paragraph separator.
         case "\u{2028}", "\u{2029}": return true
