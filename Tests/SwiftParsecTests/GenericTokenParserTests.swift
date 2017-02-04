@@ -1387,3 +1387,38 @@ class GenericTokenParserTests: XCTestCase {
     }
 
 }
+
+extension GenericTokenParserTests {
+    static var allTests:
+    [(String, (GenericTokenParserTests) -> () throws -> Void)] {
+        return [
+            ("testIdentifier", testIdentifier),
+            ("testReservedName", testReservedName),
+            ("testLegalOperator", testLegalOperator),
+            ("testReservedOperator", testReservedOperator),
+            ("testCharacterLiteral", testCharacterLiteral),
+            ("testStringLiteral", testStringLiteral),
+            ("testSwiftStringLiteral", testSwiftStringLiteral),
+            ("testJSONStringLiteral", testJSONStringLiteral),
+            ("testNatural", testNatural),
+            ("testInteger", testInteger),
+            ("testIntegerAsFloat", testIntegerAsFloat),
+            ("testFloat", testFloat),
+            ("testNumber", testNumber),
+            ("testDecimal", testDecimal),
+            ("testHexadecimal", testHexadecimal),
+            ("testOctal", testOctal),
+            ("testSymbol", testSymbol),
+            ("testWhiteSpace", testWhiteSpace),
+            ("testParentheses", testParentheses),
+            ("testBraces", testBraces),
+            ("testAngles", testAngles),
+            ("testBrackets", testBrackets),
+            ("testPunctuations", testPunctuations),
+            ("testSemicolonSeparated", testSemicolonSeparated),
+            ("testSemicolonSeparated1", testSemicolonSeparated1),
+            ("testCommaSeparated", testCommaSeparated),
+            ("testCommaSeparated1", testCommaSeparated1)
+        ]
+    }
+}

@@ -103,6 +103,7 @@
 		57AA4E021BB77A0F0026DF01 /* CombinatorParsersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CombinatorParsersTests.swift; sourceTree = "<group>"; };
 		57AB6BB51CF399E6008A1927 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		57ABA23B1CF5F39B00C2B657 /* StringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
+		57BD79281E3D5961005E1BF0 /* LinuxMain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinuxMain.swift; path = Tests/LinuxMain.swift; sourceTree = "<group>"; };
 		57C459771CE2150D0014764F /* UnicodeScalarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalarTests.swift; sourceTree = "<group>"; };
 		57C956681BDAE01D00057A4F /* ExpressionParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpressionParser.swift; sourceTree = "<group>"; };
 		57C995DA1CF86906000DA292 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
@@ -140,6 +141,7 @@
 				579C00CD1C03EC60009282A6 /* en.lproj */,
 				571A4EFC1CE2895E00D6D446 /* CHANGELOG.md */,
 				578435571BF692380067B3E9 /* LICENSE */,
+				57BD79281E3D5961005E1BF0 /* LinuxMain.swift */,
 				57AB6BB51CF399E6008A1927 /* Package.swift */,
 				579C00D31C03F16E009282A6 /* README.md */,
 				575680E01CCA99E3003FBCFA /* SubmittingPatches.md */,

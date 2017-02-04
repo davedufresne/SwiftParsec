@@ -628,3 +628,26 @@ func curriedPlus<T: PlusOperator>(_ lhs: T) -> (T) -> T {
     return { rhs in lhs + rhs }
     
 }
+
+extension GenericParserTests {
+    static var allTests: [(String, (GenericParserTests) -> () throws -> Void)] {
+        return [
+            ("testMap", testMap),
+            ("testApplicative", testApplicative),
+            ("testAlternative", testAlternative),
+            ("testFlatMap", testFlatMap),
+            ("testAtempt", testAtempt),
+            ("testLookAhead", testLookAhead),
+            ("testMany", testMany),
+            ("testSkipMany", testSkipMany),
+            ("testEmpty", testEmpty),
+            ("testLabel", testLabel),
+            ("testLift2", testLift2),
+            ("testLift3", testLift3),
+            ("testLift4", testLift4),
+            ("testLift5", testLift5),
+            ("testUpdateUserState", testUpdateUserState),
+            ("testParseArray", testParseArray)
+        ]
+    }
+}

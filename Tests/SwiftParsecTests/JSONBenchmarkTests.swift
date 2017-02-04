@@ -197,3 +197,12 @@ class JSONBenchmarkTests: XCTestCase {
     }
     
 }
+
+extension JSONBenchmarkTests {
+    static var allTests: [(String, (JSONBenchmarkTests) -> () throws -> Void)] {
+        return [
+            ("testJSONStatisticsParserPerformance",
+             testJSONStatisticsParserPerformance)
+        ]
+    }
+}

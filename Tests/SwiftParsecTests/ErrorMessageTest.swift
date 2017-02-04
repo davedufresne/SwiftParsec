@@ -373,3 +373,21 @@ class ErrorMessageTests: XCTestCase {
     }
     
 }
+
+extension ErrorMessageTests {
+    static var allTests: [(String, (ErrorMessageTests) -> () throws -> Void)] {
+        return [
+            ("testCharacterError", testCharacterError),
+            ("testStringError", testStringError),
+            ("testEofError", testEofError),
+            ("testChoiceError", testChoiceError),
+            ("testCtrlCharError", testCtrlCharError),
+            ("testPositionError", testPositionError),
+            ("testNoOccurenceError", testNoOccurenceError),
+            ("testLabelError", testLabelError),
+            ("testMultiLabelError", testMultiLabelError),
+            ("testGenericError", testGenericError),
+            ("testUnknownError", testUnknownError)
+        ]
+    }
+}

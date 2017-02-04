@@ -31,3 +31,9 @@ class CharacterSetTests: XCTestCase {
     }
     
 }
+
+extension CharacterSetTests {
+    static var allTests: [(String, (CharacterSetTests) -> () throws -> Void)] {
+        return [("testLarge", testLarge)]
+    }
+}

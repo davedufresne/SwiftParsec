@@ -906,3 +906,30 @@ class CharacterTests: XCTestCase {
     }
     
 }
+
+extension CharacterTests {
+    static var allTests: [(String, (CharacterTests) -> () throws -> Void)] {
+        return [
+            ("testOneOf", testOneOf),
+            ("testOneOfInterval", testOneOfInterval),
+            ("testNoneOf", testNoneOf),
+            ("testSpaces", testSpaces),
+            ("testUnicodeSpace", testUnicodeSpace),
+            ("testSpace", testSpace),
+            ("testNewLine", testNewLine),
+            ("testCrlf", testCrlf),
+            ("testEndOfLine", testEndOfLine),
+            ("testTab", testTab),
+            ("testUppercase", testUppercase),
+            ("testLowercase", testLowercase),
+            ("testAlphaNumeric", testAlphaNumeric),
+            ("testLetter", testLetter),
+            ("testSymbol", testSymbol),
+            ("testDigit", testDigit),
+            ("testDecimalDigit", testDecimalDigit),
+            ("testHexadecimalDigit", testHexadecimalDigit),
+            ("testOctalDigit", testOctalDigit),
+            ("testString", testString)
+        ]
+    }
+}

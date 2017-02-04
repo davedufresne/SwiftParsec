@@ -4,7 +4,7 @@ Added support for linux.
 
 # Release 2.0.1
 
-- Moved operators implementation in `Parsec` extension
+Moved operators implementation in `Parsec` extension
 
 # Release 2.0
 

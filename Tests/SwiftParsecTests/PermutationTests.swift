@@ -368,3 +368,17 @@ private func ==(lhs: [String?], rhs: [String?]) -> Bool {
     return lhs.count == rhs.count && !zip(lhs, rhs).contains { $0 != $1 }
     
 }
+
+extension PermutationTests {
+    static var allTests: [(String, (PermutationTests) -> () throws -> Void)] {
+        return [
+            ("testCollectionMethods", testCollectionMethods),
+            ("testPermutation", testPermutation),
+            ("testPermutationWithSeparator", testPermutationWithSeparator),
+            ("testPermutationWithOptional", testPermutationWithOptional),
+            ("testPermutationWithSeparatorAndOptional",
+             testPermutationWithSeparatorAndOptional),
+            ("testPermutationWithNil", testPermutationWithNil)
+        ]
+    }
+}

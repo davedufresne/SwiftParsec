@@ -145,3 +145,12 @@ class ExpressionTests: XCTestCase {
     }
     
 }
+
+extension ExpressionTests {
+    static var allTests: [(String, (ExpressionTests) -> () throws -> Void)] {
+        return [
+            ("testExpr", testExpr),
+            ("testReplaceRange", testReplaceRange)
+        ]
+    }
+}
