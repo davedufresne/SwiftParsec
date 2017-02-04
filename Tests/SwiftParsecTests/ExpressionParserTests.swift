@@ -10,7 +10,7 @@ import XCTest
 import func Foundation.pow
 @testable import SwiftParsec
 
-class ExpressionTests: XCTestCase {
+class ExpressionParserTests: XCTestCase {
     
     func testExpr() {
         
@@ -146,8 +146,9 @@ class ExpressionTests: XCTestCase {
     
 }
 
-extension ExpressionTests {
-    static var allTests: [(String, (ExpressionTests) -> () throws -> Void)] {
+extension ExpressionParserTests {
+    static var allTests:
+    [(String, (ExpressionParserTests) -> () throws -> Void)] {
         return [
             ("testExpr", testExpr),
             ("testReplaceRange", testReplaceRange)

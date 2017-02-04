@@ -2,11 +2,11 @@ import XCTest
 @testable import SwiftParsecTests
 
 XCTMain([
-    testCase(CharacterTests.allTests),
+    testCase(CharacterParsersTests.allTests),
     testCase(CharacterSetTests.allTests),
-    testCase(CombinatorTests.allTests),
+    testCase(CombinatorParsersTests.allTests),
     testCase(ErrorMessageTests.allTests),
-    testCase(ExpressionTests.allTests),
+    testCase(ExpressionParserTests.allTests),
     testCase(GenericParserTests.allTests),
     testCase(GenericTokenParserTests.allTests),
     testCase(JSONBenchmarkTests.allTests),

@@ -9,7 +9,7 @@
 import XCTest
 @testable import SwiftParsec
 
-class CharacterTests: XCTestCase {
+class CharacterParsersTests: XCTestCase {
     
     func testOneOf() {
         
@@ -907,8 +907,9 @@ class CharacterTests: XCTestCase {
     
 }
 
-extension CharacterTests {
-    static var allTests: [(String, (CharacterTests) -> () throws -> Void)] {
+extension CharacterParsersTests {
+    static var allTests:
+    [(String, (CharacterParsersTests) -> () throws -> Void)] {
         return [
             ("testOneOf", testOneOf),
             ("testOneOfInterval", testOneOfInterval),

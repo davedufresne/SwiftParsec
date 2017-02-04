@@ -10,7 +10,7 @@ import XCTest
 import func Foundation.pow
 @testable import SwiftParsec
 
-class CombinatorTests: XCTestCase {
+class CombinatorParsersTests: XCTestCase {
     
     func testChoice() {
         
@@ -1154,8 +1154,9 @@ class CombinatorTests: XCTestCase {
     
 }
 
-extension CombinatorTests {
-    static var allTests: [(String, (CombinatorTests) -> () throws -> Void)] {
+extension CombinatorParsersTests {
+    static var allTests:
+    [(String, (CombinatorParsersTests) -> () throws -> Void)] {
         return [
             ("testChoice", testChoice),
             ("testOtherwise", testOtherwise),
