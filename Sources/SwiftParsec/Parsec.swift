@@ -394,7 +394,7 @@ public extension Parsec where UserState == () {
 // Extension containing useful methods to run a parser.
 /// A `Stream` instance is responsible for maintaining the position of the
 /// parser's stream.
-public protocol Stream: Collection, ExpressibleByArrayLiteral {}
+public protocol Stream: Collection, ExpressibleByArrayLiteral where ArrayLiteralElement == Element {}
 
 extension String: Stream {
     
