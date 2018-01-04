@@ -852,8 +852,9 @@ extension TokenParser {
             
             return commentEnd.attempt *> GenericParser(result: ()) <|>
                 self.multiLineComment *> self.inNestedComment <|>
-                GenericParser.noneOf(startEnd).skipMany1 *>
-                self.inNestedComment <|> GenericParser.oneOf(startEnd) *>
+                GenericParser.noneOf(String(startEnd)).skipMany1 *>
+                self.inNestedComment <|>
+                GenericParser.oneOf(String(startEnd)) *>
                 self.inNestedComment <?>
                 LocalizedString("end of comment")
             
@@ -873,8 +874,9 @@ extension TokenParser {
             let commentEnd = StrParser.string(langDef.commentEnd)
             
             return commentEnd.attempt *> GenericParser(result: ()) <|>
-                GenericParser.noneOf(startEnd).skipMany1 *>
-                self.inNonNestedComment <|> GenericParser.oneOf(startEnd) *>
+                GenericParser.noneOf(String(startEnd)).skipMany1 *>
+                self.inNonNestedComment <|>
+                GenericParser.oneOf(String(startEnd)) *>
                 self.inNonNestedComment <?>
                 LocalizedString("end of comment")
             
@@ -1039,7 +1041,7 @@ extension TokenParser {
         
     }
     
-    private static func sign<Number: SignedNumber>()
+    private static func sign<Number: SignedNumeric>()
         -> GenericParser<String, UserState, (Number) -> Number> {
             
         return GenericParser.character("-") *> GenericParser(result: -) <|>
@@ -1110,7 +1112,7 @@ extension TokenParser {
             guard !string.isEmpty else { return unit }
             
             var str = string
-            let c = str.popFirst()!
+            let c = str.remove(at: str.startIndex)
             
             let charParser: VoidParser
             if c.isAlpha {

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'SwiftParsec'
-  s.version = '2.1'
+  s.version = '3.0.0'
   s.license = '2-clause BSD'
   s.summary = 'SwiftParsec is a Swift port of the Parsec parser combinator library.'
   s.homepage = 'https://github.com/davedufresne/SwiftParsec'

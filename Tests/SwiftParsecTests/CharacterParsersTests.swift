@@ -869,9 +869,7 @@ class CharacterParsersTests: XCTestCase {
         // Test when not matching.
         let notMatching = [
             "àaeéèëcçAÀEÉÈËCÇ",
-            stringToMatch.substring(
-                to: stringToMatch.index(before: stringToMatch.endIndex)
-            )
+            String(stringToMatch.dropLast())
         ]
         let shouldFailMessage = "GenericParser.string should fail."
         

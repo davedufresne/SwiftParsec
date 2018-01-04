@@ -564,7 +564,8 @@ class GenericParserTests: XCTestCase {
                     input: input
                 )
                 
-                if state != input.characters.filter({ $0.isAlpha }).count {
+                let alphaCharacters = input.filter { $0.isAlpha }
+                if state != alphaCharacters.count {
                     
                     XCTFail(errorMessage)
                 

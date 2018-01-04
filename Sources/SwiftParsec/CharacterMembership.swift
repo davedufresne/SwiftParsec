@@ -127,7 +127,7 @@ extension Character {
     /// `true` if `self` is an ASCII decimal digit, i.e. between "0" and "9".
     var isDecimalDigit: Bool {
         
-        return "0123456789".characters.contains(self)
+        return "0123456789".contains(self)
         
     }
     
@@ -135,14 +135,14 @@ extension Character {
     /// "a"..."f", "A"..."F".
     var isHexadecimalDigit: Bool {
         
-        return "01234567890abcdefABCDEF".characters.contains(self)
+        return "01234567890abcdefABCDEF".contains(self)
         
     }
     
     /// `true` if `self` is an ASCII octal digit, i.e. between '0' and '7'.
     var isOctalDigit: Bool {
         
-        return "01234567".characters.contains(self)
+        return "01234567".contains(self)
         
     }
     

@@ -50,7 +50,7 @@ extension UnicodeScalar {
         
     }
     
-    private static func isSurrogatePair<T: Integer>(_ v: T) -> Bool {
+    private static func isSurrogatePair<T: BinaryInteger>(_ v: T) -> Bool {
         
         return v >= 0xD800 && v <= 0xDFFF
         

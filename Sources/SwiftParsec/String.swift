@@ -57,16 +57,6 @@ extension String {
         
     }
     
-    /// Return a `String` with the duplicate characters removed. In particular,
-    /// it keeps only the first occurrence of each element.
-    ///
-    /// - returns: A `String` with the duplicate characters removed.
-    func removingDuplicates() -> String {
-        
-        return String(characters.removingDuplicates())
-        
-    }
-    
     /// Return a new `String` with `c` adjoined to the end.
     ///
     /// - parameter c: Character to append.

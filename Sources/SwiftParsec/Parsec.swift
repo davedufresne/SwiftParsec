@@ -394,27 +394,13 @@ public extension Parsec where UserState == () {
 // Extension containing useful methods to run a parser.
 /// A `Stream` instance is responsible for maintaining the position of the
 /// parser's stream.
-public protocol Stream: Collection, ExpressibleByArrayLiteral where ArrayLiteralElement == Element {}
+public protocol Stream: Collection, ExpressibleByArrayLiteral
+where ArrayLiteralElement == Element {}
 
 extension String: Stream {
     
     /// Create an instance containing `elements`.
     public init(arrayLiteral elements: String.Iterator.Element...) {
-        
-        self.init(elements)
-        
-    }
-    
-}
-
-//==============================================================================
-// Extension implementing the `Stream` protocol.
-extension String.CharacterView: Stream {
-    
-    public typealias Element = String.CharacterView.Iterator.Element
-    
-    /// Create an instance containing `elements`.
-    public init(arrayLiteral elements: Element...) {
         
         self.init(elements)
         

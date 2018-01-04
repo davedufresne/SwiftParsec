@@ -28,7 +28,7 @@ class PositionTests: XCTestCase {
     func testColumnPosition() {
         
         let str = "1234"
-        let expectedColumn = str.characters.count + 1
+        let expectedColumn = str.count + 1
         
         let strParser = StringParser.string(str)
         let positionParser = strParser *>

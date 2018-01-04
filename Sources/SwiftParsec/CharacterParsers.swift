@@ -61,7 +61,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
         _ list: String
     ) -> GenericParser<StreamType, UserState, Result> {
         
-        return satisfy(list.characters.contains)
+        return satisfy(list.contains)
         
     }
     
@@ -98,7 +98,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
         _ list: String
     ) -> GenericParser<StreamType, UserState, Result> {
         
-        return satisfy { !list.characters.contains($0) }
+        return satisfy { !list.contains($0) }
         
     }
     
@@ -305,8 +305,7 @@ where Result: Sequence, Result.Iterator.Element == Character {
 //==============================================================================
 // Extension containing methods related to string parsing.
 public extension Parsec
-where StreamType.Element == StreamType.Iterator.Element,
-StreamType.Iterator.Element == Character {
+where StreamType.Iterator.Element == Character {
     
     /// Return a parser that parses a `String`. It returns the parsed string
     /// (i.e. `str`).

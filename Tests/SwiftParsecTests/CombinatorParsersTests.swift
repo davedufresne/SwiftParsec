@@ -228,8 +228,7 @@ class CombinatorParsersTests: XCTestCase {
         testStringParserSuccess(digit, inputs: matchingDigit)
         { inputStr, result in
             
-            var input = inputStr
-            _ = input.popFirst()
+            let input = inputStr.dropFirst()
             
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(

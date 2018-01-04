@@ -1,3 +1,7 @@
+# Release 3.0.0
+
+Migrated source code to Swift 4.0
+
 # Release 2.1
 
 Added support for linux.
