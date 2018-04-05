@@ -142,9 +142,9 @@ class PermutationTests: XCTestCase {
         
         let permutation: Permutation = [
             
-            (StringParser.character("a"), "_"),
+            (StringParser.character("a"), Character("_")),
             (StringParser.character("b"), nil),
-            (StringParser.character("c"), "?")
+            (StringParser.character("c"), Character("?"))
             
         ]
         
@@ -206,7 +206,7 @@ class PermutationTests: XCTestCase {
         let permutation: Permutation = [
             
             (StringParser.character("a"), nil),
-            (StringParser.character("b"), "_"),
+            (StringParser.character("b"), Character("_")),
             (StringParser.character("c"), nil),
             (StringParser.character("d"), nil),
             
