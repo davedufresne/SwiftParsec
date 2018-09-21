@@ -56,11 +56,10 @@ class CharacterParsersTests: XCTestCase {
         let interval = StringParser.oneOf("a"..."z")
         
         // Test for success.
-        let matching = ["axyz", "éxyz", "ixyz", "oxyz", "uxyz"]
+        let matching = ["axyz", "exyz", "ixyz", "oxyz", "uxyz"]
         let errorMessage = "GenericParser.oneOf should succeed."
         
         testStringParserSuccess(interval, inputs: matching) { input, result in
-            
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
