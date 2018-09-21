@@ -1,3 +1,7 @@
+# Release 3.0.1
+
+Fix compilation error for Swift 4.2
+
 # Release 3.0.0
 
 Migrated source code to Swift 4.0
