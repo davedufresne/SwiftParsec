@@ -1,3 +1,7 @@
+# Release 3.0.2
+
+Update package description
+
 # Release 3.0.1
 
 Fix compilation error for Swift 4.2

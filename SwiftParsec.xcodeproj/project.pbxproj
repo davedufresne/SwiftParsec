@@ -107,6 +107,7 @@
 		57C459771CE2150D0014764F /* UnicodeScalarTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnicodeScalarTests.swift; sourceTree = "<group>"; };
 		57C956681BDAE01D00057A4F /* ExpressionParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpressionParser.swift; sourceTree = "<group>"; };
 		57C995DA1CF86906000DA292 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		57D3AFF521FCF09500D1DCEF /* Release */ = {isa = PBXFileReference; lastKnownFileType = text; path = Release; sourceTree = "<group>"; };
 		57E5A60A1BA36FD10062F479 /* RangeReplaceableCollectionInsertion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeReplaceableCollectionInsertion.swift; sourceTree = "<group>"; };
 		57E6F77E1BA7414B0015E875 /* SequenceAggregation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SequenceAggregation.swift; sourceTree = "<group>"; };
 		57E6F7821BAA1C260015E875 /* CharacterParsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterParsers.swift; sourceTree = "<group>"; };
@@ -146,6 +147,7 @@
 				579C00D31C03F16E009282A6 /* README.md */,
 				575680E01CCA99E3003FBCFA /* SubmittingPatches.md */,
 				578E3B0F1CA4B014005B83B8 /* SwiftParsec.podspec */,
+				57D3AFF521FCF09500D1DCEF /* Release */,
 				57FA9BA81BB97463000DCC03 /* TODO */,
 			);
 			sourceTree = "<group>";
