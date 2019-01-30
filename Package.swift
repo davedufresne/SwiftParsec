@@ -12,6 +12,14 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftParsec",
+    products: [
+        // Products define the executables and libraries produced by a package, and
+        // make them visible to other packages.
+        .library(
+            name: "SwiftParsec",
+            targets: ["SwiftParsec"]
+        ),
+    ],
     targets: [
         .target(name: "SwiftParsec"),
     ]
