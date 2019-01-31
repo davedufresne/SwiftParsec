@@ -1,3 +1,7 @@
+# Release 3.0.3
+
+Add missing 'products' entry in package description
+
 # Release 3.0.2
 
 Update package description
