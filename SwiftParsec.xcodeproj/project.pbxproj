@@ -296,11 +296,11 @@
 			};
 			buildConfigurationList = 57167EFC1B99E66800F35A29 /* Build configuration list for PBXProject "SwiftParsec" */;
 			compatibilityVersion = "Xcode 10.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
+				Base,
 			);
 			mainGroup = 57167EF81B99E66800F35A29;
 			productRefGroup = 57167F031B99E66800F35A29 /* Products */;
