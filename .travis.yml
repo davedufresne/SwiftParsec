@@ -7,7 +7,7 @@ matrix:
   include:
     # - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone 6s Plus"
     # - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone 7"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone X"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=11.1,name=iPhone X"
     # - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Air 3"
     # - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Pro (12.9 inch)"
     # - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Retina"
