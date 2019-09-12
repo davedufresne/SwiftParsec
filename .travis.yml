@@ -5,12 +5,12 @@ language: objective-c
 
 matrix:
   include:
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone 6s Plus"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone 7"
+    # - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone 6s Plus"
+    # - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone 7"
     - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone X"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Air 3"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Pro (12.9 inch)"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Retina"
+    # - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Air 3"
+    # - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Pro (12.9 inch)"
+    # - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Retina"
     - os: linux
       dist: trusty
       language: generic
