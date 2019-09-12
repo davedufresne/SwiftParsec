@@ -1,17 +1,16 @@
 os: osx
-osx_image: xcode8
+osx_image: xcode10.3
 language: objective-c
 
 
 matrix:
   include:
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 5s"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPhone 6s Plus"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Air"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Air 2"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Pro (12.9 inch)"
-    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.0,name=iPad Retina"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone 6s Plus"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone 7"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPhone X"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Air 3"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Pro (12.9 inch)"
+    - env: XCODE_DESTINATION="platform=iOS Simulator,OS=10.3,name=iPad Retina"
     - os: linux
       dist: trusty
       language: generic
