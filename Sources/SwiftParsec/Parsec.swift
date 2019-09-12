@@ -314,7 +314,7 @@ public extension Parsec {
     ///   - input: The input stream to parse.
     /// - throws: A `ParseError` when an error occurs.
     /// - returns: The result of the parsing.
-    public func run(
+    func run(
         userState: UserState,
         sourceName: String,
         input: StreamType
@@ -354,7 +354,7 @@ public extension Parsec where UserState == () {
     ///   - input: The input stream to parse.
     /// - throws: A `ParseError` when an error occurs.
     /// - returns: The result of the parsing.
-    public func run(sourceName: String, input: StreamType) throws -> Result {
+    func run(sourceName: String, input: StreamType) throws -> Result {
         
         return try run(
             userState: (),
@@ -368,7 +368,7 @@ public extension Parsec where UserState == () {
     /// the result.
     ///
     /// - parameter input: The input stream to parse.
-    public func test(input: StreamType) {
+    func test(input: StreamType) {
         
         do {
             

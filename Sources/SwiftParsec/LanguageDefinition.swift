@@ -77,7 +77,7 @@ public extension LanguageDefinition {
     /// definition as the basis for other definitions. `empty` has no reserved
     /// names or operators, is case sensitive and doesn't accept comments,
     /// identifiers or operators.
-    public static var empty: LanguageDefinition {
+    static var empty: LanguageDefinition {
         
         return LanguageDefinition(
             commentStart:        "",
@@ -106,7 +106,7 @@ public extension LanguageDefinition {
     /// This is a minimal token definition for Java style languages. It defines
     /// the style of comments, valid identifiers and case sensitivity. It does
     /// not define any reserved words or operators.
-    public static var javaStyle: LanguageDefinition {
+    static var javaStyle: LanguageDefinition {
         
         var javaDef = empty
         
@@ -120,7 +120,7 @@ public extension LanguageDefinition {
     
     // This is a definition for the JSON language-independent data interchange
     // format.
-    public static var json: LanguageDefinition {
+    static var json: LanguageDefinition {
         
         var jsonDef = empty
         
@@ -185,7 +185,7 @@ public extension LanguageDefinition {
     /// This is a minimal token definition for the swift 2.1 language. It
     /// defines the style of comments, valid identifiers and operators, reserved
     /// names and operators, character escaping, and case sensitivity.
-    public static var swift: LanguageDefinition {
+    static var swift: LanguageDefinition {
         
         var swiftDef = empty
         

@@ -23,7 +23,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     /// - parameter predicate: The predicate to apply on the `Character`.
     /// - returns: A parser that succeeds for any character for which the
     ///   supplied function `predicate` returns `true`.
-    public static func satisfy(
+    static func satisfy(
         _ predicate: @escaping (Character) -> Bool
     ) -> GenericParser<StreamType, UserState, Result> {
         
@@ -57,7 +57,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     ///   `GenericParser.satisfy(
     ///       predicate: Character -> Bool
     ///   ) -> GenericParser`
-    public static func oneOf(
+    static func oneOf(
         _ list: String
     ) -> GenericParser<StreamType, UserState, Result> {
         
@@ -78,7 +78,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     ///   `GenericParser.satisfy(
     ///       predicate: Character -> Bool
     ///   ) -> GenericParser`
-    public static func oneOf(
+    static func oneOf(
         _ interval: ClosedRange<Character>
     ) -> GenericParser<StreamType, UserState, Result> {
         
@@ -94,7 +94,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     /// - parameter list: A `String` of possible _not_ to match.
     /// - returns: A parser that succeeds if the current character is _not_ in
     ///   the supplied list of characters.
-    public static func noneOf(
+    static func noneOf(
         _ list: String
     ) -> GenericParser<StreamType, UserState, Result> {
         
@@ -105,7 +105,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     /// A Parser that skips _zero_ or more unicode white space characters.
     ///
     /// - SeeAlso: `GenericParser.skipMany`.
-    public static var spaces: GenericParser<StreamType, UserState, ()> {
+    static var spaces: GenericParser<StreamType, UserState, ()> {
         
         return space.skipMany <?> LocalizedString("white space")
         
@@ -114,7 +114,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     /// A Parser that parses a white space character (any Unicode space
     /// character, and the control characters \t, \n, \r, \f, \v). It returns
     /// the parsed character.
-    public static var unicodeSpace:
+    static var unicodeSpace:
         GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isUnicodeSpace } <?> LocalizedString("unicode space")
@@ -123,7 +123,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses any space character, and the control characters \t,
     /// \n, \r, \f, \v. It returns the parsed character.
-    public static var space: GenericParser<StreamType, UserState, Result> {
+    static var space: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isSpace } <?> LocalizedString("space")
         
@@ -131,7 +131,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses a newline character ("\n"). It returns a newline
     /// character.
-    public static var newLine: GenericParser<StreamType, UserState, Result> {
+    static var newLine: GenericParser<StreamType, UserState, Result> {
         
         return character("\n") <?> LocalizedString("lf new-line")
         
@@ -139,7 +139,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses a carriage return character ("\r") followed by a
     /// newline character ("\n"). It returns a newline character.
-    public static var crlf: GenericParser<StreamType, UserState, Result> {
+    static var crlf: GenericParser<StreamType, UserState, Result> {
         
         // "\r\n" is combined in one Unicode Scalar.
         return character("\r\n") *> GenericParser(result: "\n") <|>
@@ -152,14 +152,14 @@ where StreamType.Iterator.Element == Character, Result == Character {
     /// end-of-line. It returns a newline character ("\n").
     ///
     ///     let endOfLine = StringParser.newline <|> StringParser.crlf
-    public static var endOfLine: GenericParser<StreamType, UserState, Result> {
+    static var endOfLine: GenericParser<StreamType, UserState, Result> {
         
         return newLine <|> crlf <?> LocalizedString("new-line")
         
     }
     
     /// A Parser that parses a tab character ("\t"). It returns a tab character.
-    public static var tab: GenericParser<StreamType, UserState, Result> {
+    static var tab: GenericParser<StreamType, UserState, Result> {
         
         return character("\t") <?> LocalizedString("tab")
         
@@ -167,7 +167,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses a character in the category of Uppercase and
     /// Titlecase Letters. It returns the parsed character.
-    public static var uppercase: GenericParser<StreamType, UserState, Result> {
+    static var uppercase: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isUppercase } <?> LocalizedString("uppercase letter")
         
@@ -175,7 +175,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses a character in the category of Lowercase Letters.
     /// It returns the parsed character.
-    public static var lowercase: GenericParser<StreamType, UserState, Result> {
+    static var lowercase: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isLowercase } <?> LocalizedString("lowercase letter")
         
@@ -183,7 +183,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses a character in the categories of Letters, Marks,
     /// and Numbers. It returns the parsed character.
-    public static var alphaNumeric:
+    static var alphaNumeric:
         GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isAlphaNumeric } <?>
@@ -193,7 +193,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses a character in the categories of Letters and Marks.
     /// It returns the parsed character.
-    public static var letter: GenericParser<StreamType, UserState, Result> {
+    static var letter: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isAlpha } <?> LocalizedString("letter")
         
@@ -201,7 +201,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses a character in the categories of Symbols. It
     /// returns the parsed character.
-    public static var symbol: GenericParser<StreamType, UserState, Result> {
+    static var symbol: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isSymbol } <?> LocalizedString("symbol")
         
@@ -209,7 +209,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses a character in the category of Numbers. It returns
     /// the parsed character.
-    public static var digit: GenericParser<StreamType, UserState, Result> {
+    static var digit: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isDigit } <?> LocalizedString("digit")
         
@@ -217,7 +217,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses an ASCII decimal digit, i.e. between "0" and "9".
     /// It returns the parsed character.
-    public static var decimalDigit:
+    static var decimalDigit:
         GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isDecimalDigit } <?> LocalizedString("digit")
@@ -226,7 +226,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses an ASCII hexadecimal digit, i.e. "0"..."9",
     /// "a"..."f", "A"..."F". It returns the parsed character.
-    public static var hexadecimalDigit:
+    static var hexadecimalDigit:
         GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isHexadecimalDigit } <?>
@@ -236,7 +236,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that parses an octal digit (a character between "0" and "7").
     /// It returns the parsed character.
-    public static var octalDigit: GenericParser<StreamType, UserState, Result> {
+    static var octalDigit: GenericParser<StreamType, UserState, Result> {
         
         return satisfy { $0.isOctalDigit } <?>  LocalizedString("octal digit")
         
@@ -249,7 +249,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     ///
     /// - parameter char: The character to parse.
     /// - returns: A parser that parses a single character `Character`.
-    public static func character(
+    static func character(
         _ char: Character
     ) -> GenericParser<StreamType, UserState, Result> {
         
@@ -259,7 +259,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     
     /// A Parser that succeeds for any character. It returns the parsed
     /// character.
-    public static var anyCharacter:
+    static var anyCharacter:
         GenericParser<StreamType, UserState, Result> {
         
         return satisfy { _ in true }
@@ -267,7 +267,7 @@ where StreamType.Iterator.Element == Character, Result == Character {
     }
     
     /// A Parser that maps a `Character` to a `String`.
-    public var stringValue: GenericParser<StreamType, UserState, String> {
+    var stringValue: GenericParser<StreamType, UserState, String> {
         
         return map { String($0) }
         
@@ -294,7 +294,7 @@ public extension Parsec
 where Result: Sequence, Result.Iterator.Element == Character {
     
     /// A Parser that maps an array of `Character` to a `String`.
-    public var stringValue: GenericParser<StreamType, UserState, String> {
+    var stringValue: GenericParser<StreamType, UserState, String> {
         
         return map { String($0) }
         
@@ -315,7 +315,7 @@ where StreamType.Iterator.Element == Character {
     ///
     /// - parameter str: The string to parse.
     /// - returns: A parser that parses a `String`.
-    public static func string(
+    static func string(
         _ str: StreamType
     ) -> GenericParser<StreamType, UserState, StreamType> {
         
