@@ -845,7 +845,7 @@ public extension Parsec {
     ///     a predicate.
     /// - returns: Return a parser that accepts a token `Element` with result
     ///   `Result` when the token matches.
-    public static func tokenPrimitive(
+    static func tokenPrimitive(
         tokenDescription: @escaping (StreamType.Iterator.Element) -> String,
         nextPosition: @escaping (
             SourcePosition, StreamType.Iterator.Element
@@ -909,7 +909,7 @@ where StreamType.Iterator.Element: Equatable {
     ///   - nextPosition: A function returning the position after the tokens.
     ///   - tokens: The collection of tokens to parse.
     /// - returns: A parser that parses a collection of tokens.
-    public static func tokens(
+    static func tokens(
         tokensDescription: @escaping (StreamType) -> String,
         nextPosition: @escaping (
             SourcePosition, StreamType
