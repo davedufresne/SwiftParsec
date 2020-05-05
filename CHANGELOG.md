@@ -1,3 +1,7 @@
+# Release 4.0.0
+
+Migrated source code to Swift 5.0
+
 # Release 3.0.3
 
 Add missing 'products' entry in package description
