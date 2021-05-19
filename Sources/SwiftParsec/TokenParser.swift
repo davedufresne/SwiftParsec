@@ -431,8 +431,9 @@ extension TokenParser {
         let escapeEmpty: GenericParser<String, UserState, Character?> =
             GenericParser.character("&") *> GenericParser(result: nil)
         
-        let characterEscape: GenericParser<String, UserState, Character?> = GenericParser.character("\\") *>
-            (escapeGap <|> escapeEmpty <|>
+        let characterEscape: GenericParser<String, UserState, Character?> =
+            GenericParser.character("\\") *>
+                (escapeGap <|> escapeEmpty <|>
                 GenericTokenParser.escapeCode.map { $0 })
         
         let stringEscape =
