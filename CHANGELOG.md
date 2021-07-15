@@ -1,3 +1,7 @@
+# Release 4.0.1
+
+Fix compilation error in Xcode 12.5
+
 # Release 4.0.0
 
 Migrated source code to Swift 5.0
