@@ -1,4 +1,4 @@
-//==============================================================================
+// ==============================================================================
 // Parsec.swift
 // SwiftParsec
 //
@@ -6,24 +6,24 @@
 // Copyright © 2016 David Dufresne. All rights reserved.
 //
 // Parsec protocol and related operator definitions.
-//==============================================================================
+// ==============================================================================
 
 // TODO: - Make `Parsec` the model of a true monad when Swift will allow it.
 
-//==============================================================================
+// ==============================================================================
 /// `Parsec` is a parser with stream type `Stream`, user state type `UserState`
 /// and return type `Result`.
 public protocol Parsec {
-    
+
     /// The input stream to parse.
     associatedtype StreamType: Stream
-    
+
     /// The state supplied by the user.
     associatedtype UserState
-    
+
     /// The result of the parser.
     associatedtype Result
-    
+
     /// Return a parser containing the result of mapping transform over `self`.
     ///
     /// This method has the synonym infix operator `<^>`.
@@ -33,7 +33,7 @@ public protocol Parsec {
     func map<T>(
         _ transform: @escaping (Result) -> T
     ) -> GenericParser<StreamType, UserState, T>
-    
+
     /// Return a parser by applying the function contained in the supplied
     /// parser to self.
     ///
@@ -44,7 +44,7 @@ public protocol Parsec {
     func apply<T>(
         _ parser: GenericParser<StreamType, UserState, (Result) -> T>
     ) -> GenericParser<StreamType, UserState, T>
-    
+
     /// This combinator implements choice. The parser `p.alternative(q)` first
     /// applies `p`. If it succeeds, the value of `p` is returned. If `p` fails
     /// _without consuming any input_, parser `q` is tried. The parser is called
@@ -59,7 +59,7 @@ public protocol Parsec {
     /// - returns: A parser that will first try `self`. If it consumed no input,
     ///   it will try `altParser`.
     func alternative(_ altParser: Self) -> Self
-    
+
     /// Return a parser containing the result of mapping transform over `self`.
     ///
     /// This method has the synonym infix operator `>>-` (bind).
@@ -71,7 +71,7 @@ public protocol Parsec {
             Result
         ) -> GenericParser<StreamType, UserState, T>
     ) -> GenericParser<StreamType, UserState, T>
-    
+
     /// This combinator is used whenever arbitrary look ahead is needed. Since
     /// it pretends that it hasn't consumed any input when `self` fails, the
     /// ('<|>') combinator will try its second alternative even when the first
@@ -103,7 +103,7 @@ public protocol Parsec {
     /// - returns: A parser that pretends that it hasn't consumed any input when
     ///   `self` fails.
     var attempt: Self { get }
-    
+
     /// A combinator that parses without consuming any input.
     ///
     /// If `self` fails and consumes some input, so does `lookAhead`. Combine
@@ -111,7 +111,7 @@ public protocol Parsec {
     ///
     /// - returns: A parser that parses without consuming any input.
     var lookAhead: Self { get }
-    
+
     /// This combinator applies `self` _zero_ or more times. It returns an
     /// accumulation of the returned values of `self` that were passed to the
     /// `accumulator` function.
@@ -125,10 +125,10 @@ public protocol Parsec {
     func manyAccumulator(
         _ accumulator: @escaping (Result, [Result]) -> [Result]
     ) -> GenericParser<StreamType, UserState, [Result]>
-    
+
     /// A parser that always fails without consuming any input.
     static var empty: Self { get }
-    
+
     /// The parser returned by `p.labels(message)` behaves as parser `p`, but
     /// whenever the parser `p` fails _without consuming any input_, it replaces
     /// expected error messages with the expected error message `message`.
@@ -146,7 +146,7 @@ public protocol Parsec {
     /// - parameter message: The new error message.
     /// - returns: A parser with a replaced error message.
     func labels(_ message: String...) -> Self
-    
+
     /// Return a parser that always fails with an unexpected error message
     /// without consuming any input.
     ///
@@ -161,26 +161,26 @@ public protocol Parsec {
     /// - SeeAlso: `GenericParser.noOccurence`, `GenericParser.fail(message:
     ///   String)` and `<?>`
     static func unexpected(_ message: String) -> Self
-    
+
     /// Return a parser that always fails with the supplied message.
     ///
     /// - parameter message: The failure message.
     /// - returns: A parser that always fail.
     static func fail(_ message: String) -> Self
-    
+
     /// Return the current source position.
     ///
     /// - returns: The current source position.
     /// - SeeAlso 'SourcePosition'.
     static var
     sourcePosition: GenericParser<StreamType, UserState, SourcePosition> { get }
-    
+
     /// Return the user state.
     ///
     /// - returns: The user state
     static var
     userState: GenericParser<StreamType, UserState, UserState> { get }
-    
+
     /// The `updateUserState` method applies the function `update` to the user
     /// state. Suppose that we want to count identifiers in a source, we could
     /// use the user state as:
@@ -194,7 +194,7 @@ public protocol Parsec {
     static func updateUserState(
         _ update: @escaping (UserState) -> UserState
     ) -> GenericParser<StreamType, UserState, ()>
-    
+
     /// Run the parser and return the result of the parsing if it succeeded.
     /// If an error occured, it is returned. Contrary to the `run()` method, it
     /// doesn't throw an exception.
@@ -210,10 +210,10 @@ public protocol Parsec {
         sourceName: String,
         input: StreamType
     ) -> Either<ParseError, Result>
-    
+
 }
 
-//==============================================================================
+// ==============================================================================
 // Operator definitions.
 
 /// Precedence of infix operator for `Parsec.labels()`. It has a higher
@@ -275,7 +275,7 @@ infix operator <*> : SequencePrecedence
 infix operator <^> : SequencePrecedence
 
 extension Parsec {
-    
+
     /// Infix operator for `Parsec.labels()`. It has the lowest precedence of the
     /// parsers operators.
     ///
@@ -283,11 +283,11 @@ extension Parsec {
     ///   - parser: The parser whose error message is to be replaced.
     ///   - message: The new error message.
     public static func <?>(parser: Self, message: String) -> Self {
-        
+
         return parser.labels(message)
-        
+
     }
-    
+
     /// Infix operator for `Parsec.alternative`. It has a higher precedence than
     /// the `>>-` operator.
     ///
@@ -295,17 +295,17 @@ extension Parsec {
     ///   - leftParser: The first parser to try.
     ///   - rightParser: The second parser to try.
     public static func <|>(leftParser: Self, rightParser: Self) -> Self {
-        
+
         return leftParser.alternative(rightParser)
-        
+
     }
-   
+
 }
 
-//==============================================================================
+// ==============================================================================
 // Extension containing useful methods to run a parser.
 public extension Parsec {
-    
+
     /// Run the parser and return the result of the parsing.
     ///
     /// - parameters:
@@ -319,33 +319,33 @@ public extension Parsec {
         sourceName: String,
         input: StreamType
         ) throws -> Result {
-        
+
         let result = runSafe(
             userState: userState,
             sourceName: sourceName,
             input: input
         )
-        
+
         switch result {
-            
+
         case .left(let error):
-            
+
             throw error
-            
+
         case .right(let result):
-            
+
             return result
-            
+
         }
-        
+
     }
-    
+
 }
 
-//==============================================================================
+// ==============================================================================
 // Extension containing useful methods to run a parser with an empty user state.
 public extension Parsec where UserState == () {
-    
+
     /// Run the parser and return the result of the parsing.
     ///
     /// - parameters:
@@ -355,42 +355,42 @@ public extension Parsec where UserState == () {
     /// - throws: A `ParseError` when an error occurs.
     /// - returns: The result of the parsing.
     func run(sourceName: String, input: StreamType) throws -> Result {
-        
+
         return try run(
             userState: (),
             sourceName: sourceName,
             input: input
         )
-        
+
     }
-    
+
     /// Used for testing parsers. It applies `self` against `input` and prints
     /// the result.
     ///
     /// - parameter input: The input stream to parse.
     func test(input: StreamType) {
-        
+
         do {
-            
+
             let result = try run(sourceName: "", input: input)
             print(result)
-            
+
         } catch let parseError as ParseError {
-            
+
             let parseErrorMsg = LocalizedString("parse error at ")
             print(parseErrorMsg + String(describing: parseError))
-            
+
         } catch let error {
-            
+
             print(String(describing: error))
-            
+
         }
-        
+
     }
-    
+
 }
 
-//==============================================================================
+// ==============================================================================
 // Extension containing useful methods to run a parser.
 /// A `Stream` instance is responsible for maintaining the position of the
 /// parser's stream.
@@ -398,27 +398,26 @@ public protocol Stream: Collection, ExpressibleByArrayLiteral
 where ArrayLiteralElement == Element {}
 
 extension String: Stream {
-    
+
     /// Create an instance containing `elements`.
     public init(arrayLiteral elements: String.Iterator.Element...) {
-        
+
         self.init(elements)
-        
+
     }
-    
+
 }
 
-//==============================================================================
+// ==============================================================================
 /// Types conforming to the `EmptyInitializable` protocol provide an empty
 /// intializer.
 public protocol EmptyInitializable {
-    
+
     init()
-    
+
 }
 
-
-//==============================================================================
+// ==============================================================================
 // Extensions implementing the `Stream` protocol for various collections.
 
 extension Array: Stream, EmptyInitializable {}

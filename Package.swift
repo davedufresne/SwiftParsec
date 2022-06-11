@@ -18,9 +18,9 @@ let package = Package(
         .library(
             name: "SwiftParsec",
             targets: ["SwiftParsec"]
-        ),
+        )
     ],
     targets: [
-        .target(name: "SwiftParsec"),
+        .target(name: "SwiftParsec")
     ]
 )

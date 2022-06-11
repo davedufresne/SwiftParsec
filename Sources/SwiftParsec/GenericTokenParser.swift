@@ -1,18 +1,18 @@
-//==============================================================================
+// ==============================================================================
 // GenericTokenParser.swift
 // SwiftParsec
 //
 // Created by David Dufresne on 2016-10-08.
 // Copyright © 2016 David Dufresne. All rights reserved.
-//==============================================================================
+// ==============================================================================
 
-//==============================================================================
+// ==============================================================================
 /// Generic implementation of the `TokenParser`.
 public struct GenericTokenParser<UserState>: TokenParser {
-    
+
     /// Language definition parameterizing the lexer.
     public let languageDefinition: LanguageDefinition<UserState>
-    
+
     /// Creates a `TokenParser` that contains lexical parsers that are defined
     /// using the definitions in the `LanguageDefinition` structure.
     ///
@@ -32,9 +32,9 @@ public struct GenericTokenParser<UserState>: TokenParser {
     /// - parameter languageDefinition: Language definition for the lexical
     ///   parsers.
     public init(languageDefinition: LanguageDefinition<UserState>) {
-        
+
         self.languageDefinition = languageDefinition
-        
+
     }
-    
+
 }
