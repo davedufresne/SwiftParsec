@@ -81,11 +81,11 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     public func makeParser<Separator>(
         separator: GenericParser<StreamType, UserState, Separator>
     ) -> GenericParser<StreamType, UserState, [Result]> {
-        let ps = parsers.map { elem in
+        let permutableParsers = parsers.map { elem in
             (parser: elem.parser.map { [$0] }, otherwise: elem.otherwise)
         }
 
-        return permute(ps, separator: separator)
+        return permute(permutableParsers, separator: separator)
     }
 
     private typealias PermParser =
@@ -122,10 +122,10 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
                 }
 
                 return permParser >>- { results in
-                    var rs = results
-                    rs.insert(contentsOf: result, at: index)
+                    var allResults = results
+                    allResults.insert(contentsOf: result, at: index)
 
-                    return GenericParser(result: rs)
+                    return GenericParser(result: allResults)
                 }
             }
 

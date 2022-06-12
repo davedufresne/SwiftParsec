@@ -314,14 +314,14 @@ extension TokenParser {
     public var legalOperator: GenericParser<String, UserState, String> {
         let langDef = languageDefinition
 
-        let op: StrParser = langDef.operatorStart >>- { char in
+        let operatorParser: StrParser = langDef.operatorStart >>- { char in
             langDef.operatorLetter.many >>- { chars in
-                let cs = chars.prepending(char)
-                return GenericParser(result: String(cs))
+                let allChars = chars.prepending(char)
+                return GenericParser(result: String(allChars))
             }
         } <?> LocalizedString("operator")
 
-        let opCheck: StrParser = op >>- { name in
+        let opCheck: StrParser = operatorParser >>- { name in
             guard !langDef.reservedOperators.contains(name) else {
                 let reservedOperatorMsg = LocalizedString("reserved operator ")
                 return GenericParser.unexpected(reservedOperatorMsg + name)
@@ -343,11 +343,11 @@ extension TokenParser {
     public func reservedOperator(
         _ name: String
     ) -> GenericParser<String, UserState, ()> {
-        let op = VoidParser.string(name) *>
+        let operatorParser = VoidParser.string(name) *>
             languageDefinition.operatorLetter.noOccurence <?>
             LocalizedString("end of ") + name
 
-        return lexeme(op.attempt)
+        return lexeme(operatorParser.attempt)
     }
 
     //

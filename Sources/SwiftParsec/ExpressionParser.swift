@@ -292,11 +292,11 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
 
     private func splitOperators(
         operators: OperatorsTuple,
-        op: Operator<StreamType, UserState, Result>
+        operatorParser: Operator<StreamType, UserState, Result>
     ) -> OperatorsTuple {
         var ops = operators
 
-        switch op {
+        switch operatorParser {
         case .infix(let parser, let assoc):
 
             switch assoc {
@@ -341,7 +341,7 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     }
 
     private func ambigious(
-        _ op: InfixOperatorParser,
+        _ operatorParser: InfixOperatorParser,
         assoc: String
     ) -> GenericParser<StreamType, UserState, Result> {
         #if _runtime(_ObjC)
@@ -356,7 +356,7 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
 
         #endif
 
-        return (op *> GenericParser.fail(localizedMsg)).attempt
+        return (operatorParser *> GenericParser.fail(localizedMsg)).attempt
     }
 
     /// Replace the given subRange of elements with newElements.

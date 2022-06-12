@@ -982,7 +982,7 @@ public func <*<StreamType, UserState, Param1, Param2>(
     leftParser: GenericParser<StreamType, UserState, Param1>,
     rightParser: GenericParser<StreamType, UserState, Param2>
 ) -> GenericParser<StreamType, UserState, Param1> {
-    return GenericParser.lift2({ p0, _ in p0 },
+    return GenericParser.lift2({ param, _ in param },
         parser1: leftParser,
         parser2: rightParser
     )

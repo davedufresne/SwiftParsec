@@ -116,9 +116,9 @@ public extension GenericParser {
     ) -> GenericParser<StreamType, UserState, [Result]> {
         return self >>- { result in
             (separator *> self).many >>- { results in
-                let rs = results.prepending(result)
+                let allResults = results.prepending(result)
                 return GenericParser<StreamType, UserState, [Result]>(
-                    result: rs
+                    result: allResults
                 )
             }
         }
@@ -174,9 +174,9 @@ public extension GenericParser {
             let optionalSeparator: GenericParser<StreamType, UserState, [Result]> =
             separator >>- { _ in
                 self.dividedBy(separator, endSeparatorRequired: false) >>- { results in
-                    let rs = results.prepending(result)
+                    let allResults = results.prepending(result)
                     return GenericParser<StreamType, UserState, [Result]>(
-                        result: rs
+                        result: allResults
                     )
                 }
             }
@@ -252,9 +252,9 @@ public extension GenericParser {
 
         func rest(_ left: Result) -> GenericParser {
             // Type inference bug.
-            let operParser: GenericParser = oper >>- { op in
+            let operParser: GenericParser = oper >>- { transform in
                 scan() >>- { right in
-                    let result = op(left, right)
+                    let result = transform(left, right)
                     return GenericParser(result: result)
                 }
             }
@@ -303,8 +303,8 @@ public extension GenericParser {
         _ oper: GenericParser<StreamType, UserState, (Result, Result) -> Result>
     ) -> GenericParser {
         func rest(_ left: Result) -> GenericParser {
-            let operParser = oper >>- { op in
-                self >>- { right in rest(op(left, right)) }
+            let operParser = oper >>- { operatorParser in
+                self >>- { right in rest(operatorParser(left, right)) }
             }
 
             return operParser <|> GenericParser(result: left)
@@ -358,9 +358,9 @@ public extension GenericParser {
 
             return empty <|> (self >>- { result in
                 scan() >>- { results in
-                    let rs = results.prepending(result)
+                    let allResults = results.prepending(result)
                     return GenericParser<StreamType, UserState, [Result]>(
-                        result: rs
+                        result: allResults
                     )
                 }
             })
