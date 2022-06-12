@@ -254,6 +254,7 @@ private let jsonMaxEscapeDigit = 4
 private let swiftImplicitParameterStart: Character = "$"
 
 // Initialized this way to overcome Swift 4.2 compiler error
+// swiftlint:disable:next closure_body_length
 private let swiftIdentifierStartCharacters: String = {
     let strands: [String] = [
         (0x0041...0x005A).stringValue, // 'A' to 'Z'

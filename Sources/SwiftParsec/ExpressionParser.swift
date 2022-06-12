@@ -204,10 +204,7 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         _ term: GenericParser<StreamType, UserState, Result>,
         operators: [Operator<StreamType, UserState, Result>]
     ) -> GenericParser<StreamType, UserState, Result> {
-        let ops: OperatorsTuple = operators.reduce(
-            ([], [], [], [], []),
-            splitOperators
-        )
+        let ops: OperatorsTuple = operators.reduce( ([], [], [], [], []), splitOperators )
 
         let rightAssocOp = GenericParser.choice(ops.right)
         let leftAssocOp = GenericParser.choice(ops.left)
@@ -215,14 +212,9 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         let prefixOp = GenericParser.choice(ops.prefix)
         let postfixOp = GenericParser.choice(ops.postfix)
 
-        let rightAssocMsg = LocalizedString("right")
-        let ambigiousRight = ambigious(rightAssocOp, assoc: rightAssocMsg)
-
-        let leftAssocMsg = LocalizedString("left")
-        let ambigiousLeft = ambigious(leftAssocOp, assoc: leftAssocMsg)
-
-        let nonAssocMsg = LocalizedString("non")
-        let ambigiousNon = ambigious(rightAssocOp, assoc: nonAssocMsg)
+        let ambigiousRight = ambigious(rightAssocOp, assoc: LocalizedString("right"))
+        let ambigiousLeft = ambigious(leftAssocOp, assoc: LocalizedString("left"))
+        let ambigiousNon = ambigious(rightAssocOp, assoc: LocalizedString("non"))
 
         let prefixParser = prefixOp <|> GenericParser(result: { $0 })
         let postfixParser = postfixOp <|> GenericParser(result: { $0 })
@@ -235,9 +227,7 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
             }
         }
 
-        func rightAssocParser(
-            _ left: Result
-        ) -> GenericParser<StreamType, UserState, Result> {
+        func rightAssocParser( _ left: Result ) -> GenericParser<StreamType, UserState, Result> {
             let rightTerm = termParser >>- { rightAssocParser1($0) }
 
             let apply = rightAssocOp >>- { transform in
@@ -247,33 +237,24 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
             return apply <|> ambigiousLeft <|> ambigiousNon
         }
 
-        func rightAssocParser1(
-            _ right: Result
-        ) -> GenericParser<StreamType, UserState, Result> {
+        func rightAssocParser1( _ right: Result ) -> GenericParser<StreamType, UserState, Result> {
             return rightAssocParser(right) <|> GenericParser(result: right)
         }
 
-        func leftAssocParser(
-            _ left: Result
-        ) -> GenericParser<StreamType, UserState, Result> {
+        func leftAssocParser( _ left: Result ) -> GenericParser<StreamType, UserState, Result> {
             let apply = leftAssocOp >>- { transform in
                 termParser >>- { right in
                     leftAssocParser1(transform(left, right))
                 }
             }
-
             return apply <|> ambigiousRight <|> ambigiousNon
         }
 
-        func leftAssocParser1(
-            _ right: Result
-        ) -> GenericParser<StreamType, UserState, Result> {
+        func leftAssocParser1( _ right: Result ) -> GenericParser<StreamType, UserState, Result> {
             return leftAssocParser(right) <|> GenericParser(result: right)
         }
 
-        func nonAssocParser(
-            _ left: Result
-        ) -> GenericParser<StreamType, UserState, Result> {
+        func nonAssocParser( _ left: Result ) -> GenericParser<StreamType, UserState, Result> {
             return nonAssocOp >>- { transform in
                 termParser >>- { right in
                     ambigiousRight <|> ambigiousLeft <|> ambigiousNon <|>

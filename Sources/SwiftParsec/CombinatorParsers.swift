@@ -7,6 +7,7 @@
 //
 // Commonly used generic combinators
 // ==============================================================================
+// swiftlint:disable file_length
 
 // ==============================================================================
 // Extension containing methods related to parser combinators.

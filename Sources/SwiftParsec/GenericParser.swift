@@ -7,7 +7,7 @@
 //
 // The primitive parser combinators.
 // ==============================================================================
-// swiftlint:disable file_length
+// swiftlint:disable file_length type_body_length function_parameter_count
 
 // ==============================================================================
 /// `GenericParser` is a generic implementation of the `Parsec`.
@@ -293,42 +293,34 @@ Parsec {
     public func manyAccumulator<Accumulator: EmptyInitializable>(
         _ accumulator: @escaping (Result, Accumulator) -> Accumulator
     ) -> GenericParser<StreamType, UserState, Accumulator> {
+        // swiftlint:disable:next closure_body_length
         return GenericParser<StreamType, UserState, Accumulator>(parse: { initState in
             var results = Accumulator()
             var newState = initState
-
             var hasConsumed = false
 
             repeat {
                 let consumed = self.parse(newState)
                 switch consumed {
                 case .some(let reply):
-
                     switch reply {
                     case .ok(let result, let state, _):
-
                         results = accumulator(result, results)
                         newState = state
 
                     case .error(let error):
-
                         return .some(.error(error))
                     }
 
                 case .none(let reply):
-
                     switch reply {
                     case .ok:
-
+                        // swiftlint:disable:next line_length
                         let failureMsg = LocalizedString("Combinator 'many' is applied to a parser that accepts an empty string.")
                         assertionFailure(failureMsg)
 
                     case .error(let error):
-
-                        if hasConsumed {
-                            return .some(.ok(results, newState, error))
-                        }
-
+                        if hasConsumed { return .some(.ok(results, newState, error)) }
                         return .none(.ok(results, newState, error))
                     }
                 }
@@ -759,6 +751,7 @@ where StreamType.Iterator.Element: Equatable {
         ) -> SourcePosition,
         tokens: StreamType
     ) -> GenericParser<StreamType, UserState, StreamType> {
+        // swiftlint:disable:next closure_body_length
         return GenericParser(parse: { state in
             let position = state.position
 
