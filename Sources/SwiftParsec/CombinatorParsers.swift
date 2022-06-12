@@ -94,9 +94,9 @@ public extension GenericParser {
 
             self.many >>- { results in
 
-                let rs = results.prepending(result)
+                let allResults = results.prepending(result)
                 return GenericParser<StreamType, UserState, [Result]>(
-                    result: rs
+                    result: allResults
                 )
 
             }
@@ -234,15 +234,15 @@ public extension GenericParser {
     /// - parameter n: The number of occurences of `self` to parse.
     /// - returns: A parser that parses `n` occurrences of `self`.
     func count(
-        _ n: Int
+        _ num: Int
     ) -> GenericParser<StreamType, UserState, [Result]> {
 
         func count(
-            _ n: Int,
+            _ num: Int,
             results: [Result]
         ) -> GenericParser<StreamType, UserState, [Result]> {
 
-            guard n > 0 else {
+            guard num > 0 else {
 
                 return GenericParser<StreamType, UserState, [Result]>(
                     result: results
@@ -252,8 +252,8 @@ public extension GenericParser {
 
             return self >>- { result in
 
-                let rs = results.appending(result)
-                return count(n - 1, results: rs)
+                let allResults = results.appending(result)
+                return count(num - 1, results: allResults)
 
             }
 
@@ -261,7 +261,7 @@ public extension GenericParser {
 
         return GenericParser<StreamType, UserState, [Result]> { state in
 
-            return count(n, results: []).parse(state)
+            return count(num, results: []).parse(state)
 
         }
 

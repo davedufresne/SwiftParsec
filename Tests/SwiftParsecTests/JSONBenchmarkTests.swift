@@ -5,6 +5,7 @@
 // Created by David Dufresne on 2016-07-16.
 // Copyright © 2016 David Dufresne. All rights reserved.
 // ==============================================================================
+// swiftlint:disable force_try
 
 import XCTest
 import SwiftParsec

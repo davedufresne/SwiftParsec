@@ -60,10 +60,10 @@ extension String {
     /// Return a new `String` with `c` adjoined to the end.
     ///
     /// - parameter c: Character to append.
-    func appending(_ c: Character) -> String {
+    func appending(_ character: Character) -> String {
 
         var mutableSelf = self
-        mutableSelf.append(c)
+        mutableSelf.append(character)
 
         return mutableSelf
 

@@ -61,7 +61,7 @@ public struct SourcePosition: Comparable, CustomStringConvertible {
 
         case "\t":
 
-            column = column + 8 - ((column - 1) % 8)
+            column += 8 - ((column - 1) % 8)
 
         default: column += 1
 

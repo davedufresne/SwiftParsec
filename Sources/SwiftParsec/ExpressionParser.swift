@@ -84,9 +84,9 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     /// Returns the position immediately after i.
     ///
     /// - SeeAlso: `IndexableBase` protocol.
-    public func index(after i: OperatorTable.Index) -> OperatorTable.Index {
+    public func index(after index: OperatorTable.Index) -> OperatorTable.Index {
 
-        return table.index(after: i)
+        return table.index(after: index)
 
     }
 
@@ -241,11 +241,11 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
 
         let termParser = prefixParser >>- { pre in
 
-            term >>- { t in
+            term >>- { transform in
 
                 postfixParser >>- { post in
 
-                    GenericParser(result: post(pre(t)))
+                    GenericParser(result: post(pre(transform)))
 
                 }
 
@@ -259,9 +259,9 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
 
             let rightTerm = termParser >>- { rightAssocParser1($0) }
 
-            let apply = rightAssocOp >>- { f in
+            let apply = rightAssocOp >>- { transform in
 
-                rightTerm >>- { right in GenericParser(result: f(left, right)) }
+                rightTerm >>- { right in GenericParser(result: transform(left, right)) }
 
             }
 
@@ -281,11 +281,11 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
             _ left: Result
         ) -> GenericParser<StreamType, UserState, Result> {
 
-            let apply = leftAssocOp >>- { f in
+            let apply = leftAssocOp >>- { transform in
 
                 termParser >>- { right in
 
-                    leftAssocParser1(f(left, right))
+                    leftAssocParser1(transform(left, right))
 
                 }
 
@@ -307,12 +307,12 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
             _ left: Result
         ) -> GenericParser<StreamType, UserState, Result> {
 
-            return nonAssocOp >>- { f in
+            return nonAssocOp >>- { transform in
 
                 termParser >>- { right in
 
                     ambigiousRight <|> ambigiousLeft <|> ambigiousNon <|>
-                        GenericParser(result: f(left, right))
+                        GenericParser(result: transform(left, right))
 
                 }
 
@@ -320,10 +320,12 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
 
         }
 
-        return termParser >>- { t in
+        return termParser >>- { transform in
 
-            rightAssocParser(t) <|> leftAssocParser(t) <|> nonAssocParser(t) <|>
-                GenericParser(result: t) <?> LocalizedString("operator")
+            rightAssocParser(transform) <|>
+            leftAssocParser(transform) <|>
+            nonAssocParser(transform) <|>
+            GenericParser(result: transform) <?> LocalizedString("operator")
 
         }
 
@@ -344,24 +346,24 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
 
             case .none:
 
-                var n = ops.none
-                n.append(parser)
+                var none = ops.none
+                none.append(parser)
 
-                ops.none = n
+                ops.none = none
 
             case .left:
 
-                var l = ops.left
-                l.append(parser)
+                var left = ops.left
+                left.append(parser)
 
-                ops.left = l
+                ops.left = left
 
             case .right:
 
-                var r = ops.right
-                r.append(parser)
+                var right = ops.right
+                right.append(parser)
 
-                ops.right = r
+                ops.right = right
 
             }
 

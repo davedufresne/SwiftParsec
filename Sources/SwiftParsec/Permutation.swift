@@ -66,9 +66,9 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     /// Returns the position immediately after i.
     ///
     /// - SeeAlso: `IndexableBase` protocol.
-    public func index(after i: Permutation.Index) -> Permutation.Index {
+    public func index(after index: Permutation.Index) -> Permutation.Index {
 
-        return parsers.index(after: i)
+        return parsers.index(after: index)
 
     }
 
@@ -126,22 +126,22 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
                 var elems = elements
                 elems.remove(at: index)
 
-                let p: PermParser
+                let permParser: PermParser
                 if elems.count > 1 {
 
-                    p = separator *> self.permute(elems, separator: separator)
+                    permParser = separator *> self.permute(elems, separator: separator)
 
                 } else {
 
                     let elem = elems[0]
-                    p = self.emptyParser(
+                    permParser = self.emptyParser(
                         separator *> elem.parser,
                         otherwise: elem.otherwise
                     )
 
                 }
 
-                return p >>- { results in
+                return permParser >>- { results in
 
                     var rs = results
                     rs.insert(contentsOf: result, at: index)

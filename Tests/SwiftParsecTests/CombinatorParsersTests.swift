@@ -5,6 +5,7 @@
 // Created by David Dufresne on 2015-09-26.
 // Copyright © 2015 David Dufresne. All rights reserved.
 // ==============================================================================
+// swiftlint:disable function_body_length file_length type_body_length
 
 import XCTest
 import func Foundation.pow
@@ -1048,11 +1049,11 @@ class CombinatorParsersTests: XCTestCase {
 
             func opParser(_ left: Int) -> GenericParser<String, (), Int> {
 
-                return operators >>- { f in
+                return operators >>- { transform in
 
                     expression >>- { right in
 
-                        opParser1(f(left, right))
+                        opParser1(transform(left, right))
 
                     }
 

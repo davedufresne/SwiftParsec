@@ -5,6 +5,7 @@
 // Created by David Dufresne on 2015-09-17.
 // Copyright © 2015 David Dufresne. All rights reserved.
 // ==============================================================================
+// swiftlint:disable type_body_length
 
 import XCTest
 @testable import SwiftParsec

@@ -9,6 +9,7 @@
 // the `TokenParser` structure for a description of how to use it.
 // Operator implementations for the `Message` type.
 // ==============================================================================
+// swiftlint:disable file_length
 
 import func Foundation.pow
 
@@ -260,8 +261,8 @@ extension TokenParser {
 
             langDef.identifierLetter(char).many >>- { chars in
 
-                let cs = chars.prepending(char)
-                return GenericParser(result: String(cs))
+                let allChars = chars.prepending(char)
+                return GenericParser(result: String(allChars))
 
             }
 
@@ -270,21 +271,21 @@ extension TokenParser {
         let identCheck: StrParser = ident >>- { name in
 
             let reservedNames: Set<String>
-            let n: String
+            let identifierName: String
 
             if langDef.isCaseSensitive {
 
                 reservedNames = langDef.reservedNames
-                n = name
+                identifierName = name
 
             } else {
 
                 reservedNames = langDef.reservedNames.map { $0.lowercased() }
-                n = name.lowercased()
+                identifierName = name.lowercased()
 
             }
 
-            guard !reservedNames.contains(n) else {
+            guard !reservedNames.contains(identifierName) else {
 
                 let reservedWordMsg = LocalizedString("reserved word ")
                 return GenericParser.unexpected(reservedWordMsg + name)
@@ -451,9 +452,9 @@ extension TokenParser {
 
             str.reduce("") { (acc, char) in
 
-                guard let c = char else { return acc }
+                guard let char = char else { return acc }
 
-                return acc.appending(c)
+                return acc.appending(char)
 
             }
 
@@ -483,11 +484,11 @@ extension TokenParser {
     /// 'decimal', 'hexadecimal' or 'octal'.
     public var integer: GenericParser<String, UserState, Int> {
 
-        let int = lexeme(GenericTokenParser.sign()) >>- { f in
+        let int = lexeme(GenericTokenParser.sign()) >>- { transform in
 
             GenericTokenParser.naturalNumber >>- {
 
-                GenericParser(result: f($0))
+                GenericParser(result: transform($0))
 
             }
 
@@ -538,11 +539,11 @@ extension TokenParser {
 
         let intPart = GenericTokenParser<UserState>.doubleIntegerPart
         let expPart = GenericTokenParser<UserState>.fractionalExponent
-        let f = intPart >>- { expPart($0) }
+        let combinator = intPart >>- { expPart($0) }
 
         let double = lexeme(GenericTokenParser.sign()) >>- { sign in
 
-            f >>- { GenericParser(result: sign($0)) }
+            combinator >>- { GenericParser(result: sign($0)) }
 
         }
 
@@ -960,9 +961,9 @@ extension TokenParser {
             GenericParser.character("_") *> GenericParser(result: "\u{001F}"))
     }
 
-    static func characterFromInt(_ v: Int) -> CharacterParser {
+    static func characterFromInt(_ value: Int) -> CharacterParser {
 
-        guard let us = UnicodeScalar.fromInt(v) else {
+        guard let scalar = UnicodeScalar.fromInt(value) else {
 
             let outsideMsg = LocalizedString(
                 "value outside of Unicode codespace"
@@ -971,7 +972,7 @@ extension TokenParser {
 
         }
 
-        return GenericParser(result: Character(us))
+        return GenericParser(result: Character(scalar))
 
     }
 
@@ -1010,9 +1011,9 @@ extension TokenParser {
 
         return parser.many1 >>- { digits in
 
-            let double = digits.reduce(0.0) { acc, d in
+            let double = digits.reduce(0.0) { acc, digit in
 
-                baseDouble * acc + Double(Int(String(d), radix: base)!)
+                baseDouble * acc + Double(Int(String(digit), radix: base)!)
 
             }
 
@@ -1113,17 +1114,17 @@ extension TokenParser {
             guard !string.isEmpty else { return unit }
 
             var str = string
-            let c = str.remove(at: str.startIndex)
+            let char = str.remove(at: str.startIndex)
 
             let charParser: VoidParser
-            if c.isAlpha {
+            if char.isAlpha {
 
-                charParser = (GenericParser.character(c.lowercase) <|>
-                    GenericParser.character(c.uppercase)) *> unit
+                charParser = (GenericParser.character(char.lowercase) <|>
+                    GenericParser.character(char.uppercase)) *> unit
 
             } else {
 
-                charParser = GenericParser.character(c) *> unit
+                charParser = GenericParser.character(char) *> unit
 
             }
 

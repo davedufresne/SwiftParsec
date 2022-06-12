@@ -24,35 +24,35 @@ extension UnicodeScalar {
     /// - parameter v: Unicode code point.
     /// - returns: A `UnicodeScalar` with value `v` or nil if the value is
     ///   outside of Unicode codespace or a surrogate pair code point.
-    static func fromInt(_ v: Int) -> UnicodeScalar? {
+    static func fromInt(_ value: Int) -> UnicodeScalar? {
 
-        guard v >= min && v <= max else { return nil }
+        guard value >= min && value <= max else { return nil }
 
-        guard !isSurrogatePair(v) else { return nil }
+        guard !isSurrogatePair(value) else { return nil }
 
-        return UnicodeScalar(v)
+        return UnicodeScalar(value)
 
     }
 
-    /// Return a `UnicodeScalar` with value `v` or nil if the value is outside
+    /// Return a `UnicodeScalar` with value `value` or nil if the value is outside
     /// of Unicode codespace.
     ///
-    /// - parameter v: Unicode code point.
-    /// - returns: A `UnicodeScalar` with value `v` or nil if the value is
+    /// - parameter value: Unicode code point.
+    /// - returns: A `UnicodeScalar` with value `value` or nil if the value is
     ///   outside of Unicode codespace.
-    static func fromUInt32(_ v: UInt32) -> UnicodeScalar? {
+    static func fromUInt32(_ value: UInt32) -> UnicodeScalar? {
 
-        guard v >= UInt32(min) && v <= UInt32(max) else { return nil }
+        guard value >= UInt32(min) && value <= UInt32(max) else { return nil }
 
-        guard !isSurrogatePair(v) else { return nil }
+        guard !isSurrogatePair(value) else { return nil }
 
-        return UnicodeScalar(v)
+        return UnicodeScalar(value)
 
     }
 
-    private static func isSurrogatePair<T: BinaryInteger>(_ v: T) -> Bool {
+    private static func isSurrogatePair<T: BinaryInteger>(_ value: T) -> Bool {
 
-        return v >= 0xD800 && v <= 0xDFFF
+        return value >= 0xD800 && value <= 0xDFFF
 
     }
 

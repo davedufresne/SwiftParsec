@@ -30,6 +30,7 @@ public struct Configuration {
 ///
 /// - parameters:
 ///   - key: The key for a string in the default table.
+// swiftlint:disable:next identifier_name
 func LocalizedString(_ key: String) -> String {
 
     return Configuration.localizeString(key)

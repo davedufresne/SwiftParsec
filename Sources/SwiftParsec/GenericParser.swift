@@ -1,5 +1,5 @@
 // ==============================================================================
-// Primitive.swift
+// GenericParser.swift
 // SwiftParsec
 //
 // Created by David Dufresne on 2015-09-04.
@@ -7,6 +7,7 @@
 //
 // The primitive parser combinators.
 // ==============================================================================
+// swiftlint:disable file_length
 
 // ==============================================================================
 /// `GenericParser` is a generic implementation of the `Parsec`.
@@ -91,7 +92,7 @@ Parsec {
         _ parser: GenericParser<StreamType, UserState, (Result) -> T>
     ) -> GenericParser<StreamType, UserState, T> {
 
-        return parser >>- { f in self.map(f) }
+        return parser >>- { transform in self.map(transform) }
 
     }
 
