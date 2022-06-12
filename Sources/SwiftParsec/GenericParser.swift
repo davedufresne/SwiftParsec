@@ -15,19 +15,14 @@
 /// - requires: StreamType.Iterator has to be a value type.
 public final class GenericParser<StreamType: Stream, UserState, Result>:
 Parsec {
-
     /// Create a parser containing the injected result.
     ///
     /// - parameter result: The result to inject into the parser.
     public init(result: Result) {
-
         parse = { state in
-
             .none(.ok(result, state,
                       ParseError.unknownParseError(state.position)))
-
         }
-
     }
 
     /// Create a parser containing a function that return a parser. Used to
@@ -35,13 +30,9 @@ Parsec {
     ///
     /// - parameter function: The function to execute when the parser is run.
     public init(function: @escaping () -> GenericParser) {
-
         parse = { state in
-
             return function().parse(state)
-
         }
-
     }
 
     /// Create an instance with the given parse function.
@@ -50,9 +41,7 @@ Parsec {
             ParserState<StreamType.Iterator, UserState>
         ) -> Consumed<StreamType, UserState, Result>
     ) {
-
         self.parse = parse
-
     }
 
     /// The function executed when the parser is run.
@@ -71,14 +60,10 @@ Parsec {
     public func map<T>(
         _ transform: @escaping (Result) -> T
     ) -> GenericParser<StreamType, UserState, T> {
-
         return GenericParser<StreamType, UserState, T>(parse: { state in
-
             let consumed = self.parse(state)
             return consumed.map(transform)
-
         })
-
     }
 
     /// Return a parser by applying the function contained in the supplied
@@ -91,9 +76,7 @@ Parsec {
     public func apply<T>(
         _ parser: GenericParser<StreamType, UserState, (Result) -> T>
     ) -> GenericParser<StreamType, UserState, T> {
-
         return parser >>- { transform in self.map(transform) }
-
     }
 
     /// This combinator implements choice. The parser `p.alternative(q)` first
@@ -110,30 +93,22 @@ Parsec {
     /// - returns: A parser that will first try `self`. If it consumed no input,
     ///   it will try `altParser`.
     public func alternative(_ altParser: GenericParser) -> GenericParser {
-
         return GenericParser(parse: { state in
-
             let consumed = self.parse(state)
             guard case .none(let reply) = consumed,
                 case .error(let error) = reply else {
-
                 return consumed
-
             }
 
             let altConsumed = altParser.parse(state)
             switch altConsumed {
-
             case .some: return altConsumed
 
             case .none(let reply):
 
                 return .none(reply.mergeParseError(error))
-
             }
-
         })
-
     }
 
     /// Return a parser containing the result of mapping transform over `self`.
@@ -147,7 +122,6 @@ Parsec {
             Result
         ) -> GenericParser<StreamType, UserState, T>
     ) -> GenericParser<StreamType, UserState, T> {
-
         func runRightParser(
             _ constructor: (
                 ParserReply<StreamType, UserState, T>
@@ -156,12 +130,10 @@ Parsec {
             state: ParserState<StreamType.Iterator, UserState>,
             error: ParseError
         ) -> Consumed<StreamType, UserState, T> {
-
             let parser = transform(result)
 
             let consumed = parser.parse(state)
             switch consumed {
-
             // If parser consumes, return the result right away.
             case .some: return consumed
 
@@ -179,9 +151,7 @@ Parsec {
                 // consume we return that it failed while not consuming any
                 // input.
                 return constructor(reply.mergeParseError(error))
-
             }
-
         }
 
         func consumed(
@@ -190,9 +160,7 @@ Parsec {
             ) -> Consumed<StreamType, UserState, T>,
             reply: ParserReply<StreamType, UserState, Result>
         ) -> Consumed<StreamType, UserState, T> {
-
             switch reply {
-
             case .ok(let result, let state, let error):
 
                 return runRightParser(constructor, result: result, state: state,
@@ -201,15 +169,11 @@ Parsec {
             case .error(let error):
 
                 return constructor(.error(error))
-
             }
-
         }
 
         return GenericParser<StreamType, UserState, T>(parse: { state in
-
             switch self.parse(state) {
-
             case .some(let reply):
 
                 return consumed(Consumed.some, reply: reply)
@@ -217,11 +181,8 @@ Parsec {
             case .none(let reply):
 
                 return consumed(Consumed.none, reply: reply)
-
             }
-
         })
-
     }
 
     /// This combinator is used whenever arbitrary look ahead is needed. Since
@@ -255,20 +216,14 @@ Parsec {
     /// - returns: A parser that pretends that it hasn't consumed any input when
     ///   `self` fails.
     public var attempt: GenericParser {
-
         return GenericParser(parse: { state in
-
             let consumed = self.parse(state)
             if case .some(let reply) = consumed, case .error = reply {
-
                 return .none(reply)
-
             }
 
             return consumed
-
         })
-
     }
 
     /// A combinator that parses without consuming any input.
@@ -278,27 +233,21 @@ Parsec {
     ///
     /// - returns: A parser that parses without consuming any input.
     public var lookAhead: GenericParser {
-
         return GenericParser(parse: { state in
-
             let consumed = self.parse(state)
 
             if case .some(let reply) = consumed,
             case .ok(let result, _, _) = reply {
-
                 return .none(
                     .ok(result,
                         state,
                         ParseError.unknownParseError(state.position)
                     )
                 )
-
             }
 
             return consumed
-
         })
-
     }
 
     /// The `many` combinator applies the parser `self` _zero_ or more times. It
@@ -315,13 +264,9 @@ Parsec {
     ///
     ///     }
     public var many: GenericParser<StreamType, UserState, [Result]> {
-
         return manyAccumulator { (result, results) in
-
             return results.appending(result)
-
         }
-
     }
 
     /// The `skipMany` combinator applies the parser `self` _zero_ or more
@@ -331,10 +276,8 @@ Parsec {
     ///
     /// - returns: An parser with an empty result.
     public var skipMany: GenericParser<StreamType, UserState, ()> {
-
         let manyAcc = manyAccumulator { (_, accum: [Result]) in accum }
         return manyAcc.map { _ in () }
-
     }
 
     /// This combinator applies `self` _zero_ or more times. It returns an
@@ -350,23 +293,18 @@ Parsec {
     public func manyAccumulator<Accumulator: EmptyInitializable>(
         _ accumulator: @escaping (Result, Accumulator) -> Accumulator
     ) -> GenericParser<StreamType, UserState, Accumulator> {
-
         return GenericParser<StreamType, UserState, Accumulator>(parse: { initState in
-
             var results = Accumulator()
             var newState = initState
 
             var hasConsumed = false
 
             repeat {
-
                 let consumed = self.parse(newState)
                 switch consumed {
-
                 case .some(let reply):
 
                     switch reply {
-
                     case .ok(let result, let state, _):
 
                         results = accumulator(result, results)
@@ -375,13 +313,11 @@ Parsec {
                     case .error(let error):
 
                         return .some(.error(error))
-
                     }
 
                 case .none(let reply):
 
                     switch reply {
-
                     case .ok:
 
                         let failureMsg = LocalizedString("Combinator 'many' is applied to a parser that accepts an empty string.")
@@ -390,35 +326,25 @@ Parsec {
                     case .error(let error):
 
                         if hasConsumed {
-
                             return .some(.ok(results, newState, error))
-
                         }
 
                         return .none(.ok(results, newState, error))
-
                     }
-
                 }
 
                 hasConsumed = true
-
             } while true // Loop while the parser consumes.
 
         })
-
     }
 
     /// A parser that always fails without consuming any input.
     public static var empty: GenericParser {
-
         return GenericParser(parse: { state in
-
             let position = state.position
             return .none(.error(ParseError.unknownParseError(position)))
-
         })
-
     }
 
     /// The parser returned by `p.labels(message)` behaves as parser `p`, but
@@ -438,24 +364,18 @@ Parsec {
     /// - parameter message: The new error message.
     /// - returns: A parser with a replaced error message.
     public func labels(_ messages: String...) -> GenericParser {
-
         return GenericParser(parse: { state in
-
             let consumed = self.parse(state)
             switch consumed {
-
             case .some: return consumed
 
             case .none(let reply):
 
                 switch reply {
-
                 case .ok(let result, let state, var error):
 
                     if !error.isUnknown {
-
                         error.insertLabelsAsExpected(messages)
-
                     }
 
                     return .none(.ok(result, state, error))
@@ -464,13 +384,9 @@ Parsec {
 
                     error.insertLabelsAsExpected(messages)
                     return .none(.error(error))
-
                 }
-
             }
-
         })
-
     }
 
     /// Return a parser that always fails with an unexpected error message
@@ -487,9 +403,7 @@ Parsec {
     /// - SeeAlso: `GenericParser.noOccurence`,
     ///   `GenericParser.fail(message: String)` and `<?>`
     public static func unexpected(_ message: String) -> GenericParser {
-
         return GenericParser { state in
-
             .none(
                 .error(
                     ParseError(
@@ -498,9 +412,7 @@ Parsec {
                     )
                 )
             )
-
         }
-
     }
 
     /// Return a parser that always fail with the supplied message.
@@ -508,9 +420,7 @@ Parsec {
     /// - parameter message: The failure message.
     /// - returns: A parser that always fail.
     public static func fail(_ message: String) -> GenericParser {
-
         return GenericParser(parse: { state in
-
             let position = state.position
             let error = ParseError(
                 position: position,
@@ -518,9 +428,7 @@ Parsec {
             )
 
             return .none(.error(error))
-
         })
-
     }
 
     /// Return the current source position.
@@ -529,14 +437,10 @@ Parsec {
     /// - SeeAlso 'SourcePosition'.
     public static var
     sourcePosition: GenericParser<StreamType, UserState, SourcePosition> {
-
         return GenericParser<StreamType, UserState, SourcePosition>(parse: { state in
-
             return .none(.ok(state.position, state,
                              ParseError.unknownParseError(state.position)))
-
         })
-
     }
 
     /// Return a parser that applies the result of the supplied parsers to the
@@ -555,18 +459,12 @@ Parsec {
         parser1: GenericParser<StreamType, UserState, Param1>,
         parser2: GenericParser<StreamType, UserState, Param2>
     ) -> GenericParser {
-
         return parser1 >>- { result1 in
-
             parser2 >>- { result2 in
-
                 let combinedResult = function(result1, result2)
                 return GenericParser(result: combinedResult)
-
             }
-
         }
-
     }
 
     /// Return a parser that applies the result of the supplied parsers to the
@@ -588,22 +486,14 @@ Parsec {
         parser2: GenericParser<StreamType, UserState, Param2>,
         parser3: GenericParser<StreamType, UserState, Param3>
     ) -> GenericParser {
-
         return parser1 >>- { result1 in
-
             parser2 >>- { result2 in
-
                 parser3 >>- { result3 in
-
                     let combinedResult = function(result1, result2, result3)
                     return GenericParser(result: combinedResult)
-
                 }
-
             }
-
         }
-
     }
 
     /// Return a parser that applies the result of the supplied parsers to the
@@ -628,15 +518,10 @@ Parsec {
         parser3: GenericParser<StreamType, UserState, Param3>,
         parser4: GenericParser<StreamType, UserState, Param4>
     ) -> GenericParser {
-
         return parser1 >>- { result1 in
-
             parser2 >>- { result2 in
-
                 parser3 >>- { result3 in
-
                     parser4 >>- { result4 in
-
                         let combinedResult = function(
                             result1,
                             result2,
@@ -644,15 +529,10 @@ Parsec {
                             result4
                         )
                         return GenericParser(result: combinedResult)
-
                     }
-
                 }
-
             }
-
         }
-
     }
 
     /// Return a parser that applies the result of the supplied parsers to the
@@ -680,17 +560,11 @@ Parsec {
         parser4: GenericParser<StreamType, UserState, Param4>,
         parser5: GenericParser<StreamType, UserState, Param5>
     ) -> GenericParser {
-
         return parser1 >>- { result1 in
-
             parser2 >>- { result2 in
-
                 parser3 >>- { result3 in
-
                     parser4 >>- { result4 in
-
                         parser5 >>- { result5 in
-
                             let combinedResult = function(
                                 result1,
                                 result2,
@@ -699,17 +573,11 @@ Parsec {
                                 result5
                             )
                             return GenericParser(result: combinedResult)
-
                         }
-
                     }
-
                 }
-
             }
-
         }
-
     }
 
     /// Return the user state.
@@ -717,14 +585,10 @@ Parsec {
     /// - returns: The user state
     static public var
     userState: GenericParser<StreamType, UserState, UserState> {
-
         return GenericParser<StreamType, UserState, UserState>(parse: { state in
-
             return .none(.ok(state.userState, state,
                              ParseError.unknownParseError(state.position)))
-
         })
-
     }
 
     /// The `updateUserState` method applies the function `update` to the user
@@ -740,9 +604,7 @@ Parsec {
     public static func updateUserState(
         _ update: @escaping (UserState) -> UserState
     ) -> GenericParser<StreamType, UserState, ()> {
-
         return GenericParser<StreamType, UserState, ()>(parse: { parserState in
-
             let userState = update(parserState.userState)
 
             var state = parserState
@@ -751,9 +613,7 @@ Parsec {
             let position = state.position
 
             return .none(.ok((), state, ParseError.unknownParseError(position)))
-
         })
-
     }
 
     /// Run the parser and return the result of the parsing if it succeeded.
@@ -771,7 +631,6 @@ Parsec {
         sourceName: String,
         input: StreamType
     ) -> Either<ParseError, Result> {
-
         let position = SourcePosition(name: sourceName, line: 1, column: 1)
         let state = ParserState(
             input: input.makeIterator(),
@@ -781,7 +640,6 @@ Parsec {
 
         let reply = parse(state).parserReply
         switch reply {
-
         case .ok(let result, _, _):
 
             return .right(result)
@@ -789,17 +647,13 @@ Parsec {
         case .error(let error):
 
             return .left(error)
-
         }
-
     }
-
 }
 
 // ==============================================================================
 // Parsec extension
 public extension Parsec {
-
     // TODO: Move this function into the `Parsec` protocol extension when Swift
     // will allow to add requirements to `associatedtype` type constraint
     // (Ex.: `associatedtype StreamType: CollectionType
@@ -851,28 +705,22 @@ public extension Parsec {
         ) -> SourcePosition,
         match: @escaping (StreamType.Iterator.Element) -> Result?
     ) -> GenericParser<StreamType, UserState, Result> {
-
         return GenericParser(parse: { state in
-
             var input = state.input
             let position = state.position
 
             guard let tok = input.next() else {
-
                 let error =
                     ParseError.unexpectedParseError(position, message: "")
                 return .none(.error(error))
-
             }
 
             guard let result = match(tok) else {
-
                 let error = ParseError.unexpectedParseError(
                     position,
                     message: tokenDescription(tok)
                 )
                 return .none(.error(error))
-
             }
 
             let newPosition = nextPosition(position, tok)
@@ -884,18 +732,14 @@ public extension Parsec {
             let unknownError = ParseError.unknownParseError(newPosition)
 
             return .some(.ok(result, newState, unknownError))
-
         })
-
     }
-
 }
 
 // ==============================================================================
 // Parsec extension where the elements are `Equatable`
 public extension Parsec
 where StreamType.Iterator.Element: Equatable {
-
     // TODO: Move this function into the `Parsec` protocol extension when Swift
     // will allow to add requirements to `associatedtype` type constraint
     // (Ex.: `associatedtype StreamType: CollectionType where
@@ -915,19 +759,15 @@ where StreamType.Iterator.Element: Equatable {
         ) -> SourcePosition,
         tokens: StreamType
     ) -> GenericParser<StreamType, UserState, StreamType> {
-
         return GenericParser(parse: { state in
-
             let position = state.position
 
             var tokensIterator = tokens.makeIterator()
             var token = tokensIterator.next()
 
             guard token != nil else {
-
                 let error = ParseError.unknownParseError(position)
                 return .none(.ok([], state, error))
-
             }
 
             var input = state.input
@@ -937,19 +777,15 @@ where StreamType.Iterator.Element: Equatable {
                 Consumed<StreamType, UserState, StreamType>.none
 
             repeat {
-
                 guard let inputToken = input.next() else {
-
                     var eofError =
                         ParseError.unexpectedParseError(position, message: "")
                     eofError.insertMessage(.expected(tokensDescription(tokens)))
 
                     return consumedConstructor(.error(eofError))
-
                 }
 
                 if token! != inputToken {
-
                     let tokDesc = tokensDescription([inputToken])
 
                     var expectedError = ParseError.unexpectedParseError(
@@ -961,18 +797,14 @@ where StreamType.Iterator.Element: Equatable {
                     expectedError.insertMessage(expected)
 
                     return consumedConstructor(.error(expectedError))
-
                 }
 
                 if !hasConsumed {
-
                     hasConsumed = true
                     consumedConstructor = Consumed.some
-
                 }
 
                 token = tokensIterator.next()
-
             } while token != nil
 
             let newPosition = nextPosition(position, tokens)
@@ -984,18 +816,14 @@ where StreamType.Iterator.Element: Equatable {
             let error = ParseError.unknownParseError(newPosition)
 
             return .some(.ok(tokens, newState, error))
-
         })
-
     }
-
 }
 
 // ==============================================================================
 /// The `Consumed` enumeration indicates if a parser consumed some or none from
 /// an input.
 enum Consumed<StreamType: Stream, UserState, Result> {
-
     /// Indicates that some of the input was consumed.
     case some(ParserReply<StreamType, UserState, Result>)
 
@@ -1004,15 +832,11 @@ enum Consumed<StreamType: Stream, UserState, Result> {
 
     /// The `ParserReply` either from `.some` or `.none`.
     var parserReply: ParserReply<StreamType, UserState, Result> {
-
         switch self {
-
         case .some(let reply): return reply
 
         case .none(let reply): return reply
-
         }
-
     }
 
     /// Return a `Consumed` enumeration containing the result of mapping
@@ -1024,9 +848,7 @@ enum Consumed<StreamType: Stream, UserState, Result> {
     func map<T>(
         _ transform: (Result) -> T
     ) -> Consumed<StreamType, UserState, T> {
-
         switch self {
-
         case .some(let reply):
 
             return .some(reply.map(transform))
@@ -1035,15 +857,12 @@ enum Consumed<StreamType: Stream, UserState, Result> {
 
             return .none(reply.map(transform))
         }
-
     }
-
 }
 
 // ==============================================================================
 /// The `ParserReply` enumeration indicates the result of a parse.
 enum ParserReply<StreamType: Stream, UserState, Result> {
-
     /// Indicates that the parsing was successfull. It contains a `Result` type,
     /// the `ParserState` and a `ParseError` as associated values.
     case ok(Result, ParserState<StreamType.Iterator, UserState>, ParseError)
@@ -1060,17 +879,13 @@ enum ParserReply<StreamType: Stream, UserState, Result> {
     func map<T>(
         _ transform: (Result) -> T
     ) -> ParserReply<StreamType, UserState, T> {
-
         switch self {
-
         case .ok(let result, let state, let error):
 
             return .ok(transform(result), state, error)
 
         case .error(let error): return .error(error)
-
         }
-
     }
 
     /// Merge the `ParseError` contained by self with the supplied `ParseError`.
@@ -1079,11 +894,9 @@ enum ParserReply<StreamType: Stream, UserState, Result> {
     ///   contained by `self`.
     /// - returns: A new `ParserReply` with the errors merged.
     func mergeParseError(_ otherError: ParseError) -> ParserReply {
-
         var mergedError = otherError
 
         switch self {
-
         case .ok(let parserResult, let parserState, let parserError):
 
             mergedError.merge(parserError)
@@ -1093,17 +906,13 @@ enum ParserReply<StreamType: Stream, UserState, Result> {
 
             mergedError.merge(parserError)
             return .error(mergedError)
-
         }
-
     }
-
 }
 
 // ==============================================================================
 /// ParserState contains the state of the parser and the user state.
 struct ParserState<StreamTypeIterator, UserState> {
-
     /// The input StreamType of the parser.
     var input: StreamTypeIterator
 
@@ -1112,7 +921,6 @@ struct ParserState<StreamTypeIterator, UserState> {
 
     /// The supplied user state.
     var userState: UserState
-
 }
 
 // ==============================================================================
@@ -1128,9 +936,7 @@ public func <^><StreamType, UserState, Result, T>(
     transform: @escaping (Result) -> T,
     parser: GenericParser<StreamType, UserState, Result>
 ) -> GenericParser<StreamType, UserState, T> {
-
     return parser.map(transform)
-
 }
 
 /// Infix operator for `apply`. It has the same precedence as the equality
@@ -1145,9 +951,7 @@ public func<*><StreamType, UserState, Result, T>(
     leftParser: GenericParser<StreamType, UserState, (Result) -> T>,
     rightParser: GenericParser<StreamType, UserState, Result>
 ) -> GenericParser<StreamType, UserState, T> {
-
     return rightParser.apply(leftParser)
-
 }
 
 /// Sequence parsing, discarding the value of the first parser. It has the same
@@ -1161,12 +965,10 @@ public func *><StreamType, UserState, Param1, Param2>(
     leftParser: GenericParser<StreamType, UserState, Param1>,
     rightParser: GenericParser<StreamType, UserState, Param2>
 ) -> GenericParser<StreamType, UserState, Param2> {
-
     return GenericParser.lift2({ $1 },
         parser1: leftParser,
         parser2: rightParser
     )
-
 }
 
 /// Sequence parsing, discarding the value of the second parser. It has the same
@@ -1180,12 +982,10 @@ public func <*<StreamType, UserState, Param1, Param2>(
     leftParser: GenericParser<StreamType, UserState, Param1>,
     rightParser: GenericParser<StreamType, UserState, Param2>
 ) -> GenericParser<StreamType, UserState, Param1> {
-
     return GenericParser.lift2({ p0, _ in p0 },
         parser1: leftParser,
         parser2: rightParser
     )
-
 }
 
 /// Infix operator for `flatMap` named _bind_. It has the same precedence as the
@@ -1198,7 +998,5 @@ public func >>-<StreamType, UserState, Result, T>(
     parser: GenericParser<StreamType, UserState, Result>,
     transform: @escaping (Result) -> GenericParser<StreamType, UserState, T>
 ) -> GenericParser<StreamType, UserState, T> {
-
     return parser.flatMap(transform)
-
 }

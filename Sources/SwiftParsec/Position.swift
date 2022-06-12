@@ -14,7 +14,6 @@
 /// is 1, 1. It implements the `Comparable` and `CustomStringConvertible`
 /// protocols. The comparison is made using line and column number.
 public struct SourcePosition: Comparable, CustomStringConvertible {
-
     /// The name of the source (i.e. file name)
     public var name: String
 
@@ -26,20 +25,16 @@ public struct SourcePosition: Comparable, CustomStringConvertible {
 
     /// A textual representation of `self`.
     public var description: String {
-
         let lineMsg = LocalizedString("line")
         let columnMsg = LocalizedString("column")
 
         var desc = "(" + lineMsg + " \(line), " + columnMsg + " \(column))"
 
         if !name.isEmpty {
-
             desc = "\"\(name)\" " + desc
-
         }
 
         return desc
-
     }
 
     /// Update a source position given a character. If the character is a
@@ -51,9 +46,7 @@ public struct SourcePosition: Comparable, CustomStringConvertible {
     /// - parameter char: The tested character indicating how to update the
     ///   position.
     mutating func updatePosition(_ char: Character) {
-
         switch char {
-
         case "\n":
 
             line += 1
@@ -64,11 +57,8 @@ public struct SourcePosition: Comparable, CustomStringConvertible {
             column += 8 - ((column - 1) % 8)
 
         default: column += 1
-
         }
-
     }
-
 }
 
 // ==============================================================================
@@ -76,24 +66,16 @@ public struct SourcePosition: Comparable, CustomStringConvertible {
 
 /// Equality based on the line and column number.
 public func == (leftPos: SourcePosition, rightPos: SourcePosition) -> Bool {
-
     return leftPos.line == rightPos.line && leftPos.column == rightPos.column
-
 }
 
 /// Comparison based on the line and column number.
 public func < (leftPos: SourcePosition, rightPos: SourcePosition) -> Bool {
-
     if leftPos.line < rightPos.line {
-
         return true
-
     } else if leftPos.line == rightPos.line {
-
         if leftPos.column < rightPos.column { return true }
-
     }
 
     return false
-
 }

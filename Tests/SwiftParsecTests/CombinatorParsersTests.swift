@@ -12,9 +12,7 @@ import func Foundation.pow
 @testable import SwiftParsec
 
 class CombinatorParsersTests: XCTestCase {
-
     func testChoice() {
-
         let digit = StringParser.digit
         let letter = StringParser.letter
         let space = StringParser.space
@@ -28,7 +26,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.choice should succeed."
 
         testStringParserSuccess(choice, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -38,7 +35,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -46,7 +42,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.choice should fail."
 
         testStringParserFailure(choice, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -54,13 +49,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testOtherwise() {
-
         let otherwiseDigit: Character = "0"
         let digit = StringParser.digit.otherwise(otherwiseDigit)
 
@@ -70,7 +62,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.otherwise should succeed."
 
         testStringParserSuccess(digit, inputs: matchingDigit) { input, result in
-
             let isMatch = input.hasPrefix(String(result)) ||
                 result == otherwiseDigit
             XCTAssert(
@@ -81,7 +72,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         let otherwiseString = "xyz"
@@ -90,7 +80,6 @@ class CombinatorParsersTests: XCTestCase {
         let matchingString = ["abc", "123"]
 
         testStringParserSuccess(string, inputs: matchingString) { input, result in
-
             let isMatch = input.hasPrefix(result) || result == otherwiseString
             XCTAssert(
                 isMatch,
@@ -100,7 +89,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -108,7 +96,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.otherwise should fail."
 
         testStringParserFailure(string, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -116,13 +103,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testOptional() {
-
         let optionalDigit = StringParser.digit.optional
 
         // Test for success.
@@ -131,7 +115,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.optional should succeed."
 
         testStringParserSuccess(optionalDigit, inputs: matchingDigit) { input, result in
-
             let isMatch = result == nil || input.hasPrefix(String(result!))
             XCTAssert(
                 isMatch,
@@ -141,7 +124,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         let optionalString = StringParser.string("abc").optional
@@ -149,7 +131,6 @@ class CombinatorParsersTests: XCTestCase {
         let matchingString = ["abc", "123"]
 
         testStringParserSuccess(optionalString, inputs: matchingString) { input, result in
-
             let isMatch = result == nil || input.hasPrefix(result!)
             XCTAssert(
                 isMatch,
@@ -159,7 +140,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -167,7 +147,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.optional should fail."
 
         testStringParserFailure(optionalString, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -175,13 +154,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testDiscard() {
-
         // Test for success.
         let discardDigit = StringParser.digit.discard
         let matchingDigit = ["1a", "2b", "3c"]
@@ -196,7 +172,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.discard should fail."
 
         testStringParserFailure(discardString, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -204,13 +179,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testBetween() {
-
         let digitOpening = StringParser.character("(")
         let digitClosing = StringParser.character(")")
         let digit = StringParser.digit.between(digitOpening, digitClosing)
@@ -221,7 +193,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.between should succeed."
 
         testStringParserSuccess(digit, inputs: matchingDigit) { inputStr, result in
-
             let input = inputStr.dropFirst()
 
             let isMatch = input.hasPrefix(String(result))
@@ -233,7 +204,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         let stringOpening = StringParser.string("{[(")
@@ -244,7 +214,6 @@ class CombinatorParsersTests: XCTestCase {
         let matchingString = ["{[(abc)]}", "{[(abc)]}abc"]
 
         testStringParserSuccess(string, inputs: matchingString) { inputStr, result in
-
             let startIndex = inputStr.startIndex
 
             var input = inputStr
@@ -261,7 +230,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -269,7 +237,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.between should fail."
 
         testStringParserFailure(string, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -277,13 +244,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testSkipMany1() {
-
         let skipMany1 = StringParser.string("asdf").skipMany1
 
         // Test for success.
@@ -296,7 +260,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.skipMany1 should fail."
 
         testStringParserFailure(skipMany1, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -304,13 +267,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testMany1() {
-
         let manyString = StringParser.string("asdf").many1
 
         // Test for success.
@@ -318,7 +278,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.many1 should succeed."
 
         testStringParserSuccess(manyString, inputs: matching) { input, result in
-
             let isMatch = input == result.joined(separator: "")
             XCTAssert(
                 isMatch,
@@ -328,7 +287,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -336,7 +294,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.many1 should fail."
 
         testStringParserFailure(manyString, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -344,13 +301,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testSeparatedBy() {
-
         let separator: Character = ","
 
         let comma = StringParser.character(separator)
@@ -365,7 +319,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.separatedBy should succeed."
 
         testStringParserSuccess(commaSeparated, inputs: matching) { input, result in
-
             let isMatch = result.isEmpty ||
                 result == input.components(separatedBy: String(separator))
             XCTAssert(
@@ -376,7 +329,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -384,7 +336,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.separatedBy should fail."
 
         testStringParserFailure(commaSeparated, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -392,13 +343,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testSeparatedBy1() {
-
         let separator: Character = ","
 
         let comma = StringParser.character(separator)
@@ -411,7 +359,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.separatedBy1 should succeed."
 
         testStringParserSuccess(commaSeparated, inputs: matching) { input, result in
-
             let isMatch =
                 result == input.components(separatedBy: String(separator))
             XCTAssert(
@@ -422,7 +369,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -432,7 +378,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.separatedBy1 should fail."
 
         testStringParserFailure(commaSeparated, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -440,13 +385,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testDividedBy() {
-
         let separator: Character = ","
 
         let comma = StringParser.character(separator)
@@ -459,7 +401,6 @@ class CombinatorParsersTests: XCTestCase {
         let endRequired = ["adsf,", "asd,fasdÀf,qeàwr,dÉgéh,"]
 
         testStringParserSuccess(commaSeparated, inputs: endRequired) { input, result in
-
             let sep = String(separator)
             let isMatch = result.isEmpty ||
                 result + [""] == input.components(separatedBy: sep)
@@ -472,7 +413,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // End separator not required
@@ -484,7 +424,6 @@ class CombinatorParsersTests: XCTestCase {
         ]
 
         testStringParserSuccess(commaDivided, inputs: endNotRequired) { input, result in
-
             let sep = String(separator)
             let isEmpty = result.isEmpty
 
@@ -502,7 +441,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -510,7 +448,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.dividedBy should fail."
 
         testStringParserFailure(commaSeparated, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -518,13 +455,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testDividedBy1() {
-
         let separator: Character = ","
 
         let comma = StringParser.character(separator)
@@ -537,7 +471,6 @@ class CombinatorParsersTests: XCTestCase {
         let endRequired = ["adsf,", "asd,fasdÀf,qeàwr,dÉgéh,"]
 
         testStringParserSuccess(commaSeparated, inputs: endRequired) { input, result in
-
             let sep = String(separator)
             let isMatch =
                 result + [""] == input.components(separatedBy: sep)
@@ -550,7 +483,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // End separator not required
@@ -562,7 +494,6 @@ class CombinatorParsersTests: XCTestCase {
         ]
 
         testStringParserSuccess(commaDivided, inputs: endNotRequired) { input, result in
-
             let sep = String(separator)
 
             let endNotPresentEqual =
@@ -579,7 +510,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -587,7 +517,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.dividedBy1 should fail."
 
         testStringParserFailure(commaSeparated, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -595,13 +524,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testCount() {
-
         let errorMessage = "GenericParser.count should succeed."
 
         let countNumber = 3
@@ -611,7 +537,6 @@ class CombinatorParsersTests: XCTestCase {
         let matching = ["adsf", "aÉaàa1"]
 
         testStringParserSuccess(letters, inputs: matching) { input, result in
-
             let sameCount = result.count == countNumber
             let joinedResult = result.joined(separator: "")
 
@@ -624,14 +549,12 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         let asdf = StringParser.string("asdf").count(countNumber)
         let matchingAsdf = ["asdfasdfasdf"]
 
         testStringParserSuccess(asdf, inputs: matchingAsdf) { input, result in
-
             let sameCount = result.count == countNumber
             let joinedResult = result.joined(separator: "")
 
@@ -644,7 +567,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -652,7 +574,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.count should fail."
 
         testStringParserFailure(asdf, inputs: notMatchingAsdf) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -660,13 +581,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testChainRight() {
-
         let digits = StringParser.digit.many1.stringValue
         let dot = StringParser.character(".").stringValue
         let decimal = GenericParser.lift2(+, parser1: dot, parser2: digits)
@@ -692,7 +610,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.chainRight should succeed."
 
         testStringParserSuccess(exp, inputs: matching) { input, result in
-
             defer { index += 1 }
             XCTAssertEqual(
                 expectedResult[index],
@@ -703,7 +620,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -711,7 +627,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.chainRight should fail."
 
         testStringParserFailure(exp, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -719,13 +634,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testChainRight1() {
-
         let digits = StringParser.digit.many1.stringValue
         let dot = StringParser.character(".").stringValue
         let decimal = GenericParser.lift2(+, parser1: dot, parser2: digits)
@@ -749,7 +661,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.chainRight1 should succeed."
 
         testStringParserSuccess(exp, inputs: matching) { input, result in
-
             defer { index += 1 }
             XCTAssertEqual(
                 expectedResult[index],
@@ -760,7 +671,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -768,7 +678,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.chainRight1 should fail."
 
         testStringParserFailure(exp, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -776,13 +685,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testChainLeft() {
-
         let addOp: GenericParser<String, (), (Int, Int) -> Int> =
         StringParser.character("+") *> GenericParser(result: +) <|>
             StringParser.character("-") *> GenericParser(result: -)
@@ -800,7 +706,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.chainLeft should succeed."
 
         testStringParserSuccess(add, inputs: matchingAdd) { input, result in
-
             defer { index += 1 }
             XCTAssertEqual(
                 expectedResultAdd[index],
@@ -811,7 +716,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         let mulOp: GenericParser<String, (), (Int, Int) -> Int> =
@@ -826,7 +730,6 @@ class CombinatorParsersTests: XCTestCase {
         index = 0
 
         testStringParserSuccess(mul, inputs: matchingMul) { input, result in
-
             defer { index += 1 }
             XCTAssertEqual(
                 expectedResultMul[index],
@@ -837,7 +740,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -845,7 +747,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.chainLeft should fail."
 
         testStringParserFailure(mul, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -853,13 +754,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testChainLeft1() {
-
         let addOp: GenericParser<String, (), (Int, Int) -> Int> =
         StringParser.character("+") *> GenericParser(result: +) <|>
             StringParser.character("-") *> GenericParser(result: -)
@@ -877,7 +775,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.chainLeft1 should succeed."
 
         testStringParserSuccess(add, inputs: matchingAdd) { input, result in
-
             defer { index += 1 }
             XCTAssertEqual(
                 expectedResultAdd[index],
@@ -888,7 +785,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         let mulOp: GenericParser<String, (), (Int, Int) -> Int> =
@@ -903,7 +799,6 @@ class CombinatorParsersTests: XCTestCase {
         index = 0
 
         testStringParserSuccess(mul, inputs: matchingMul) { input, result in
-
             defer { index += 1 }
             XCTAssertEqual(
                 expectedResultMul[index],
@@ -914,7 +809,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -922,7 +816,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.chainLeft1 should fail."
 
         testStringParserFailure(mulOp, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -930,13 +823,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testNoOccurence() {
-
         let alphaNum = StringParser.alphaNumeric
         let keyworkLet = StringParser.string("let") <* alphaNum.noOccurence
 
@@ -946,7 +836,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.noOccurence should succeed."
 
         testStringParserSuccess(keyworkLet, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(result)
             XCTAssert(
                 isMatch,
@@ -956,7 +845,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -964,7 +852,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.noOccurence should fail."
 
         testStringParserFailure(keyworkLet, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -972,13 +859,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testManyTill() {
-
         let commentStartStr = "<!--"
 
         let anyChar = StringParser.anyCharacter
@@ -996,7 +880,6 @@ class CombinatorParsersTests: XCTestCase {
         let errorMessage = "GenericParser.manyTill should succeed."
 
         testStringParserSuccess(comment, inputs: matching) { inputStr, result in
-
             let startIndex = inputStr.startIndex
 
             var input = inputStr
@@ -1011,7 +894,6 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -1021,7 +903,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.manyTill should fail."
 
         testStringParserFailure(comment, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -1029,13 +910,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testRecursive() {
-
         let openingParen = StringParser.character("(")
         let closingParen = StringParser.character(")")
 
@@ -1046,47 +924,34 @@ class CombinatorParsersTests: XCTestCase {
             StringParser.character("-") *> GenericParser(result: -)
 
         let expression = GenericParser<String, (), Int>.recursive { expression in
-
             func opParser(_ left: Int) -> GenericParser<String, (), Int> {
-
                 return operators >>- { transform in
-
                     expression >>- { right in
-
                         opParser1(transform(left, right))
-
                     }
-
                 }
-
             }
 
             func opParser1(_ right: Int) -> GenericParser<String, (), Int> {
-
                 return opParser(right) <|> GenericParser(result: right)
-
             }
 
             return expression.between(
                 openingParen,
                 closingParen
             ) <|> decimal >>- { term in
-
                 opParser(term) <|> GenericParser(result: term)
-
             }
-
         }
 
         let matching = ["3-(1+2)", "3-(1-(3+1))"]
-        let expected = [3-(1+2), 3-(1-(3+1))]
+        let expected = [3 - (1 + 2), 3 - (1 - (3 + 1))]
 
         var index = 0
 
         let errorMessage = "GenericParser.recursive did not succeed."
 
         testStringParserSuccess(expression, inputs: matching) { input, result in
-
             defer { index += 1 }
             XCTAssertEqual(
                 expected[index],
@@ -1097,13 +962,10 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testEof() {
-
         let eof = StringParser.eof
 
         // Test for success.
@@ -1116,7 +978,6 @@ class CombinatorParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.eof should fail."
 
         testStringParserFailure(eof, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -1124,11 +985,8 @@ class CombinatorParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
-
 }
 
 extension CombinatorParsersTests {

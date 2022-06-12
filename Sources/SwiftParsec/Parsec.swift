@@ -14,7 +14,6 @@
 /// `Parsec` is a parser with stream type `Stream`, user state type `UserState`
 /// and return type `Result`.
 public protocol Parsec {
-
     /// The input stream to parse.
     associatedtype StreamType: Stream
 
@@ -210,7 +209,6 @@ public protocol Parsec {
         sourceName: String,
         input: StreamType
     ) -> Either<ParseError, Result>
-
 }
 
 // ==============================================================================
@@ -275,7 +273,6 @@ infix operator <*> : SequencePrecedence
 infix operator <^> : SequencePrecedence
 
 extension Parsec {
-
     /// Infix operator for `Parsec.labels()`. It has the lowest precedence of the
     /// parsers operators.
     ///
@@ -283,9 +280,7 @@ extension Parsec {
     ///   - parser: The parser whose error message is to be replaced.
     ///   - message: The new error message.
     public static func <?> (parser: Self, message: String) -> Self {
-
         return parser.labels(message)
-
     }
 
     /// Infix operator for `Parsec.alternative`. It has a higher precedence than
@@ -295,17 +290,13 @@ extension Parsec {
     ///   - leftParser: The first parser to try.
     ///   - rightParser: The second parser to try.
     public static func <|> (leftParser: Self, rightParser: Self) -> Self {
-
         return leftParser.alternative(rightParser)
-
     }
-
 }
 
 // ==============================================================================
 // Extension containing useful methods to run a parser.
 public extension Parsec {
-
     /// Run the parser and return the result of the parsing.
     ///
     /// - parameters:
@@ -319,7 +310,6 @@ public extension Parsec {
         sourceName: String,
         input: StreamType
         ) throws -> Result {
-
         let result = runSafe(
             userState: userState,
             sourceName: sourceName,
@@ -327,7 +317,6 @@ public extension Parsec {
         )
 
         switch result {
-
         case .left(let error):
 
             throw error
@@ -335,17 +324,13 @@ public extension Parsec {
         case .right(let result):
 
             return result
-
         }
-
     }
-
 }
 
 // ==============================================================================
 // Extension containing useful methods to run a parser with an empty user state.
 public extension Parsec where UserState == () {
-
     /// Run the parser and return the result of the parsing.
     ///
     /// - parameters:
@@ -355,13 +340,11 @@ public extension Parsec where UserState == () {
     /// - throws: A `ParseError` when an error occurs.
     /// - returns: The result of the parsing.
     func run(sourceName: String, input: StreamType) throws -> Result {
-
         return try run(
             userState: (),
             sourceName: sourceName,
             input: input
         )
-
     }
 
     /// Used for testing parsers. It applies `self` against `input` and prints
@@ -369,25 +352,16 @@ public extension Parsec where UserState == () {
     ///
     /// - parameter input: The input stream to parse.
     func test(input: StreamType) {
-
         do {
-
             let result = try run(sourceName: "", input: input)
             print(result)
-
         } catch let parseError as ParseError {
-
             let parseErrorMsg = LocalizedString("parse error at ")
             print(parseErrorMsg + String(describing: parseError))
-
         } catch let error {
-
             print(String(describing: error))
-
         }
-
     }
-
 }
 
 // ==============================================================================
@@ -398,23 +372,17 @@ public protocol Stream: Collection, ExpressibleByArrayLiteral
 where ArrayLiteralElement == Element {}
 
 extension String: Stream {
-
     /// Create an instance containing `elements`.
     public init(arrayLiteral elements: String.Iterator.Element...) {
-
         self.init(elements)
-
     }
-
 }
 
 // ==============================================================================
 /// Types conforming to the `EmptyInitializable` protocol provide an empty
 /// intializer.
 public protocol EmptyInitializable {
-
     init()
-
 }
 
 // ==============================================================================

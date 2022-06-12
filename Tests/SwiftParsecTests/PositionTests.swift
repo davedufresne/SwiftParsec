@@ -10,9 +10,7 @@ import XCTest
 @testable import SwiftParsec
 
 class PositionTests: XCTestCase {
-
     func testComparable() {
-
         let pos1 = SourcePosition(name: "", line: 1, column: 8)
         let pos2 = SourcePosition(name: "", line: 2, column: 1)
         let pos3 = SourcePosition(name: "", line: 1, column: 4)
@@ -22,11 +20,9 @@ class PositionTests: XCTestCase {
         XCTAssert(pos1 == pos1, "pos1 should be equal to itself.")
         XCTAssert(pos1 > pos3, "pos1 should be greater than pos3.")
         XCTAssertFalse(pos3 > pos1, "pos3 should be smaller than pos1.")
-
     }
 
     func testColumnPosition() {
-
         let str = "1234"
         let expectedColumn = str.count + 1
 
@@ -38,7 +34,6 @@ class PositionTests: XCTestCase {
             "column value equal to \"\(expectedColumn)\"."
 
         testStringParserSuccess(positionParser, inputs: [str]) { input, result in
-
             XCTAssertEqual(
                 expectedColumn,
                 result.column,
@@ -48,13 +43,10 @@ class PositionTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testLineColumnPosition() {
-
         let str = "1\n2\n3"
         let expectedLine = 3
         let expectedColumn = 2
@@ -68,7 +60,6 @@ class PositionTests: XCTestCase {
             "to \"\(expectedLine)\"."
 
         testStringParserSuccess(positionParser, inputs: [str]) { input, result in
-
             let positionEqual = expectedLine == result.line &&
                 expectedColumn == result.column
 
@@ -80,13 +71,10 @@ class PositionTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testTabPosition() {
-
         let str = "1\t3"
         let expectedColumn = 10
 
@@ -98,7 +86,6 @@ class PositionTests: XCTestCase {
             "column value equal to \"\(expectedColumn)\"."
 
         testStringParserSuccess(positionParser, inputs: [str]) { input, result in
-
             XCTAssertEqual(
                 expectedColumn,
                 result.column,
@@ -108,11 +95,8 @@ class PositionTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
-
 }
 
 extension PositionTests {

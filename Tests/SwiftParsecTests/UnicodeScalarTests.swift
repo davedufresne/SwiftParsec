@@ -14,9 +14,7 @@ private let minSurrogatePairValue = 0xD800
 private let maxSurrogatePairValue = 0xDFFF
 
 class UnicodeScalarTests: XCTestCase {
-
     func testFromInt() {
-
         // Test boundary conditions
 
         let aboveMax = UnicodeScalar.fromInt(maxCodePointValue + 1)
@@ -42,11 +40,9 @@ class UnicodeScalarTests: XCTestCase {
             maxSurrogatePair,
             "UnicodeScalar.fromInt should return nil when a surrogate pair."
         )
-
     }
 
     func testFromUInt32() {
-
         // Test boundary conditions
 
         let aboveMax = UnicodeScalar.fromUInt32(UInt32(maxCodePointValue) + 1)
@@ -71,9 +67,7 @@ class UnicodeScalarTests: XCTestCase {
             maxSurrogatePair,
             "UnicodeScalar.fromUInt32 should return nil when a surrogate pair."
         )
-
     }
-
 }
 
 extension UnicodeScalarTests {

@@ -12,7 +12,6 @@ import SwiftParsec
 import class Foundation.Bundle
 
 class JSONBenchmarkTests: XCTestCase {
-
     private typealias JSONStatistics = (
         booleanCount: Int,
         numberCount: Int,
@@ -29,51 +28,42 @@ class JSONBenchmarkTests: XCTestCase {
     // file. The goal is to keep the building part as light as possible to
     // test the parsing speed without too much influence from the building part.
     func testJSONStatisticsParserPerformance() {
-
         let json = LanguageDefinition<JSONStatistics>.json
         let lexer = GenericTokenParser(languageDefinition: json)
         let symbol = lexer.symbol
 
         let jbool = (symbol("true") <|> symbol("false")) *>
         StatisticsParser.updateUserState { statistics in
-
             var stats = statistics
             stats.booleanCount += 1
 
             return stats
-
         }
 
         let stringLiteral = lexer.stringLiteral
 
         let jstring = stringLiteral *>
         StatisticsParser.updateUserState { statistics in
-
             var stats = statistics
             stats.stringCount += 1
 
             return stats
-
         }
 
         let jnumber = (lexer.float.attempt <|> lexer.integerAsFloat) *>
         StatisticsParser.updateUserState { statistics in
-
             var stats = statistics
             stats.numberCount += 1
 
             return stats
-
         }
 
         let jnull = symbol("null") *>
         StatisticsParser.updateUserState { statistics in
-
             var stats = statistics
             stats.nullCount += 1
 
             return stats
-
         }
 
         var jarray: GenericParser<String, JSONStatistics, ()>!
@@ -86,51 +76,38 @@ class JSONBenchmarkTests: XCTestCase {
             let jarrayValues = lexer.commaSeparated(jvalue)
             jarray = lexer.brackets(jarrayValues) *>
             StatisticsParser.updateUserState { statistics in
-
                 var stats = statistics
                 stats.arrayCount += 1
 
                 return stats
-
             }
 
             let nameValue = stringLiteral >>- { name in
-
                 symbol(":") *> jvalue.map { _ in (name, ()) }
-
             }
 
             let dictionary: GenericParser<String, JSONStatistics, [String: ()]> =
             (symbol(",") *> nameValue).manyAccumulator { _, dict in
-
                 return dict
-
             }
 
             let jobjectDict = nameValue >>- { _ in
-
                 dictionary >>- { _ in
-
                     return GenericParser(result: ())
-
                 }
-
             }
 
             let jobjectValues = jobjectDict <|> GenericParser(result: ())
             jobject = lexer.braces(jobjectValues) *>
             StatisticsParser.updateUserState { statistics in
-
                 var stats = statistics
                 stats.objectCount += 1
 
                 return stats
-
             }
 
             return jstring <|> jnumber <|> jbool <|> jnull <|> jarray <|>
                 jobject
-
         }
 
         let jsonParser = lexer.whiteSpace *> (jobject <|> jarray)
@@ -167,7 +144,6 @@ class JSONBenchmarkTests: XCTestCase {
             GenericParser<String, JSONStatistics, JSONStatistics>.userState
         self.measure {
             do {
-
                 let stats = try statisticsParser.run(
                     userState: initialState,
                     sourceName: "",
@@ -175,28 +151,20 @@ class JSONBenchmarkTests: XCTestCase {
                 )
 
                 statistics = stats
-
             } catch let error {
-
                 XCTFail(String(describing: error))
-
             }
-
         }
 
         if let stats = statistics {
-
             XCTAssertEqual(3, stats.booleanCount)
             XCTAssertEqual(1503, stats.numberCount)
             XCTAssertEqual(3015, stats.stringCount)
             XCTAssertEqual(999, stats.arrayCount)
             XCTAssertEqual(1015, stats.objectCount)
             XCTAssertEqual(2, stats.nullCount)
-
         }
-
     }
-
 }
 
 extension JSONBenchmarkTests {

@@ -9,7 +9,6 @@
 // ==============================================================================
 /// Generic implementation of the `TokenParser`.
 public struct GenericTokenParser<UserState>: TokenParser {
-
     /// Language definition parameterizing the lexer.
     public let languageDefinition: LanguageDefinition<UserState>
 
@@ -32,9 +31,6 @@ public struct GenericTokenParser<UserState>: TokenParser {
     /// - parameter languageDefinition: Language definition for the lexical
     ///   parsers.
     public init(languageDefinition: LanguageDefinition<UserState>) {
-
         self.languageDefinition = languageDefinition
-
     }
-
 }

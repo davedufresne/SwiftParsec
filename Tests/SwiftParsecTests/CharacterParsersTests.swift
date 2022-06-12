@@ -11,9 +11,7 @@ import XCTest
 @testable import SwiftParsec
 
 class CharacterParsersTests: XCTestCase {
-
     func testOneOf() {
-
         let vowel = StringParser.oneOf("aeiou")
 
         // Test for success.
@@ -21,7 +19,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.oneOf should succeed."
 
         testStringParserSuccess(vowel, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -31,7 +28,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test for failure.
@@ -39,7 +35,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.oneOf should fail."
 
         testStringParserFailure(vowel, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -47,13 +42,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testOneOfInterval() {
-
         let interval = StringParser.oneOf("a"..."z")
 
         // Test for success.
@@ -70,7 +62,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test for failure.
@@ -78,20 +69,16 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.oneOf should fail."
 
         testStringParserFailure(interval, inputs: notMatching) { input, result in
-
             XCTFail(self.formatErrorMessage(
                 shouldFailMessage,
                 input: input,
                 result: result
                 )
             )
-
         }
-
     }
 
     func testNoneOf() {
-
         let consonant = StringParser.noneOf("aeiou")
 
         // Test for success.
@@ -99,7 +86,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.noneOf should succeed."
 
         testStringParserSuccess(consonant, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -109,7 +95,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test for failure.
@@ -117,7 +102,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.noneOf should fail."
 
         testStringParserFailure(consonant, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -125,13 +109,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testSpaces() {
-
         let suffix = "xadf"
         let skipSpaces = StringParser.spaces *>
             StringParser.character(suffix[suffix.startIndex])
@@ -141,7 +122,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.spaces should succeed."
 
         testStringParserSuccess(skipSpaces, inputs: matching) { input, result in
-
             let isMatch = suffix.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -151,7 +131,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -159,7 +138,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.spaces should fail."
 
         testStringParserFailure(skipSpaces, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -167,13 +145,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testUnicodeSpace() {
-
         let space = StringParser.unicodeSpace
 
         // Test for success.
@@ -188,7 +163,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.unicodeSpace should succeed."
 
         testStringParserSuccess(space, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -198,7 +172,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -206,7 +179,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.unicodeSpace should fail."
 
         testStringParserFailure(space, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -214,13 +186,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testSpace() {
-
         let space = StringParser.space
 
         // Test for success.
@@ -231,7 +200,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.space should succeed."
 
         testStringParserSuccess(space, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -241,7 +209,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -249,7 +216,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.space should fail."
 
         testStringParserFailure(space, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -257,13 +223,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testNewLine() {
-
         let newLine = StringParser.newLine
 
         // Test for success.
@@ -271,7 +234,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.newLine should succeed."
 
         testStringParserSuccess(newLine, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -281,7 +243,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -289,7 +250,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.newLine should fail."
 
         testStringParserFailure(newLine, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -297,13 +257,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testCrlf() {
-
         let newLine = StringParser.crlf
 
         // Test for success.
@@ -312,7 +269,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.crlf should succeed."
 
         testStringParserSuccess(newLine, inputs: matching) { input, result in
-
             XCTAssertEqual(
                 "\n",
                 result,
@@ -322,7 +278,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -330,7 +285,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.crlf should fail."
 
         testStringParserFailure(newLine, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -338,13 +292,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testEndOfLine() {
-
         let endOfLine = StringParser.endOfLine
 
         // Test for success.
@@ -353,7 +304,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.endOfLine should succeed."
 
         testStringParserSuccess(endOfLine, inputs: matching) { input, result in
-
             XCTAssertEqual(
                 "\n",
                 result,
@@ -363,7 +313,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -371,7 +320,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.endOfLine should fail."
 
         testStringParserFailure(endOfLine, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -379,13 +327,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testTab() {
-
         let tab = StringParser.tab
 
         // Test for success.
@@ -393,7 +338,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.tab should succeed."
 
         testStringParserSuccess(tab, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -403,7 +347,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -411,7 +354,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.tab should fail."
 
         testStringParserFailure(tab, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -419,13 +361,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testUppercase() {
-
         let uppercase = StringParser.uppercase
 
         // Test for success.
@@ -433,7 +372,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.uppercase should succeed."
 
         testStringParserSuccess(uppercase, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -443,7 +381,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -453,7 +390,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.uppercase should fail."
 
         testStringParserFailure(uppercase, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -461,13 +397,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testLowercase() {
-
         let lowercase = StringParser.lowercase
 
         // Test for success.
@@ -475,7 +408,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.lowercase should succeed."
 
         testStringParserSuccess(lowercase, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -485,7 +417,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -495,7 +426,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.lowercase should fail."
 
         testStringParserFailure(lowercase, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -503,13 +433,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testAlphaNumeric() {
-
         let alphaNum = StringParser.alphaNumeric
 
         // Test for success.
@@ -521,7 +448,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.alphaNumeric should succeed."
 
         testStringParserSuccess(alphaNum, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -531,7 +457,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -543,7 +468,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.alphaNumeric should fail."
 
         testStringParserFailure(alphaNum, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -551,13 +475,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testLetter() {
-
         let letter = StringParser.letter
 
         // Test for success.
@@ -568,7 +489,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.letter should succeed."
 
         testStringParserSuccess(letter, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -578,7 +498,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -590,7 +509,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.letter should fail."
 
         testStringParserFailure(letter, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -598,13 +516,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testSymbol() {
-
         let symbol = StringParser.symbol
 
         // Test for success.
@@ -612,7 +527,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.symbol should succeed."
 
         testStringParserSuccess(symbol, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -622,7 +536,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -634,7 +547,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.letter should fail."
 
         testStringParserFailure(symbol, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -642,13 +554,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testDigit() {
-
         let digit = StringParser.digit
 
         // Test for success.
@@ -656,7 +565,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.digit should succeed."
 
         testStringParserSuccess(digit, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -666,7 +574,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -679,7 +586,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.digit should fail."
 
         testStringParserFailure(digit, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -687,13 +593,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testDecimalDigit() {
-
         let hexDigit = StringParser.decimalDigit
 
         // Test for success.
@@ -701,7 +604,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.decimalDigit should succeed."
 
         testStringParserSuccess(hexDigit, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -711,7 +613,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -725,7 +626,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.decimalDigit should fail."
 
         testStringParserFailure(hexDigit, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -733,13 +633,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testHexadecimalDigit() {
-
         let hexDigit = StringParser.hexadecimalDigit
 
         // Test for success.
@@ -750,7 +647,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.hexadecimalDigit should succeed."
 
         testStringParserSuccess(hexDigit, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -760,7 +656,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -775,7 +670,6 @@ class CharacterParsersTests: XCTestCase {
         "GenericParser.hexadecimalDigit should fail."
 
         testStringParserFailure(hexDigit, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -783,13 +677,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testOctalDigit() {
-
         let octDigit = StringParser.octalDigit
 
         // Test for success.
@@ -797,7 +688,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.octalDigit should succeed."
 
         testStringParserSuccess(octDigit, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(String(result))
             XCTAssert(
                 isMatch,
@@ -807,7 +697,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -820,7 +709,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.octalDigit should fail."
 
         testStringParserFailure(octDigit, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -828,13 +716,10 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
 
     func testString() {
-
         let stringToMatch = "aàeéèëcçAÀEÉÈËCÇ"
         let string1 = StringParser.string(stringToMatch)
 
@@ -843,7 +728,6 @@ class CharacterParsersTests: XCTestCase {
         let errorMessage = "GenericParser.string should succeed."
 
         testStringParserSuccess(string1, inputs: matching) { input, result in
-
             let isMatch = input.hasPrefix(result)
             XCTAssert(
                 isMatch,
@@ -853,7 +737,6 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test when not matching.
@@ -864,7 +747,6 @@ class CharacterParsersTests: XCTestCase {
         let shouldFailMessage = "GenericParser.string should fail."
 
         testStringParserFailure(string1, inputs: notMatching) { input, result in
-
             XCTFail(
                 self.formatErrorMessage(
                     shouldFailMessage,
@@ -872,13 +754,11 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
 
         // Test for success with empty string to match.
         let string2 = StringParser.string("")
         testStringParserSuccess(string2, inputs: ["", "adsf"]) { input, result in
-
             XCTAssert(
                 result.isEmpty,
                 self.formatErrorMessage(
@@ -887,11 +767,8 @@ class CharacterParsersTests: XCTestCase {
                     result: result
                 )
             )
-
         }
-
     }
-
 }
 
 extension CharacterParsersTests {

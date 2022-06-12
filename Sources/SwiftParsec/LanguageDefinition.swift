@@ -13,7 +13,6 @@
 /// The `LanguageDefinition` structure contains all parameterizable features of
 /// the token parser. There is some default definitions provided by SwiftParsec.
 public struct LanguageDefinition<UserState> {
-
     /// Describe the start of a block comment. Use the empty string if the
     /// language doesn't support block comments. For example "/*".
     public var commentStart: String
@@ -64,20 +63,17 @@ public struct LanguageDefinition<UserState> {
 
     /// Set to `true` if the language is case sensitive.
     public var isCaseSensitive: Bool
-
 }
 
 // ==============================================================================
 // LanguageDefinition extension containing factory methods to create language
 // definitions for different languages.
 public extension LanguageDefinition {
-
     /// This is the most minimal token definition. It is recommended to use this
     /// definition as the basis for other definitions. `empty` has no reserved
     /// names or operators, is case sensitive and doesn't accept comments,
     /// identifiers or operators.
     static var empty: LanguageDefinition {
-
         return LanguageDefinition(
             commentStart: "",
             commentEnd: "",
@@ -99,14 +95,12 @@ public extension LanguageDefinition {
             characterEscape: nil,
             isCaseSensitive: true
         )
-
     }
 
     /// This is a minimal token definition for Java style languages. It defines
     /// the style of comments, valid identifiers and case sensitivity. It does
     /// not define any reserved words or operators.
     static var javaStyle: LanguageDefinition {
-
         var javaDef = empty
 
         javaDef.commentStart = "/*"
@@ -114,33 +108,27 @@ public extension LanguageDefinition {
         javaDef.commentLine  = "//"
 
         return javaDef
-
     }
 
     // This is a definition for the JSON language-independent data interchange
     // format.
     static var json: LanguageDefinition {
-
         var jsonDef = empty
 
         let charEscParsers: [GenericParser<String, UserState, Character>] =
         jsonEscapeMap.map { escCode in
-
             GenericParser.character(escCode.esc) *>
                 GenericParser(result: escCode.code)
-
         }
 
         let charEscape = GenericParser.choice(charEscParsers)
 
         let hexaNum: GenericParser<String, UserState, UInt16> =
         GenericParser.hexadecimalDigit.count(jsonMaxEscapeDigit) >>- { digits in
-
             // The max possible value of `digits` is 0xFFFF, so no possible
             // overflow.
             let integer = UInt16(String(digits), radix: 16)!
             return GenericParser(result: integer)
-
         }
 
         let backslash =
@@ -149,27 +137,19 @@ public extension LanguageDefinition {
         let codePoint = GenericParser.character("u") *> hexaNum
         let encodedChar: GenericParser<String, UserState, Character> =
         codePoint >>- { cp1 in
-
             if cp1.isSingleCodeUnit {
-
                 return GenericParser(result: Character(UnicodeScalar(cp1)!))
-
             }
 
             return backslash *> codePoint >>- { cp2 in
-
                 let cps = [cp1, cp2]
                 guard let str = String(codeUnits: cps, codec: UTF16()) else {
-
                     let decodingErrorMsg = LocalizedString("decoding error")
                     return GenericParser.fail(decodingErrorMsg)
-
                 }
 
                 return GenericParser(result: str[str.startIndex])
-
             } <?> LocalizedString("surrogate pair")
-
         }
 
         let escapeCodeMsg = LocalizedString("escape code")
@@ -178,14 +158,12 @@ public extension LanguageDefinition {
         jsonDef.characterEscape = characterEscape
 
         return jsonDef
-
     }
 
     /// This is a minimal token definition for the swift 2.1 language. It
     /// defines the style of comments, valid identifiers and operators, reserved
     /// names and operators, character escaping, and case sensitivity.
     static var swift: LanguageDefinition {
-
         var swiftDef = empty
 
         swiftDef.commentStart = "/*"
@@ -197,15 +175,11 @@ public extension LanguageDefinition {
             GenericParser.character(swiftImplicitParameterStart)
 
         swiftDef.identifierLetter = { char in
-
             if char == swiftImplicitParameterStart {
-
                 return GenericParser.decimalDigit
-
             }
 
             return GenericParser.memberOf(swiftIdentifierLetterSet)
-
         }
 
         swiftDef.operatorStart =
@@ -229,24 +203,18 @@ public extension LanguageDefinition {
 
         let charEscParsers: [GenericParser<String, UserState, Character>] =
         swiftEscapeMap.map { escCode in
-
             GenericParser.character(escCode.esc) *>
                 GenericParser(result: escCode.code)
-
         }
 
         let charEscape = GenericParser.choice(charEscParsers)
 
         let hexaChar: GenericParser<String, UserState, Character> =
         (GenericParser.hexadecimalDigit <?> "").many1 >>- { digits in
-
             let num = String(digits)
             return GenericTokenParser.integerWithDigits(num, base: 16) >>- { intVal in
-
                 GenericTokenParser.characterFromInt(intVal)
-
             } <?> LocalizedString("escape sequence")
-
         } <?> LocalizedString("hexadecimal digit(s)")
 
         let charNumber =
@@ -259,9 +227,7 @@ public extension LanguageDefinition {
         swiftDef.characterEscape = characterEscape
 
         return swiftDef
-
     }
-
 }
 
 // ==============================================================================

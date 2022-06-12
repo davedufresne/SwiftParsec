@@ -11,7 +11,6 @@
 // ==============================================================================
 // Extension containing aggregation methods.
 extension Collection {
-
     /// Return the result of repeatedly calling `combine` with an accumulated
     /// value initialized to `initial` and each element of `self`, in turn from
     /// the right, i.e. return combine(combine(...combine(combine(initial,
@@ -25,16 +24,11 @@ extension Collection {
         _ initial: T,
         combine: (T, Self.Iterator.Element) throws -> T
     ) rethrows -> T {
-
         var acc = initial
         for elem in reversed() {
-
             acc = try combine(acc, elem)
-
         }
 
         return acc
-
     }
-
 }

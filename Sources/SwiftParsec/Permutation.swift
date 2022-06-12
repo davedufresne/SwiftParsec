@@ -28,7 +28,6 @@
 ///
 public struct Permutation<StreamType: Stream, UserState, Result>:
 RangeReplaceableCollection, ExpressibleByArrayLiteral {
-
     /// Represents a valid position in the permutation.
     public typealias Index = Int
 
@@ -55,9 +54,7 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     /// - parameter arrayLiteral: Arrays of tuple containing a parser and an
     ///   optional default value.
     public init(arrayLiteral elements: Element...) {
-
         parsers = elements
-
     }
 
     /// Create an empty instance.
@@ -67,17 +64,13 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     ///
     /// - SeeAlso: `IndexableBase` protocol.
     public func index(after index: Permutation.Index) -> Permutation.Index {
-
         return parsers.index(after: index)
-
     }
 
     /// A parser applying to the permutation of all the parsers contained in
     /// `self`.
     public func makeParser() -> GenericParser<StreamType, UserState, [Result]> {
-
         return makeParser(separator: GenericParser(result: ()))
-
     }
 
     /// A parser applying to the permutation of all the parsers contained in
@@ -88,15 +81,11 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     public func makeParser<Separator>(
         separator: GenericParser<StreamType, UserState, Separator>
     ) -> GenericParser<StreamType, UserState, [Result]> {
-
         let ps = parsers.map { elem in
-
             (parser: elem.parser.map { [$0] }, otherwise: elem.otherwise)
-
         }
 
         return permute(ps, separator: separator)
-
     }
 
     private typealias PermParser =
@@ -106,69 +95,53 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         _ elements: [(parser: PermParser, otherwise: Result?)],
         separator: GenericParser<StreamType, UserState, Separator>
     ) -> PermParser {
-
         var permutation = ContiguousArray<PermParser>()
 
         let elementsRange = elements.indices
         for index in elementsRange {
-
             let element = elements[index]
 
             var parser = element.parser
             if index == elementsRange.last {
-
                 parser = emptyParser(parser, otherwise: element.otherwise)
-
             }
 
             let perm: PermParser = parser >>- { result in
-
                 var elems = elements
                 elems.remove(at: index)
 
                 let permParser: PermParser
                 if elems.count > 1 {
-
                     permParser = separator *> self.permute(elems, separator: separator)
-
                 } else {
-
                     let elem = elems[0]
                     permParser = self.emptyParser(
                         separator *> elem.parser,
                         otherwise: elem.otherwise
                     )
-
                 }
 
                 return permParser >>- { results in
-
                     var rs = results
                     rs.insert(contentsOf: result, at: index)
 
                     return GenericParser(result: rs)
-
                 }
-
             }
 
             permutation.append(perm)
-
         }
 
         return GenericParser.choice(permutation)
-
     }
 
     private func emptyParser(
         _ parser: PermParser,
         otherwise: Result?
     ) -> PermParser {
-
         guard let def = otherwise else { return parser }
 
         return parser.otherwise([def])
-
     }
 
     /// Append a parser to the permutation. The added parser is not allowed to
@@ -178,9 +151,7 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     public mutating func appendParser(
         _ parser: GenericParser<StreamType, UserState, Result>
     ) {
-
         parsers.append((parser, nil))
-
     }
 
     /// Append an optional parser to the permutation. The parser is optional -
@@ -194,9 +165,7 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         _ parser: GenericParser<StreamType, UserState, Result>,
         otherwise: Result
     ) {
-
         parsers.append((parser, otherwise))
-
     }
 
     /// Replace the given subRange of elements with newElements.
@@ -209,11 +178,8 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         _ subrange: Range<Index>,
         with newElements: C
     ) where C.Iterator.Element == Iterator.Element {
-
         parsers.replaceSubrange(subrange, with: newElements)
-
     }
 
     public subscript(position: Index) -> Element { return parsers[position] }
-
 }

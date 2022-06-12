@@ -13,7 +13,6 @@
 /// This enumeration specifies the associativity of operators: right, left or
 /// none.
 public enum Associativity {
-
     /// Right associative
     case right
 
@@ -22,7 +21,6 @@ public enum Associativity {
 
     /// No associativity
     case none
-
 }
 
 // ==============================================================================
@@ -30,7 +28,6 @@ public enum Associativity {
 /// operator is either binary infix or unary prefix or postfix. A binary
 /// operator has also an associated associativity.
 public enum Operator<StreamType: Stream, UserState, Result> {
-
     /// Infix operator and associativity.
     case infix(
         GenericParser<StreamType, UserState, (Result, Result) -> Result>,
@@ -42,7 +39,6 @@ public enum Operator<StreamType: Stream, UserState, Result> {
 
     /// Postfix operator.
     case postfix(GenericParser<StreamType, UserState, (Result) -> Result>)
-
 }
 
 // ==============================================================================
@@ -50,7 +46,6 @@ public enum Operator<StreamType: Stream, UserState, Result> {
 /// used to create parsers based on the table.
 public struct OperatorTable<StreamType: Stream, UserState, Result>:
 RangeReplaceableCollection, ExpressibleByArrayLiteral {
-
     /// Represents a valid position in the operator table.
     public typealias Index = Int
 
@@ -73,9 +68,7 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     ///
     /// - parameter arrayLiteral: Arrays of `Operator`.
     public init(arrayLiteral elements: Element...) {
-
         table = elements
-
     }
 
     /// Create an empty instance.
@@ -85,9 +78,7 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     ///
     /// - SeeAlso: `IndexableBase` protocol.
     public func index(after index: OperatorTable.Index) -> OperatorTable.Index {
-
         return table.index(after: index)
-
     }
 
     /// Build an expression parser for terms returned by `combined` with
@@ -185,7 +176,6 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
             _ expression: GenericParser<StreamType, UserState, Result>
         ) -> GenericParser<StreamType, UserState, Result>
     ) -> GenericParser<StreamType, UserState, Result> {
-
         var term: GenericParser<StreamType, UserState, Result>!
         let lazyTerm = GenericParser<StreamType, UserState, Result> { term }
 
@@ -193,7 +183,6 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         term = combine(expr)
 
         return expr
-
     }
 
     private typealias InfixOperatorParser =
@@ -215,7 +204,6 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         _ term: GenericParser<StreamType, UserState, Result>,
         operators: [Operator<StreamType, UserState, Result>]
     ) -> GenericParser<StreamType, UserState, Result> {
-
         let ops: OperatorsTuple = operators.reduce(
             ([], [], [], [], []),
             splitOperators
@@ -240,110 +228,78 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         let postfixParser = postfixOp <|> GenericParser(result: { $0 })
 
         let termParser = prefixParser >>- { pre in
-
             term >>- { transform in
-
                 postfixParser >>- { post in
-
                     GenericParser(result: post(pre(transform)))
-
                 }
-
             }
-
         }
 
         func rightAssocParser(
             _ left: Result
         ) -> GenericParser<StreamType, UserState, Result> {
-
             let rightTerm = termParser >>- { rightAssocParser1($0) }
 
             let apply = rightAssocOp >>- { transform in
-
                 rightTerm >>- { right in GenericParser(result: transform(left, right)) }
-
             }
 
             return apply <|> ambigiousLeft <|> ambigiousNon
-
         }
 
         func rightAssocParser1(
             _ right: Result
         ) -> GenericParser<StreamType, UserState, Result> {
-
             return rightAssocParser(right) <|> GenericParser(result: right)
-
         }
 
         func leftAssocParser(
             _ left: Result
         ) -> GenericParser<StreamType, UserState, Result> {
-
             let apply = leftAssocOp >>- { transform in
-
                 termParser >>- { right in
-
                     leftAssocParser1(transform(left, right))
-
                 }
-
             }
 
             return apply <|> ambigiousRight <|> ambigiousNon
-
         }
 
         func leftAssocParser1(
             _ right: Result
         ) -> GenericParser<StreamType, UserState, Result> {
-
             return leftAssocParser(right) <|> GenericParser(result: right)
-
         }
 
         func nonAssocParser(
             _ left: Result
         ) -> GenericParser<StreamType, UserState, Result> {
-
             return nonAssocOp >>- { transform in
-
                 termParser >>- { right in
-
                     ambigiousRight <|> ambigiousLeft <|> ambigiousNon <|>
                         GenericParser(result: transform(left, right))
-
                 }
-
             }
-
         }
 
         return termParser >>- { transform in
-
             rightAssocParser(transform) <|>
             leftAssocParser(transform) <|>
             nonAssocParser(transform) <|>
             GenericParser(result: transform) <?> LocalizedString("operator")
-
         }
-
     }
 
     private func splitOperators(
         operators: OperatorsTuple,
         op: Operator<StreamType, UserState, Result>
     ) -> OperatorsTuple {
-
         var ops = operators
 
         switch op {
-
         case .infix(let parser, let assoc):
 
             switch assoc {
-
             case .none:
 
                 var none = ops.none
@@ -364,7 +320,6 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
                 right.append(parser)
 
                 ops.right = right
-
             }
 
         case .prefix(let parser):
@@ -380,18 +335,15 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
             post.append(parser)
 
             ops.postfix = post
-
         }
 
         return ops
-
     }
 
     private func ambigious(
         _ op: InfixOperatorParser,
         assoc: String
     ) -> GenericParser<StreamType, UserState, Result> {
-
         #if _runtime(_ObjC)
 
         let msg = LocalizedString("ambiguous use of a %@ associative operator")
@@ -405,7 +357,6 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
         #endif
 
         return (op *> GenericParser.fail(localizedMsg)).attempt
-
     }
 
     /// Replace the given subRange of elements with newElements.
@@ -417,11 +368,8 @@ RangeReplaceableCollection, ExpressibleByArrayLiteral {
     public mutating func replaceSubrange<C: Collection>(
         _ subrange: Range<Index>, with newElements: C
     ) where C.Iterator.Element == Iterator.Element {
-
         table.replaceSubrange(subrange, with: newElements)
-
     }
 
     public subscript(position: Index) -> Element { return table[position] }
-
 }

@@ -7,11 +7,9 @@ import XCTest
 @testable import SwiftParsec
 
 class CharacterSetTests: XCTestCase {
-
     // Creating large `Foundation.CharacterSet`s can cause Linux programs to
     // halt (silently crash).
     func testLarge() {
-
         // Initialized this way to overcome Swift 4.2 compiler error
         let unicode: String = {
             let strands: [String] = [
@@ -34,7 +32,6 @@ class CharacterSetTests: XCTestCase {
         }()
         _ = CharacterSet(charactersIn: unicode)
     }
-
 }
 
 extension CharacterSetTests {

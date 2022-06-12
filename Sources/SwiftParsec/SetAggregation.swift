@@ -11,7 +11,6 @@
 // ==============================================================================
 // Extension containing aggregation methods.
 extension Set {
-
     /// Return a `Set` containing the results of mapping transform over `self`.
     ///
     /// - parameter transform: The transform function.
@@ -20,17 +19,12 @@ extension Set {
     func map<T>(
         _ transform: (Iterator.Element) throws -> T
     ) rethrows -> Set<T> {
-
         var mappedSet = Set<T>()
 
         for elem in self {
-
             mappedSet.insert(try transform(elem))
-
         }
 
         return mappedSet
-
     }
-
 }
