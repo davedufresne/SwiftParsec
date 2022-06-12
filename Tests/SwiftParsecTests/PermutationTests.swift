@@ -363,7 +363,7 @@ class PermutationTests: XCTestCase {
 }
 
 // ==============================================================================
-private func ==(lhs: [String?], rhs: [String?]) -> Bool {
+private func == (lhs: [String?], rhs: [String?]) -> Bool {
 
     return lhs.count == rhs.count && !zip(lhs, rhs).contains { $0 != $1 }
 

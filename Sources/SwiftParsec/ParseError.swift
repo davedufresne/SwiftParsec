@@ -74,14 +74,14 @@ public enum Message: Comparable {
 // Operator implementations for the `Message` type.
 
 /// Equality based on the index.
-public func ==(leftMsg: Message, rightMsg: Message) -> Bool {
+public func == (leftMsg: Message, rightMsg: Message) -> Bool {
 
     return leftMsg.index == rightMsg.index
 
 }
 
 /// Comparison based on the index.
-public func <(leftMsg: Message, rightMsg: Message) -> Bool {
+public func < (leftMsg: Message, rightMsg: Message) -> Bool {
 
     return leftMsg.index < rightMsg.index
 

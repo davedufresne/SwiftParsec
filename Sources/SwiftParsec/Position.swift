@@ -75,14 +75,14 @@ public struct SourcePosition: Comparable, CustomStringConvertible {
 // Operator implementations for the `SourcePosition` type.
 
 /// Equality based on the line and column number.
-public func ==(leftPos: SourcePosition, rightPos: SourcePosition) -> Bool {
+public func == (leftPos: SourcePosition, rightPos: SourcePosition) -> Bool {
 
     return leftPos.line == rightPos.line && leftPos.column == rightPos.column
 
 }
 
 /// Comparison based on the line and column number.
-public func <(leftPos: SourcePosition, rightPos: SourcePosition) -> Bool {
+public func < (leftPos: SourcePosition, rightPos: SourcePosition) -> Bool {
 
     if leftPos.line < rightPos.line {
 

@@ -282,7 +282,7 @@ extension Parsec {
     /// - parameters:
     ///   - parser: The parser whose error message is to be replaced.
     ///   - message: The new error message.
-    public static func <?>(parser: Self, message: String) -> Self {
+    public static func <?> (parser: Self, message: String) -> Self {
 
         return parser.labels(message)
 
@@ -294,7 +294,7 @@ extension Parsec {
     /// - parameters:
     ///   - leftParser: The first parser to try.
     ///   - rightParser: The second parser to try.
-    public static func <|>(leftParser: Self, rightParser: Self) -> Self {
+    public static func <|> (leftParser: Self, rightParser: Self) -> Self {
 
         return leftParser.alternative(rightParser)
 
